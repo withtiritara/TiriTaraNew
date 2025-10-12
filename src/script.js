@@ -310,6 +310,150 @@ window.onbeforeunload = function () {
     window.scrollTo(0, 0);
 };
 
+/* ----------------------
+   Scroll checkpoints / pagination
+   When the user scrolls (wheel or touch) we snap the page to predefined
+   checkpoints so the GSAP ScrollTrigger animations play between stops.
+   This keeps the existing ScrollTrigger timelines intact and uses
+   native smooth scrolling to move the document to the next checkpoint.
+   ---------------------- */
+(function () {
+    const scrollElement = document.querySelector('.scrollElement');
+    if (!scrollElement) return;
+
+    // percentages of the scrollElement's scrollable range we want checkpoints at
+    const percents = [0, 0.15, 0.4, 0.6, 0.8, 1];
+    let maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
+    let checkpoints = percents.map(p => Math.round(p * maxScroll));
+    let current = 0;
+    let isAnimating = false;
+
+    const updateCheckpoints = () => {
+        maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
+        checkpoints = percents.map(p => Math.round(p * maxScroll));
+    };
+
+    window.addEventListener('resize', updateCheckpoints);
+
+    // adjustable snap duration in ms (increase to slow down snapping)
+    const snapDuration = 1400;
+    let _rafId = null;
+
+    const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+    const smoothScrollTo = (targetY, duration = snapDuration) => {
+        if (_rafId) cancelAnimationFrame(_rafId);
+        const startY = window.scrollY || window.pageYOffset;
+        const diff = targetY - startY;
+        if (diff === 0) return Promise.resolve();
+        const startTime = performance.now();
+
+        return new Promise((resolve) => {
+            const step = (now) => {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / duration);
+                const eased = easeInOutQuad(t);
+                window.scrollTo(0, Math.round(startY + diff * eased));
+                if (t < 1) {
+                    _rafId = requestAnimationFrame(step);
+                } else {
+                    _rafId = null;
+                    resolve();
+                }
+            };
+            _rafId = requestAnimationFrame(step);
+        });
+    };
+
+    const updateCheckpointContent = (index) => {
+        // Hide all checkpoint content immediately
+        document.querySelectorAll('.checkpoint-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        // Show current checkpoint content after a delay
+        setTimeout(() => {
+            const currentContent = document.getElementById(`checkpoint-${index}`);
+            if (currentContent) {
+                currentContent.classList.add('active');
+            }
+        }, snapDuration * 0.7); // Show text when 70% through scroll animation
+    };
+
+    const goTo = (index) => {
+        index = Math.max(0, Math.min(checkpoints.length - 1, index));
+        if (index === current) return;
+        current = index;
+        isAnimating = true;
+
+        // Hide current content immediately when starting to scroll
+        document.querySelectorAll('.checkpoint-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // animate to checkpoint with a controlled duration
+        smoothScrollTo(checkpoints[index], snapDuration).then(() => {
+            isAnimating = false;
+            // Show content when scroll animation is complete
+            const currentContent = document.getElementById(`checkpoint-${index}`);
+            if (currentContent) {
+                currentContent.classList.add('active');
+            }
+        });
+    };
+
+    // Wheel handler (desktop). preventDefault to stop native free scrolling
+    const wheelHandler = (e) => {
+        // if an animation is playing, ignore additional wheel events
+        if (isAnimating) {
+            e.preventDefault();
+            return;
+        }
+
+        const delta = e.deltaY;
+        if (Math.abs(delta) < 5) return;
+
+        e.preventDefault();
+        if (delta > 0) goTo(current + 1);
+        else goTo(current - 1);
+    };
+
+    // Touch handlers (mobile)
+    let touchStartY = null;
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches ? e.touches[0].clientY : null;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+        if (isAnimating || touchStartY === null) return;
+        const touchEndY = e.changedTouches ? e.changedTouches[0].clientY : null;
+        if (touchEndY === null) return;
+        const dy = touchStartY - touchEndY;
+        if (Math.abs(dy) < 30) return; // small swipe = ignore
+        if (dy > 0) goTo(current + 1);
+        else goTo(current - 1);
+        touchStartY = null;
+    }, { passive: true });
+
+    // initialize current index based on current scroll position
+    const initIndex = () => {
+        updateCheckpoints();
+        const y = window.scrollY;
+        let i = 0;
+        for (let j = 0; j < checkpoints.length; j++) {
+            if (y >= checkpoints[j]) i = j;
+        }
+        current = i;
+    };
+
+    initIndex();
+    // Initialize content visibility for current checkpoint
+    updateCheckpointContent(current);
+    
+    // attach wheel listener as non-passive so we can preventDefault
+    window.addEventListener('wheel', wheelHandler, { passive: false });
+})();
+
 // function screenToSVG(svg, x, y) {
 //     var pt = svg.createSVGPoint();
 //     pt.x = x;
