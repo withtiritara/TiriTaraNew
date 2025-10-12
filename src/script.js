@@ -3,9 +3,9 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Navbar functionality
+// Floating Navbar functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const navbar = document.querySelector('.glassmorphic-navbar');
+    const navbar = document.querySelector('.floating-navbar');
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
     const navbarLinks = document.querySelectorAll('.navbar-link');
@@ -35,21 +35,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Smooth scrolling for anchor links
+    // Navbar checkpoint navigation
     navbarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
+            e.preventDefault();
+            const checkpointIndex = parseInt(this.getAttribute('data-checkpoint'));
+            if (!isNaN(checkpointIndex)) {
+                // Update navbar active state
+                navbarLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
                 
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop - 100;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+                // Navigate to checkpoint using existing goTo function
+                if (window.checkpointGoTo) {
+                    window.checkpointGoTo(checkpointIndex);
                 }
             }
         });
@@ -371,13 +369,33 @@ window.onbeforeunload = function () {
             content.classList.remove('active');
         });
         
-        // Show current checkpoint content after a delay
-        setTimeout(() => {
-            const currentContent = document.getElementById(`checkpoint-${index}`);
-            if (currentContent) {
-                currentContent.classList.add('active');
-            }
-        }, snapDuration * 0.7); // Show text when 70% through scroll animation
+        // Update navbar active state
+        document.querySelectorAll('.navbar-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        const activeNavLink = document.querySelector(`[data-checkpoint="${index}"]`);
+        if (activeNavLink) {
+            activeNavLink.classList.add('active');
+        }
+        
+        // Always hide hero text initially
+        document.body.classList.remove('checkpoint-0-active');
+        
+        // Show content after animations complete
+        if (index === 0) {
+            // For hero text, wait longer to let all animations finish
+            setTimeout(() => {
+                document.body.classList.add('checkpoint-0-active');
+            }, snapDuration * 0.9); // Show hero text when 90% through scroll animation
+        } else {
+            // For other checkpoint content
+            setTimeout(() => {
+                const currentContent = document.getElementById(`checkpoint-${index}`);
+                if (currentContent) {
+                    currentContent.classList.add('active');
+                }
+            }, snapDuration * 0.7); // Show text when 70% through scroll animation
+        }
     };
 
     const goTo = (index) => {
@@ -390,14 +408,25 @@ window.onbeforeunload = function () {
         document.querySelectorAll('.checkpoint-content').forEach(content => {
             content.classList.remove('active');
         });
+        
+        // Always hide hero text initially
+        document.body.classList.remove('checkpoint-0-active');
 
         // animate to checkpoint with a controlled duration
         smoothScrollTo(checkpoints[index], snapDuration).then(() => {
             isAnimating = false;
-            // Show content when scroll animation is complete
-            const currentContent = document.getElementById(`checkpoint-${index}`);
-            if (currentContent) {
-                currentContent.classList.add('active');
+            
+            if (index === 0) {
+                // For hero text, add additional delay to let GSAP animations finish
+                setTimeout(() => {
+                    document.body.classList.add('checkpoint-0-active');
+                }, 300); // Extra delay after scroll completes for hero text
+            } else {
+                // Show other checkpoint content immediately when scroll completes
+                const currentContent = document.getElementById(`checkpoint-${index}`);
+                if (currentContent) {
+                    currentContent.classList.add('active');
+                }
             }
         });
     };
@@ -449,6 +478,9 @@ window.onbeforeunload = function () {
     initIndex();
     // Initialize content visibility for current checkpoint
     updateCheckpointContent(current);
+    
+    // Expose goTo function globally for navbar
+    window.checkpointGoTo = goTo;
     
     // attach wheel listener as non-passive so we can preventDefault
     window.addEventListener('wheel', wheelHandler, { passive: false });
