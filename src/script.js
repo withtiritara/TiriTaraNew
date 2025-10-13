@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+
 });
 
 let speed = 100;
@@ -178,9 +180,10 @@ scene2.fromTo("#h2-6", { y: 900 }, { y: 0 }, 0.3);
 gsap.set("#bats", { transformOrigin: "50% 50%" });
 gsap.fromTo(
     "#bats",
-    { opacity: 1, y: 400, scale: 0 },
+    { opacity: 1, y: 400, x: 0, scale: 0 },
     {
         y: 20,
+        x: 100,
         scale: 0.8,
         //transformOrigin: "50% 50%",
         ease: "power3.out",
@@ -320,7 +323,8 @@ window.onbeforeunload = function () {
     if (!scrollElement) return;
 
     // percentages of the scrollElement's scrollable range we want checkpoints at
-    const percents = [0, 0.15, 0.4, 0.6, 0.8, 1];
+    const percents = [0, 0.15, 0.4, 0.6, 1];
+    // const percents = [0, 0.15, 0.4, 0.6, 0.8, 1]; FOR NEW SECTION
     let maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
     let checkpoints = percents.map(p => Math.round(p * maxScroll));
     let current = 0;
@@ -479,6 +483,33 @@ window.onbeforeunload = function () {
     // Initialize content visibility for current checkpoint
     updateCheckpointContent(current);
     
+    // Add scroll listener to update navbar on manual scroll
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (isAnimating) return; // Don't update during programmatic scrolling
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const y = window.scrollY;
+            let newIndex = 0;
+            for (let j = 0; j < checkpoints.length; j++) {
+                if (y >= checkpoints[j]) newIndex = j;
+            }
+            
+            if (newIndex !== current) {
+                current = newIndex;
+                // Update navbar active state directly using existing logic
+                document.querySelectorAll('.navbar-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                const activeNavLink = document.querySelector(`[data-checkpoint="${current}"]`);
+                if (activeNavLink) {
+                    activeNavLink.classList.add('active');
+                }
+            }
+        }, 50);
+    });
+    
     // Expose goTo function globally for navbar
     window.checkpointGoTo = goTo;
     
@@ -493,3 +524,22 @@ window.onbeforeunload = function () {
 //     var cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
 //     return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
 // }
+
+// Join form functionality
+function openJoinForm() {
+    // Show the popup modal with Google form
+    const popup = document.getElementById('joinFormPopup');
+    if (popup) {
+        popup.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+}
+
+function closeJoinForm() {
+    // Hide the popup modal
+    const popup = document.getElementById('joinFormPopup');
+    if (popup) {
+        popup.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+    }
+}
