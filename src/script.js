@@ -35,9 +35,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Navbar checkpoint navigation
+    // Navbar checkpoint navigation and special actions (e.g. open join form)
     navbarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
+            // If this is the join-tribe link, open the embedded Google form popup
+            if (this.classList.contains('join-tribe') || this.id === 'nav-join-tribe') {
+                e.preventDefault();
+                if (window.openJoinForm) window.openJoinForm();
+                return;
+            }
+
             e.preventDefault();
             const checkpointIndex = parseInt(this.getAttribute('data-checkpoint'));
             if (!isNaN(checkpointIndex)) {
@@ -157,7 +164,7 @@ sun.to("#bg_grad stop:nth-child(2)", { attr: { offset: "0.15" } }, 0);
 sun.to("#bg_grad stop:nth-child(3)", { attr: { offset: "0.18" } }, 0);
 sun.to("#bg_grad stop:nth-child(4)", { attr: { offset: "0.25" } }, 0);
 sun.to("#bg_grad stop:nth-child(5)", { attr: { offset: "0.46" } }, 0);
-sun.to("#bg_grad stop:nth-child(6)", { attr: { "stop-color": "#FF9171" } }, 0);
+sun.to("#bg_grad stop:nth-child(6)", { attr: { "stop-color": "#f1e4c6" } }, 0);
 
 /*   SCENE 2  */
 let scene2 = gsap.timeline();
@@ -323,8 +330,8 @@ window.onbeforeunload = function () {
     if (!scrollElement) return;
 
     // percentages of the scrollElement's scrollable range we want checkpoints at
-    const percents = [0, 0.15, 0.4, 0.6, 1];
-    // const percents = [0, 0.15, 0.4, 0.6, 0.8, 1]; FOR NEW SECTION
+    // const percents = [0, 0.15, 0.4, 0.6, 1];
+    const percents = [0, 0.15, 0.4, 0.6, 0.8, 1]; 
     let maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
     let checkpoints = percents.map(p => Math.round(p * maxScroll));
     let current = 0;
@@ -526,12 +533,89 @@ window.onbeforeunload = function () {
 // }
 
 // Join form functionality
+// Escape cards modal behavior
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('escape-modal');
+    const backdrop = document.getElementById('escape-modal-backdrop');
+    const closeBtn = document.getElementById('escape-modal-close');
+    const modalImage = document.getElementById('escape-modal-image');
+    const modalTitle = document.getElementById('escape-modal-title');
+    const modalDesc = document.getElementById('escape-modal-desc');
+    const modalJourney = document.getElementById('escape-modal-journey');
+    const modalPrice = document.getElementById('escape-modal-price');
+    const modalBookBtn = document.getElementById('escape-modal-book');
+
+    // Keep reference to the last clicked card so we can use per-card book links if provided
+    let lastClickedCard = null;
+
+    function openModal(data) {
+        if (!modal) return;
+        modalImage.src = data.imgSrc || '';
+        modalImage.alt = data.imgAlt || '';
+        modalTitle.textContent = data.title || '';
+        modalDesc.textContent = data.description || '';
+        modalJourney.textContent = data.journey || 'Details coming soon';
+        modalPrice.textContent = data.price || 'Price: Contact us';
+        // store card reference if available
+        lastClickedCard = data._card || null;
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        if (!modal) return;
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    // Click on card to open modal
+    document.querySelectorAll('.escape-card').forEach(card => {
+        card.addEventListener('click', function (e) {
+            // Collect data from card
+            const img = card.querySelector('.card-image img');
+            const title = card.querySelector('.card-title')?.textContent || '';
+            const desc = card.querySelector('.card-description')?.textContent || '';
+
+            // For now, derive journey and price from data attributes if present
+            const journey = card.getAttribute('data-journey') || (title ? `${title} - 3 days / 2 nights` : '3 days / 2 nights');
+            const price = card.getAttribute('data-price') || 'Price: ₹9,999';
+
+            openModal({ imgSrc: img?.src, imgAlt: img?.alt, title, description: desc, journey, price, _card: card });
+        });
+    });
+
+    // Close interactions
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modalBookBtn) modalBookBtn.addEventListener('click', function () {
+        // prefer per-card booking link; fallback to default group link
+        const defaultWhatsApp = 'https://chat.whatsapp.com/your-group-invite-link-here';
+        let link = defaultWhatsApp;
+        try {
+            if (lastClickedCard) {
+                const cardLink = lastClickedCard.getAttribute('data-book-link');
+                if (cardLink) link = cardLink;
+            }
+        } catch (err) {
+            // ignore and use default
+        }
+
+        // open in new tab/window
+        window.open(link, '_blank');
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
+            closeModal();
+        }
+    });
+});
 function openJoinForm() {
     // Show the popup modal with Google form
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
         popup.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent scrolling
+        addPopupScrollBlockers(popup);
     }
 }
 
@@ -541,5 +625,106 @@ function closeJoinForm() {
     if (popup) {
         popup.style.display = 'none';
         document.body.style.overflow = 'auto'; // Re-enable scrolling
+        removePopupScrollBlockers(popup);
     }
 }
+
+// Helper: prevent wheel/touch events on popup from bubbling to the window
+function addPopupScrollBlockers(popup) {
+    if (!popup) return;
+    // avoid adding twice
+    if (popup.__blockerHandlers) return;
+
+    const wheelHandler = function (e) {
+        // allow the inner element to handle default scrolling but stop propagation to window
+        e.stopPropagation();
+        // don't call preventDefault so inner scroll still works
+    };
+
+    const touchHandler = function (e) {
+        e.stopPropagation();
+    };
+
+    popup.addEventListener('wheel', wheelHandler, { passive: false });
+    popup.addEventListener('touchmove', touchHandler, { passive: false });
+
+    popup.__blockerHandlers = { wheelHandler, touchHandler };
+}
+
+function removePopupScrollBlockers(popup) {
+    if (!popup || !popup.__blockerHandlers) return;
+    const { wheelHandler, touchHandler } = popup.__blockerHandlers;
+    popup.removeEventListener('wheel', wheelHandler, { passive: false });
+    popup.removeEventListener('touchmove', touchHandler, { passive: false });
+    delete popup.__blockerHandlers;
+}
+
+function openB2BForm() {
+    const popup = document.getElementById('b2bPopup');
+    if (popup) {
+        popup.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        addPopupScrollBlockers(popup);
+    }
+}
+
+function closeB2BForm() {
+    const popup = document.getElementById('b2bPopup');
+    if (popup) {
+        popup.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        removePopupScrollBlockers(popup);
+    }
+}
+
+// B2B form submit handling (non-blocking, client-side only)
+document.addEventListener('DOMContentLoaded', function () {
+    const b2bForm = document.getElementById('b2b-form');
+    if (!b2bForm) return;
+
+    b2bForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Basic validation for required fields
+        const fullName = b2bForm.elements['fullName']?.value?.trim();
+        const email = b2bForm.elements['email']?.value?.trim();
+        const phone = b2bForm.elements['phone']?.value?.trim();
+        const participants = b2bForm.elements['participants']?.value?.trim();
+
+        if (!fullName || !email || !phone || !participants) {
+            alert('Please fill the required fields: Full Name, Email, Phone and Number of Travellers.');
+            return;
+        }
+
+        // collect form data
+        const data = {
+            fullName,
+            email,
+            phone,
+            company: b2bForm.elements['company']?.value?.trim() || '',
+            participants: participants,
+            dates: b2bForm.elements['dates']?.value?.trim() || '',
+            destination: b2bForm.elements['destination']?.value?.trim() || '',
+            vibe: b2bForm.elements['vibe']?.value || '',
+            notes: b2bForm.elements['notes']?.value?.trim() || ''
+        };
+
+        // In this static prototype we simply show a success message and log the data
+        const successEl = document.getElementById('b2b-success');
+        if (successEl) {
+            successEl.hidden = false;
+            // scroll success into view (only within checkpoint area)
+            successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Optionally, send data to backend or third-party here (not implemented)
+        // For debugging: log the payload
+        try { console.log('B2B form submitted:', data); } catch (err) { /* ignore */ }
+
+        // Disable the form to prevent duplicate sends
+        Array.from(b2bForm.querySelectorAll('input,textarea,select,button')).forEach(el => el.disabled = true);
+
+        // Keep the success state visible and do not reset immediately. If desired, uncomment next line to reset.
+        // b2bForm.reset();
+    });
+});

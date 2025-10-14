@@ -1,10 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
 
+/* Local font: Greenth (placed in src/assets) */
+@font-face {
+    font-family: 'Greenth';
+    src: url('assets/Greenth_Personal_Use.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* CSS Font Variables - Change URLs here to update fonts site-wide */
 :root {
-    --primary-font: 'Cormorant Garamond', serif;
-    --secondary-font: 'Cormorant Garamond', serif;
-    --body-font: 'Cormorant Garamond', serif;
+    /* Use Greenth as primary with fallbacks to Cormorant and generic serif */
+    --primary-font: 'Greenth', 'Cormorant Garamond', serif;
+    --secondary-font: 'Greenth', 'Cormorant Garamond', serif;
+    --body-font: 'Greenth', 'Cormorant Garamond', serif;
 }
 
 body {
@@ -87,6 +97,37 @@ body::-webkit-scrollbar,
     margin: 0;
     padding: 0;
     gap: 16px;
+}
+
+/* Social icons in navbar */
+.navbar-social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 8px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.social-link:hover {
+    background: rgba(0,0,0,0.06);
+    transform: translateY(-2px) scale(1.03);
+}
+
+.social-icon {
+    width: 20px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
 }
 
 .navbar-link {
@@ -186,6 +227,21 @@ body::-webkit-scrollbar,
     
     .navbar-toggle {
         display: flex;
+    }
+
+    /* make social icons slightly smaller on mobile */
+    .navbar-social {
+        margin-top: 8px;
+        justify-content: center;
+    }
+
+    .social-link {
+        width: 32px;
+        height: 32px;
+    }
+
+    .social-icon {
+        width: 18px;
     }
     
     .navbar-toggle.active .bar:nth-child(2) {
@@ -348,12 +404,15 @@ svg {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease;
-    pointer-events: none;
+    /* allow interaction by default so cards are clickable; visual hiding is handled by opacity */
+    pointer-events: auto;
     width: 90%;
 }
 
 .checkpoint-content.active {
     opacity: 1;
+    /* allow interaction with content only when the checkpoint is active */
+    pointer-events: auto;
 }
 
 .checkpoint-header {
@@ -507,15 +566,157 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     filter: brightness(1.2) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
 }
 
+.navbar-link.join-tribe {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ffb347 0%, #ffcc33 50%, #ffd54f 100%);
+    color: #1b0f00;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(255, 180, 50, 0.12);
+    transform-origin: center;
+}
+
+.navbar-link.join-tribe:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(255, 180, 50, 0.16);
+}
+
+/* Make sure the navbar-link default styles don't conflict */
+.navbar-menu .navbar-link.join-tribe {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .navbar-link.join-tribe {
+        padding: 10px 16px;
+    }
+}
+
 .checkpoint-text {
     font-family: var(--secondary-font);
     font-size: 1.8rem;
     font-weight: 500;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     opacity: 0.95;
+}
+
+/* B2B form styles */
+.b2b-form-wrap {
+    margin: 2.25rem auto 0 auto;
+    max-width: 920px;
+    background: rgba(255,255,255,0.92);
+    color: #111;
+    padding: 1.6rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(13,12,25,0.08);
+    text-align: left;
+}
+
+.b2b-intro {
+    margin-bottom: 0.6rem;
+}
+
+.b2b-title {
+    font-family: var(--primary-font);
+    font-size: 1.6rem;
+    margin: 0 0 0.25rem 0;
+    color: #1b1734;
+}
+
+.b2b-sub {
+    margin: 0 0 1rem 0;
+    color: #fff;
+    font-size: 0.98rem;
+}
+
+.b2b-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field.fullwidth { grid-column: 1 / -1; }
+
+.label-title {
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.b2b-form input[type="text"],
+.b2b-form input[type="email"],
+.b2b-form input[type="tel"],
+.b2b-form input[type="number"],
+.b2b-form input[type="date"],
+.b2b-form select,
+.b2b-form textarea {
+    border: 1px solid rgba(27,23,52,0.06);
+    padding: 0.6rem 0.7rem;
+    border-radius: 8px;
+    font-family: var(--body-font);
+    font-size: 0.98rem;
+    color: #111;
+    outline: none;
+    transition: box-shadow 0.15s ease, border-color 0.12s ease;
+    background: #fff;
+}
+
+.b2b-form input:focus,
+.b2b-form select:focus,
+.b2b-form textarea:focus {
+    box-shadow: 0 6px 20px rgba(81, 63, 151, 0.06);
+    border-color: rgba(81, 63, 151, 0.18);
+}
+
+.b2b-form .submit-btn {
+    background: linear-gradient(90deg,#ffb347 0%,#ffcc33 50%,#ffd54f 100%);
+    color: #1b0f00;
+    padding: 0.7rem 1.1rem;
+    border-radius: 999px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(255,180,50,0.12);
+}
+
+.b2b-form .form-actions {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-note {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.b2b-success {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: linear-gradient(180deg,#f6fff4,#f0fff0);
+    border: 1px solid rgba(30,150,60,0.06);
+    color: #0b3b17;
+    border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+    .b2b-form .form-grid { grid-template-columns: 1fr; }
+    .b2b-form-wrap { padding: 1rem; }
 }
 
 
@@ -551,6 +752,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 #checkpoint-4 .checkpoint-header {
     background: linear-gradient(135deg, #fff, #000) !important;
     -webkit-background-clip: text !important;
+    background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     font-size: 64px !important;
 }
@@ -574,6 +776,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     font-weight: 200 !important;
     font-size: 20px !important;
 }
+#checkpoint-5 .checkpoint-text{
+    font-size: 14px !important;
+    letter-spacing: 0.05em;
+}
 
 
 #checkpoint-1 .checkpoint-subtitle,
@@ -583,6 +789,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     color: #4a4a4a;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
     font-weight: 500;
+}
+
+#checkpoint-5 .checkpoint-subtitle {
+    font-size: 14px;
 }
 
 /* MARK: ---0-490 Mobile */
@@ -1209,4 +1419,183 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     .navbar-link {
         font-size: 0.7rem !important;
     }
+}
+
+/* Modal for escape card details */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20001; /* sit above most site elements */
+}
+
+.modal[aria-hidden="false"] {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 20000; /* backdrop below modal content but above page */
+}
+
+.modal-content {
+    position: relative;
+    background: #0e0f12;
+    color: #fff;
+    border-radius: 12px;
+    max-width: 900px;
+    width: calc(100% - 48px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    z-index: 20002; /* above the backdrop */
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.modal-body {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    align-items: flex-start;
+}
+
+.modal-media {
+    flex: 0 0 220px;
+}
+
+.modal-media img {
+    width: 220px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.modal-info {
+    flex: 1 1 auto;
+}
+
+.modal-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.6rem;
+}
+
+.modal-info p {
+    margin: 0 0 0.75rem 0;
+    color: #dcdcdc;
+}
+
+.modal-details {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.journey-data {
+    font-size: 0.95rem;
+}
+
+.journey-price {
+    margin-top: 0.5rem;
+    font-weight: 700;
+}
+
+/* Book Now button in modal */
+.book-now-btn {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(90deg, #00c853, #00e676);
+    color: #062018;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(2, 200, 120, 0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.12s;
+}
+
+.book-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(2, 200, 120, 0.14);
+}
+
+.book-now-btn:active,
+.book-now-btn:focus {
+    outline: none;
+    transform: translateY(0);
+    opacity: 0.95;
+}
+
+@media (max-width: 640px) {
+    .modal-body {
+        flex-direction: column;
+    }
+    .modal-media {
+        flex: none;
+        width: 100%;
+    }
+    .modal-media img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Footer */
+.site-footer {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    opacity: 0;
+    z-index: 10;
+    width: auto;
+}
+.site-footer .footer-inner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: rgba(0,0,0,0.25);
+    padding: 8px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+}
+.site-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+.social-link {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+.social-link:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.12);
 }
