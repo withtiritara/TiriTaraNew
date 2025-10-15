@@ -450,8 +450,8 @@ svg {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease;
-    /* allow interaction by default so cards are clickable; visual hiding is handled by opacity */
-    pointer-events: auto;
+    /* disable interactions by default - only active checkpoints should be clickable */
+    pointer-events: none;
     width: 90%;
 }
 
@@ -770,6 +770,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     border: 1px solid rgba(30,150,60,0.06);
     color: #0b3b17;
     border-radius: 10px;
+    font-family: var(--description-font);
 }
 
 @media (max-width: 900px) {
@@ -1213,7 +1214,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     opacity: 0;
     transform: translateY(20px);
-    pointer-events: auto;
+    pointer-events: none;
     text-transform: uppercase;
 }
 
@@ -1751,7 +1752,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 /* Footer */
 .site-footer {
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
     color: #ffffffaa;

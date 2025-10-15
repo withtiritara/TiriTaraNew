@@ -532,6 +532,58 @@ window.onbeforeunload = function () {
 //     return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
 // }
 
+// Enhanced checkpoint interaction safety
+// Add safeguards to ensure only active checkpoint interactions work
+function isCheckpointActive(element) {
+    // Check if the element is inside an active checkpoint
+    const checkpointContent = element.closest('.checkpoint-content');
+    if (!checkpointContent) return true; // Allow interactions outside checkpoints
+    return checkpointContent.classList.contains('active');
+}
+
+// Override openJoinForm to check for active checkpoint
+const originalOpenJoinForm = window.openJoinForm;
+window.openJoinForm = function(clickedElement) {
+    // If called from an event, check if the checkpoint is active
+    if (clickedElement && clickedElement instanceof Event) {
+        const target = clickedElement.target || clickedElement.currentTarget;
+        if (target && !isCheckpointActive(target)) {
+            console.log('Blocked interaction: checkpoint not active');
+            return;
+        }
+    }
+    if (originalOpenJoinForm) originalOpenJoinForm();
+};
+
+// Override openB2BForm to check for active checkpoint
+const originalOpenB2BForm = window.openB2BForm;
+window.openB2BForm = function(clickedElement) {
+    // If called from an event, check if the checkpoint is active
+    if (clickedElement && clickedElement instanceof Event) {
+        const target = clickedElement.target || clickedElement.currentTarget;
+        if (target && !isCheckpointActive(target)) {
+            console.log('Blocked interaction: checkpoint not active');
+            return;
+        }
+    }
+    if (originalOpenB2BForm) originalOpenB2BForm();
+};
+
+// Add click event listeners to all buttons to check checkpoint status
+document.addEventListener('DOMContentLoaded', function() {
+    // Add checkpoint safety to all buttons
+    document.querySelectorAll('.tribe-join-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!isCheckpointActive(this)) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Blocked button click: checkpoint not active');
+                return false;
+            }
+        }, true); // Use capture phase to intercept before onclick handlers
+    });
+});
+
 // Join form functionality
 // Escape cards modal behavior
 document.addEventListener('DOMContentLoaded', function () {
@@ -571,6 +623,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Click on card to open modal
     document.querySelectorAll('.escape-card').forEach(card => {
         card.addEventListener('click', function (e) {
+            // Check if the card's checkpoint is active
+            if (!isCheckpointActive(this)) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Blocked escape card click: checkpoint not active');
+                return false;
+            }
+
             // Collect data from card
             const img = card.querySelector('.card-image img');
             const title = card.querySelector('.card-title')?.textContent || '';
@@ -692,13 +752,33 @@ function closeB2BForm() {
     }
 }
 
-// B2B form submit handling (non-blocking, client-side only)
+// EmailJS Configuration
+// Replace these with your actual EmailJS credentials
+const EMAILJS_CONFIG = {
+    serviceId: 'service_x86a8zr',     // Replace with your EmailJS service ID
+    templateId: 'template_10x59bl',   // Replace with your EmailJS template ID  
+    publicKey: '6NvPuQRD2EKFSDf1j'      // Replace with your EmailJS public key
+};
+
+// Initialize EmailJS
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize EmailJS with public key
+    if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY') {
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+    }
+});
+
+// B2B form submit handling with email functionality
 document.addEventListener('DOMContentLoaded', function () {
     const b2bForm = document.getElementById('b2b-form');
     if (!b2bForm) return;
 
-    b2bForm.addEventListener('submit', function (e) {
+    b2bForm.addEventListener('submit', async function (e) {
         e.preventDefault();
+
+        // Get submit button for loading state
+        const submitBtn = b2bForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn?.textContent || 'Submit';
 
         // Basic validation for required fields
         const fullName = b2bForm.elements['fullName']?.value?.trim();
@@ -711,35 +791,74 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // collect form data
-        const data = {
+        // Show loading state
+        if (submitBtn) {
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+        }
+
+        // Collect form data
+        const formData = {
             fullName,
             email,
             phone,
-            company: b2bForm.elements['company']?.value?.trim() || '',
+            company: b2bForm.elements['company']?.value?.trim() || 'Not specified',
             participants: participants,
-            dates: b2bForm.elements['dates']?.value?.trim() || '',
-            destination: b2bForm.elements['destination']?.value?.trim() || '',
-            vibe: b2bForm.elements['vibe']?.value || '',
-            notes: b2bForm.elements['notes']?.value?.trim() || ''
+            dates: b2bForm.elements['dates']?.value?.trim() || 'Not specified',
+            destination: b2bForm.elements['destination']?.value?.trim() || 'Not specified',
+            vibe: b2bForm.elements['vibe']?.value || 'Not specified',
+            notes: b2bForm.elements['notes']?.value?.trim() || 'No additional notes',
+            submissionDate: new Date().toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })
         };
 
-        // In this static prototype we simply show a success message and log the data
-        const successEl = document.getElementById('b2b-success');
-        if (successEl) {
-            successEl.hidden = false;
-            // scroll success into view (only within checkpoint area)
-            successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        try {
+            // Send email using EmailJS (only if properly configured)
+            if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY') {
+                await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    formData
+                );
+                console.log('Email sent successfully');
+            } else {
+                console.log('EmailJS not configured. Form data:', formData);
+            }
+
+            // Show success message
+            const successEl = document.getElementById('b2b-success');
+            if (successEl) {
+                successEl.hidden = false;
+                // Scroll success into view (only within popup area)
+                successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // Disable the form to prevent duplicate sends
+            Array.from(b2bForm.querySelectorAll('input,textarea,select,button')).forEach(el => {
+                if (el.type !== 'submit') el.disabled = true;
+            });
+
+            // Reset submit button but keep it disabled
+            if (submitBtn) {
+                submitBtn.textContent = 'Sent Successfully!';
+            }
+
+        } catch (error) {
+            console.error('Error sending email:', error);
+            
+            // Show error message to user
+            alert('There was an error sending your message. Please try again or contact us directly.');
+            
+            // Reset submit button
+            if (submitBtn) {
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
         }
-
-        // Optionally, send data to backend or third-party here (not implemented)
-        // For debugging: log the payload
-        try { console.log('B2B form submitted:', data); } catch (err) { /* ignore */ }
-
-        // Disable the form to prevent duplicate sends
-        Array.from(b2bForm.querySelectorAll('input,textarea,select,button')).forEach(el => el.disabled = true);
-
-        // Keep the success state visible and do not reset immediately. If desired, uncomment next line to reset.
-        // b2bForm.reset();
     });
 });

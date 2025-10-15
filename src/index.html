@@ -53,7 +53,7 @@
             <h1 class="checkpoint-header">How to join</h1>
             <p class="checkpoint-text">We plan just enough to keep you safe, and leave<br/> the rest open to discovery- that's exactly why we<br/> only reveal 40% of the journey with you
             because<br/> the best stories are the ones that you don't know yet.</p>
-            <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button>
+            <button class="tribe-join-btn" onclick="openJoinForm(event)">Join Now</button>
             <!-- <p class="checkpoint-subtitle">Planned enough to be safe. Unplanned enough to be free 💫</p> -->
         </div>
         
@@ -78,7 +78,7 @@
                 
                 <div class="escape-card">
                     <div class="card-image">
-                        <img src="./assets/escape-2.jpg" alt="Ocean Journey" />
+                        <img src="./assets/araku.png" alt="Ocean Journey" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Araku</h3>
@@ -88,7 +88,7 @@
                 
                 <div class="escape-card">
                     <div class="card-image">
-                        <img src="./assets/escape-3.jpg" alt="Cultural Discovery" />
+                        <img src="./assets/panchgami.png" alt="Cultural Discovery" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Panchgani</h3>
@@ -112,7 +112,7 @@
 </p>
             <!-- Contact Us button opens B2B popup -->
             <div class="b2b-cta">
-                <button class="tribe-join-btn" type="button" onclick="openB2BForm()">Host a Trip</button>
+                <button class="tribe-join-btn" type="button" onclick="openB2BForm(event)">Host a Trip</button>
             </div>
         </div>
         
@@ -473,6 +473,9 @@
     <!-- GSAP and ScrollTrigger libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- EmailJS library for sending emails -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <!-- Join Form Popup Modal -->
     <div id="joinFormPopup" class="form-popup-overlay" aria-hidden="true" role="dialog" aria-modal="true">
