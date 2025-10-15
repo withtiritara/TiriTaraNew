@@ -10,27 +10,26 @@
     <!-- Floating Navigation -->
     <nav class="floating-navbar">
         <div class="navbar-container">
-            <div class="navbar-brand">
-                <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
-            </div>
-            <div class="navbar-menu">
-                <!-- <a href="#" class="navbar-link active" data-checkpoint="0">Home</a>
-                <a href="#" class="navbar-link" data-checkpoint="1">Story</a>
-                <a href="#" class="navbar-link" data-checkpoint="2">Philosophy</a>
-                <a href="#" class="navbar-link" data-checkpoint="3">Escapes</a>
-                <a href="#" class="navbar-link" data-checkpoint="4">Tribe</a> -->
-                <!-- New: opens the embedded Google Form popup -->
-                <a href="#" class="navbar-link join-tribe" id="nav-join-tribe">Join the Tribe</a>
+            <div class="navbar-left">
                 <!-- Social icons -->
                 <div class="navbar-social">
-                    <a href="https://www.instagram.com/" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+                    <a href="https://www.instagram.com/withtiritara" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
                         <img src="./assets/social/instagram.svg" alt="Instagram" class="social-icon">
                     </a>
                     <a href="https://wa.me/" class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">
                         <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="social-icon">
                     </a>
                 </div>
-                <!-- <a href="#" class="navbar-link" data-checkpoint="5">Journey</a> -->
+            </div>
+
+            <div class="navbar-center">
+                <div class="navbar-brand">
+                    <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
+                </div>
+            </div>
+
+            <div class="navbar-right">
+                <a href="#" class="navbar-link join-tribe" id="nav-join-tribe">Join the Tribe</a>
             </div>
             <div class="navbar-toggle">
                 <span class="bar"></span>
@@ -43,26 +42,24 @@
     <div class="wrapper">
         <div class="scrollElement"></div>
         
-        <div id="checkpoint-1" class="checkpoint-content" style="top: 20vh;">
-            <h1 class="checkpoint-header">What is Tiri Tara?</h1>
-            <p class="checkpoint-text">For us, Tiri Tara is more than travel. We don't just plan trips.<br>
-            Not the kind with tight schedules and guided checklists, we curate soulful escapes — journeys that connect you to the world, its people, and yourself. The kind where you laugh under unfamiliar stars, share stories with strangers, and find peace in the unexpected.</p>
+        <div id="checkpoint-1" class="checkpoint-content" style="top: 25vh;">
+            <h1 class="checkpoint-header">What is Tiri Tara</h1>
+            <p class="checkpoint-text">We don't just take you to places. We help you rediscover wonder, connect deeply, explore the cultures of the place, and meet like-minded strangers who may become your future best friends - that's who we aspire to be — a Tara in the Tiri of your life.</p>
             <!-- <p class="checkpoint-subtitle">It's about feeling at home — wherever you are.<br>
             It's about seeing the world through stories, connections, and the small magic that makes you feel alive at least for a moment back.</p> -->
         </div>
         
         <div id="checkpoint-2" class="checkpoint-content" style="top: 20vh;">
             <h1 class="checkpoint-header">How to join</h1>
-            <p class="checkpoint-text">40% Planned. 60% Discovered.<br>
-            We curate the essentials — your stay, your comfort, your safety.   <br>
-            But the magic — that's the 60% you discover.</p>
+            <p class="checkpoint-text">We plan just enough to keep you safe, and leave<br/> the rest open to discovery- that's exactly why we<br/> only reveal 40% of the journey with you
+            because<br/> the best stories are the ones that you don't know yet.</p>
             <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button>
             <!-- <p class="checkpoint-subtitle">Planned enough to be safe. Unplanned enough to be free 💫</p> -->
         </div>
         
         <div id="checkpoint-3" class="checkpoint-content" style="top: 20vh;">
             <h1 class="checkpoint-header">Journeys</h1>
-            <p class="checkpoint-text">We don't just plan trips. We curate soulful escapes —<br>
+            <p class="checkpoint-text">We don't just plan trips. We curate soulful escapes, <br>
             journeys that connect you to the world, its people, and yourself.<br>
             Travel that feels like home.</p>
             <!-- <p class="checkpoint-subtitle">Because the best stories are the ones that weren't planned at all</p> -->
@@ -71,11 +68,11 @@
             <div class="escape-cards">
                 <div class="escape-card">
                     <div class="card-image">
-                        <img src="./assets/escape-1.jpg" alt="Mountain Escape" />
+                        <img src="./assets/humpy.png" alt="Mountain Escape" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Hampi</h3>
-                        <p class="card-description">Upcoming!</p>
+                        <p class="card-description">Upcoming</p>
                     </div>
                 </div>
                 
@@ -85,7 +82,7 @@
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Araku</h3>
-                        <p class="card-description">Upcoming!</p>
+                        <p class="card-description">Upcoming</p>
                     </div>
                 </div>
                 
@@ -95,7 +92,7 @@
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Panchgani</h3>
-                        <p class="card-description">Upcoming!</p>
+                        <p class="card-description">Upcoming</p>
                     </div>
                 </div>
             </div>
@@ -104,19 +101,18 @@
         
         <div id="checkpoint-4" class="checkpoint-content" style="top: 20vh;">
             <h1 class="checkpoint-header">Stories from the Tribe</h1>
-            <p class="checkpoint-text">Once you fill the form we will suggest you the best trip and invite you personally for the trip over whatsapp or email?</p>
-            <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button>
+            <!-- <p class="checkpoint-text">Once you fill the form we will suggest you the best trip and invite you personally for the trip over whatsapp or email?</p>
+            <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button> -->
         </div>
         
         <div id="checkpoint-5" class="checkpoint-content" style="top: 15vh;">
-            <h1 class="checkpoint-header">B2B Reach Us</h1>
-            <p class="checkpoint-text">At Tiri Tara, we believe our role is to be a little star in your journey —<br>
-            a guide, a companion, a moment of brightness as you find your way through the world.</p>
-            <p class="checkpoint-subtitle">"Because the best part is what you don't know yet." ✨</p>
+            <h1 class="checkpoint-header">Reach Out</h1>
+            <p class="checkpoint-text">Want to Host a Trip, The Tiri Way?</p>
+            <p class="checkpoint-text">Submit your details, tell us your vision, and we’ll get in touch with you.
+</p>
             <!-- Contact Us button opens B2B popup -->
             <div class="b2b-cta">
-                <button class="tribe-join-btn" type="button" onclick="openB2BForm()">Contact Us — Host a Trip</button>
-                <p class="b2b-sub" style="margin-top:0.6rem">Submit your details and we'll reach out personally to craft a journey that feels like you.</p>
+                <button class="tribe-join-btn" type="button" onclick="openB2BForm()">Host a Trip</button>
             </div>
         </div>
         
@@ -234,7 +230,7 @@
     </g>
 
     <!-- Hero Text Layer - Positioned after clouds but before hills -->
-    <text id="hero-text-svg" class="hero-text-svg" x="375" y="260" text-anchor="middle" dominant-baseline="middle">
+    <text id="hero-text-svg" class="hero-text-svg" x="375" y="290" text-anchor="middle" dominant-baseline="middle">
         Tiri Tara
     </text>
 
@@ -384,17 +380,17 @@
     <!-- SCENE 1 -->
     <g id="scene1">
         <g id="hills1">
-            <path id="cloudStart-L" style="fill: #2b7cff; opacity: 0;"
+            <path id="cloudStart-L" style="fill: #8fb3e9; opacity: 1;"
                 d="m71.1,92.9c-.1,0-.3.2-.4.3-1.9-8.3-13.5-3.3-13.9,2.6.2,1.8,1.2,6.2-2.3,6.3-5.6-2.6-5.5.3-9.8,2.7-2.6-2.5-10-.6-9.9,3.4,49.8-1.3,91.9-1.8,126.3-1.6,1.4-6.6-5.5-5.8-9.2-4.5,1.5-3.2-4.1-2.8-5.5-2,.1-2.1.2-3.4-2.1-2.6,2.8-9.8-13.1-10.3-14.1-3-.6,3.2-1.2,4.8-1.8,4.8-4.5-1.5-3.8-.3-7.8.9-2.3-1.1-2.3-5.2-6.4-3.1.2.3-.3.4-.4.6,3.1-5.3,4.2-10.3-2.3-10.4-.2-23.2-37.4-15.3-30.4,6-1.9-3.8-6.7-2.5-9.8-.3m72.7,4.7h0c0,.1,0,0,0,0h0m55.6,4c2.9-9.9-15.9-8.5-12.4-.4-5.9-.7-3.4-1.7-7.4,2.1-1,.3-3-2.3-3.6-2.4-2.7.4-6.2,2.6-5.7,5.7,4.2.1,13.6,0,28.4-.3.4-1.1.6-2.7.6-4.7m12.4-1.6c-3,0-5.5,2.9-5.3,6.1,4.5-.1,9.3-.3,14.5-.4,2.5-5.4-4.8-4-6.3-3.6-1.3.3-2-2.1-3-2.1Z" />
-            <path id="cloudStart-R" style="fill: #2b7cff; opacity: 0;"
+            <path id="cloudStart-R" style="fill: #8fb3e9; opacity: 1;"
                 d="m710.3,103c0,1,1.2,1.6,2.2,1.2,17.9,1.7,6.4-8.6-2.2-1.2m-33.1-20.8c1.3-14.4-17.6-14.4-23.3-4-3.9-3.6-10.3-3-15.1.2-3.2-19-36.9-14.1-38.2,3.4-7-3.1-14.1,3.4-16.9,9.7-4.5-8.1-12.7,1.8-11.6,7.7-2.5-.5-11.8,1.6-11,6.1,42.2-1.2,102.5.2,144.8-.8,3.3-4.7-5.7-6.8-7.6-5.1-.2-4.8-4.9-8.8-9.5-5.3-.6-6.1-5.4-9.8-11.8-8.9.1-.8.2-1.8.2-2.9m53,21.7c2-2.8-6-3.4-4.2-.1.5.8,3.6.8,4.2.1Z" />
 
             <path id="cloudsBig-L" transform="translate(0,130)"
                 d="m286.9,293.2c-94.4,24-191.8,46.4-288.9,41.9v-162.1c13.2,4.6,24.7,14.5,30.1,27.5,10.1-3.4,21,1.7,28.5,9.2,19.1-13,49.9-6.4,61.2,14.2,5.8-1.7,14.9,3.6,16.4,9.5,22-21,63.1-11.5,73,17.7,10.1-4.8,22.4,4.3,20.8,15.3,21.5-7.9,51.8,3.9,58.8,26.9Z"
-                style="fill: #2b7cff; opacity: 0.5;" />
+                style="fill: #8fb3e9; opacity: 1;" />
             <path id="cloudsBig-R" transform="translate(0,120)"
                 d="m797.3,100.5l26.8,179.4c-163.5,24.8-334,76.2-497.6,41.2,8.7-15.6,30.8-21.9,46.5-13.3,1.3-7.7,12.5-13,19.2-8.8,2.5-36.5,49.1-57.4,76.5-31.8,6.3-8.4,19.2-12.4,29.1-8.9,5.1-12.3,18.3-19.2,29.7-12.4.7-39.5,48.9-63.5,80.9-40.4,5.1-4.6,15.4-4.4,21.2-.8,9.8-19.9,38.8-31.3,59.6-23.7,2.5-30.2,39.5-54,67.9-40.6,3.5-18.2,22.4-34.5,40.1-39.7Z"
-                style="fill: #2b7cff;opacity: 0.5;" />
+                style="fill: #8fb3e9;opacity: 1;" />
 
             <path id="h1-9"
                 d="M696.36,409H75V335.47c10.19-.52,20.5-.36,30.05-3.65,8.11-2.8,15.84-8.49,23.78-11.33s18.18,1.84,25.36-4.85C165,305.56,172,289.79,186.71,292.8c6.21,1.27,12.09,3.66,18.43.84,6-2.65,9.73-9.46,14.69-13.54,2.87-2.35,6.42-3.2,9.35-5.49,1.65-1.28,5.45-6.37,7-6.92,7.94-2.93,10.34,2.69,18.56-3.47,6.45-4.84,8.52-8.21,15.45-5,5,2.35,11.89,10.09,16,15.37C294.9,286,302,297.77,312.71,307.53c11.62,10.63,21.59,9.37,34.67,5.83,16.12-4.37,18.32,9.06,32.24,15.28,7.45,3.32,13.23-1.7,19.6-2.08,3.64-.22,5.85,2.12,9.37,1.82,3.12-.27,4.08-4.44,8.33-3,7.32,12.31,15.75,20,28.21,20.59,14.32.7,27.12.76,39.73-4.94A145.24,145.24,0,0,0,502.11,332c8.71-5.36,11.22-2.82,19.35,1.5,11.66,6.21,25.31,1.08,36.56,9.18,5.53,4,8.36,12.23,14.64,14.79,4.86,2,15.59.38,20.4-1.18,13.47-4.38,21.52-16.59,36.56-17.33,13.57-.67,25.19-4.17,39.11-2.31,10.91,1.46,18.72-.1,27.63-2.61Z"
@@ -453,11 +449,6 @@
             <path id="h1-2"
                 d="M458.76,482c5.16-5-11.74.58,1.39-8.14,3.06-4.4-10.55.51-5.45-5.72,1.87-2.26-3.86-2.07-1.53-4.31,2.18-3.68-5.58-.57-5.2-4.1.27-2.94,5.63-1.63,5.89-4.53-1.27-1.36-8.66-.73-3.81-4.29.78-.64.63-1.93-.49-1.76-11.28.92,7.41-5.34-5.09-5-.07-7.42-4-8.29-4,.43-2.15-.06-6.11.48-2.34,2.77,6.88,4.11-6.21-.91-.09,6.26-9.68-.45,2.22,4.05-1.66,6.62-6.42-.72,1,3.05-.35,5-2.22-.11-9.69-2.36-6.67,2.14,1.41,1.08,5.44,1.67,4.16,4.19-14,.35-1.69-3.29-6.22-5.16-9.47.18,3.15-4.84,1.85-7.73-9.62.27-4.67-.91-7.3-8.13,2.83-4.76-13.74.93.69-8.63-5.13-2.29-6.41.32-3.61-5.93-11.85.81,5.66-5.38-5.78-5.15.15-7.09-4.22-7.89-4,.44-2.15-.07-6.11.47-2.34,2.76,6.88,4.11-6.2-.91-.09,6.27-9.68-.46,2.23,4-1.66,6.61-6.41-.72,1,3.06-.35,5-14.1-1.58-4.48,1.08-2.41,6.18-.74,2-7.34-1-3.91,2.67,6.41,3.38-1.72,4.42-4.8,2.38,1.12-4.51-12.53.43-.71-6.68-12.2-.93,6.29-5-5.76-4.73-5.54-2.52,8.3-3.7-.69-5.23-5.84-1.94,4.42-3.47.4-4.84-1.22.31-3.76-.16-2.87-1.84,6.91-2.07-.72-1.42-.68-3.93,4.92-1.72-.21-1.63-.26-3.51,4.44,1.35-1.94-14-3.67-3.17-.8,2.29-5.49.91-1.55,3.84,2.52,3.94-2.5,1.25-3.25,3,4.7,6-1.57,2.19-1.09,5.78,3.53,4,1.11,3.15-2.25,3.33,2.61,4,2.08,8.22-3.68,5.72-1.62-1.67,4.32-3.9.4-4.44-10.78.43,6.22-6.38.89-8-7.78,1.15-3.82-.52-6.33-7.88,2.17-3.68-5.59-.58-5.2-4.1.31-2.7,4.62-1.82,5.73-3.86.94-2.65-9.36-.72-3.66-5,2.7-3.64-6.79.55-3.65-3.67,5-2,1.56-3.17-1.92-3.12-.54-.27.63-8.46-3.55-4.92,1.75,8.9-7.66,3.56-2.78,8.13,6.88,4.11-6.21-.92-.09,6.26-9.68-.45,2.22,4-1.66,6.62-6.42-.73,1,3-.35,5-14.11-1.58-4.48,1.08-2.41,6.19-.82,1.56-3.05.34-4.45.57-1.81,1.88,8.35,6.13-.87,5.54,7.65-5.69-10,.57-.46-8.75-5.45-1.75-6.32-1.71-1.64-6.16-2.69-2.14-5.64.68-2.42-5.44-2.48-.13-4.29.5-1.67-2.47.2-2.56-4.21-.12-.81-4.3-4-.95-2.86-.66-1.28-3.78-4.36-.68-3.26-9.29-5.9-.45-1.69.42-.32,2,.9,1.53-.32,1.21-3.28,1.72-.2,2.6-.13,1.72-5.33,1.7-.51,2.92.67,1.25-1.22,1.6-2.13,1.37-3,1,4.64,2.15.3,3.6-7,1.29,3.64,2-.51,3.87-9-.18,4.78,2.82-4.28,3.52,11,6.71-6.38.31,1.4,6.37-.76,2-6.41-1.15-5.09,1.82,2.32.84,4.11,2.25.87,3.47-4.11,1.08-2,1.74-3.25-.62-6.34.25,3.67-3.77.53-4.71-5.43,1-1.73-1.91-3.33-3.35a.71.71,0,0,1-.4-1.29c.24-2.77-7.7-.85.31-4.69.55-1.57-5.52-.43-2.15-2.93,1.59-2.15-4,.32-2.16-2.16,3-1.18.92-1.87-1.13-1.84-.32-.16.37-5-2.09-2.9,1,5.58-4.69,1.75-1.64,4.79,3.93,2.34-3.67-.41-.05,3.69-5.7-.27,1.3,2.39-1,3.9-3.78-.43.56,1.8-.21,2.95-7.14-1-3.36.55-1.4,3.6-20.82-5.42,15.55-8.49-9.78-14.34-1-4.08,4.92-5,6.1-8.35-2.57-4.75-11.79,3.63-4.62-10.39-4.74-.25-8.2,1-3.19-4.72,1-5.25-8.31.83-1.55-8.2-.43-2.27-3.52,0-4.8-.76-3-2.12,3.41-5,2.35-6.46-8.43-.81-5.66-18.62-11.26-.86-3.23.81-.61,3.74,1.71,2.91-.06,2.62-7.33,2.59-.37,5,1.16,2.72-5.59,1.51-4.85,4.07.49,1.35,2.93.41,3.88,1.5,1.26,2.37-2.34,3.06-4.07,2.61-5.69,1.95,8.86,4.1.58,6.87-12.17,1.9,6.57,4.08-1,7.41-17.71-1,8.72,6.71-6.76,5.84-6.41-2.11-7.5-2-1.94-7.31-3.15-2.61-6.72,1.08-2.86-6.42-2.94-.15-5.08.59-2-2.92.43-3.17-5.08.26-1-5.07-4.84-1.29-3.61-.46-1.52-4.47-2.94-.11-2.83-2.64-4-4.7-3-2.3-1.29,3.54-2.94,4.17-2,.5-.38,2.31,1.06,1.8,0,1.62-4.53,1.6-.23,3.08,0,2.09-6.51,1.85-.6,3.45.78,1.46-1.45,1.89-2.52,1.61-3.52,1.21,5.48,2.54.36,4.25-7.81,1.33,4.22,2.36-.61,4.58-10.59-.21,5.65,3.33-5,4.16,10.45,6.46-.72,1.82-.83,5.58,8.72,4.58-6.19.52-3.48,4.14,7.92,3.4-3.1,4.87-2.53.79-6.34-.08,3.86-3.57.78-4.68-4.16,1-2.76-2.51-3.48-4.83.07-2.93-7.44-.71.56-4.66.63-1.54-5.48-.72-2-3,1.7-2.06-4,.12-2-2.27,3-1,1-1.81-1-1.89-.31-.18.64-5-1.93-3,.74,5.62-4.78,1.51-1.89,4.7,3.79,2.53-3.64-.6-.26,3.68-5.67-.56,1.18,2.45-1.18,3.84-3.75-.62.47,1.83-.36,2.94-10.47-2.77,3.15,4.78-4.25,3.77,4.88,5.83-10.67,1.08-1.94-3.71-2.69-2.14-5.64.67-2.41-5.44-2.49-.13-4.3.5-1.68-2.47.2-2.56-4.21-.12-.8-4.3-4.11-.92-2.8-.73-1.29-3.78-2.48-.09-2.39-2.23-3.41-4-2.53-1.94-1.09,3-2.49,3.53-1.69.43-.32,2,.9,1.53-4.38,3.14,2.56,2-1.38,3.72-4.45.74,4.45,2.51-.9,3.21.38-2.33-7.66.62-4.27-3.65,1.35-1.65-2.69-1.46-1.17-3.09,1.84-2.7-4-.51-3.7-3.06.21-2.14,4.1-1.16,4.3-3.27-.91-1-6.31-.58-2.76-3.14,2-2.64-5,.37-2.65-2.68.73-.47,2.22-.65,1.93-1.71-6.38.22-1.28-6.35-5.87-4.17-1.08.91.93,3.06-.35,3.9-1.56-.05-4.45.32-1.71,2,4.85,2.92-4.53-.54-.09,4.56-7-.37,1.6,3-1.23,4.81-6.21-.48,5.52,5.54-3.69,3.19,1.39-.38,1.75-2.57-.11-2.32-10.78.43,6.22-6.38.89-8-7.78,1.12-3.8-.39-6.34-7.87,2.84-4.76-13.74.93.7-8.64-5.14-2.28-6.42.33-3.61-5.92-1.49-.19-6.09,1-3.86-2,5-2,1.56-3.17-1.92-3.12-.54-.27.63-8.46-3.55-4.92,1.74,8.81-7.58,3.61-2.78,8.12,6.88,4.11-6.21-.91-.09,6.27-9.68-.46,2.22,4-1.66,6.61-6.42-.72,1,3.05-.35,5-14.11-1.57-4.48,1.09-2.41,6.19-7.27,2.1-5-.36-1.57,5.11-2.6,3.16-9.48-3.16-9.41,2.41-10.51-4.19,11.08-4.29-4.83-8.59,9.59-12.9-5.12.44.92-11.59-2.94-.16-5.08.59-2-2.92.43-3.17-5.08.26-1-5.08-.26-1.4-2.17,0-3-.47,1.94-7.42.17-1-2.57-8.7-3-2.29-1.29,3.55-2.94,4.18-2,.49-.38,2.31,1.06,1.79,0,1.63-4.54,1.6-.23,3.08,0,2.11-6.51,1.85-.6,3.45.83,2-2,1.54-3.16,1.72.2,3.2,6.63,2.1-1.44,4.91-2.72.08-2.75-1-1.54-3.2-1.58,0-2.71.1-1.09-1.62.13-1.67-2.76-.08-.53-2.81-2.61-.69-2-.31-.84-2.48-1.63-.06-1.57-1.46-2.24-2.6-.85-1.31-2.94,4.33-1,3.31-.2.79-2.14,1.12-.12,1.7-.1,1.13-3.49,1.12-.34,1.91.44.82-.8,1-1.39.9-2,.66,3,1.4.2,2.35-4.46.71,2.3,1.38-.34,2.54-5.46-.29,2.79,2-2.8,2.3,5.29,3.29.61.84-.46,3.09,3.17,1.72-.49,1.56-2.07,1.39,5.62-3.91-10.06-2.36-5.48-7.07,10.21-6.19-11.14-3.29,1.25-11.79-3.09-3.14-7.74,1.64-3.2-7.24-3.3-.18-5.7.66-2.22-3.28.48-3.57-5.71.29-1.07-5.7-9.55-1.62,1.9-4.21-2.79-5.36-2.68.41-3.9-10.11-5.79-3.4,1,2.63-4.89,5.16.23,5.16,0,1.82-5.09,1.8-.25,3.46-.06,2.36-7.33,2.08-.68,3.88.88,1.65-1.62,2.12-2.83,1.81-4,1.36,6.16,2.85.4,4.78-8.86,1.48,4.77,2.67-.68,5.15-11.9-.24,6.35,3.74-5.68,4.66.18,2.26,5,1.07,4.84,3.51-1.91,2.93-10.39-.72-3,5-1,2.59-8.59-1.54-6.69,2.46,3.11,1.07,5.31,3,1.09,4.56a5.5,5.5,0,0,0-2.92,1c-21-4.74,14.24-9.36-10.31-14.48-1-4.08,4.92-5.05,6.1-8.35-2.56-4.75-11.79,3.63-4.61-10.39-4.75-.25-8.21,1-3.2-4.71,1-5.26-8.3.82-1.54-8.21-.43-2.27-3.52,0-4.81-.76-3-2.12,3.41-5,2.36-6.46-4.75-.17-4.58-4.27-6.52-7.6-4.83-3.69-2.08,5.72-4.75,6.74-3.22.81-.61,3.74,1.72,2.91-.06,2.62-7.34,2.59-.37,5,1.15,2.72-5.6,1.51-4.86,4.07,4.29.89,5.93,4.66-.19,4.11-5.69,1.95,8.86,4.1.58,6.87-12.17,1.9,6.58,4.08-1,7.4-17.62-.13,9.56,5.15-8.17,6.72.26,3.24,7.15,1.53,7,5-3.2,4.42-14.5-1.48-4.37,7.25-16.76-2.77,6.36-6.08-8.62-9.37,9.6-12.91-5.11.43.92-11.6-2.93-.16-5.07.59-2-2.92.42-3.17-5.09.26-1-5.07-.27-1.41-2.18,0-3-.47,1.94-7.44.21-1-2.57-8.7-3-2.3-1.29,3.54-2.93,4.17-2,.49-.39,2.31,1,1.8,0,1.62-4.54,1.59-.22,3.08-.06,2.1-6.51,1.84-.61,3.45.84,2-2,1.54-3.15,1.71-.41,2.91,7,2.16-1.2,4.73,3.83-3-3.3-3-.93-5.63,3.08-4.21-12.45-.82-2.84-6.88,1.45-.39,3.53-.82,3.6-2.54-.71-1.87-6.8.32-5.71-3.29,3.43-2.58,1.75-3.87-1.85-2.94C-.75,344.2.16,465.91.12,500H467.87C473.79,495.49,471.59,489.61,458.76,482ZM10.88,370c-1.36.11-3.05-.89-3-2.25C8.48,368.61,11.55,368.23,10.88,370Zm107.47,18.35c.12,0,.22.1.33.14C121.24,390.56,115.34,390.33,118.35,388.34Zm-1.9-2.67c-.32-1.24,1.32-1.65,1.88-2.5C124.28,385.1,120,387.49,116.45,385.67Zm77.12,31.76c.12-.73,1.62-2.22,2.09-1.22S194.42,417.74,193.57,417.43Zm-.49-2.38c-3.46-.59-.05-3.14,1.48-3.86C200.14,413,192.92,413.23,193.08,415.05Zm65.81,17.06a2.55,2.55,0,0,1,.75.43C259.28,432.55,258.94,432.53,258.89,432.11Zm2.37-4c-1.58-1-3.82-1-5.46-1.77C251,418.85,271.7,425.92,261.26,428.12ZM391,465a.7.7,0,0,1,.41-.85C391.06,464.53,391.49,466,391,465Zm39.5,11.52H432C431.85,477.15,431,476.53,430.52,476.55Z"
                 fill="url(#grad8)" />
-                <text id="hero-description-svg" class="hero-description-svg" x="375" y="340" text-anchor="middle" dominant-baseline="middle">
-                <tspan x="375" dy="0">“Tiri” means a journey in Sanskrit,</tspan>
-                <tspan x="375" dy="25">And “Tara” means stars</tspan>
-                <tspan x="375" dy="25">At Tiri Tara, we curate journeys that feel soulful, spontaneous, and real.</tspan>
-            </text>
             <path id="h1-1"
                 d="M761.44,506.06c-5.65-.19,10.92-182.57-7.17-162-1.31-2.92,9.88-6.67.34-5.87-4.24-.44,1-4-1.72-4.8-2.49-.42,1.86-4.33-2.2-3.39-8.74-1.35,7.4-5.58.13-5.93-1.16.14-2.66-.83-2.15-1.87,5.62-4.46-4.52-.31-1.81-4,4.06-1.59,1.25-2.59-1.55-2.52-.43-.22.51-6.83-2.86-4,1.48,7.41-6.36,2.56-2.25,6.56,5.14,3-5-.25-.08,5.06-7.81-.36,1.8,3.26-1.33,5.34-5.19-.58.77,2.46-.29,4.05-14.58-3.05,4.72,6.31-5.53,5.46-1.7,1.79,5.19,2.86,1.22,4.65-9-2.33-7.62,1.55-.87,4.1-.85,3.28-7.17.63-6.46,4.61a2.16,2.16,0,0,0-2.05-1.46c-3.92-1.42,2.25-2,.32-3.26-1-.12-2.49.65-3.16-.31,5-3.59-6.35-.29.94-4.3-5.75-.3,2.74-2.66-2.88-2.37-2.72-1.19,4.24-1.88-.35-2.61-2.92-1,2.21-1.74.2-2.42-.61.15-1.88-.09-1.43-.93,3.25-.82-.26-.81-.35-2,2.08-.6.08-.94-.13-1.76,2,1.08-.21-4.83-1.07-3.41-2.69,3-.16,4.58-3.16,5.23,2.16,2.44-.56,1.32-.55,2.9,1.66,1.77.5,1.65-1.13,1.66,2.07,3.55.2,2.46-1.63,3.67,3,2.68,2.38,3.16-1.1,4.15,6.38,6.85-5.28,1.52-.27,6a54.76,54.76,0,0,1-5.21,3c-5.88-1.82,5.87-3.27-2.9-4.93,5-6.49-2.77-.61.52-6.62-1.63,0-2.78.1-1.13-1.67,0-1.57-2.69-.47-.54-2.89-2.57-.64-2.07-.48-.87-2.55-1.67-.06-1.61-1.51-2.3-2.68-1.75-1.1-2.47,5.84-1.2,5.16-3.88,2.37,2.78,2.17-2.14,2.95-.76,1.13,3.25,1.24.57,2.36-4.6.73,2.37,1.42-.35,2.62-5-.63,2.12,2.54-2.68,2.17-6-1.33,1.92-3-3.55-4.14,3.51-4.39-1.9-.75.38-4.83-1.19,0-2,.08-.82-1.21,0-1.15-2-.36-.4-2.12-1.93-.73-.68-1.93-2.31-3.82-.68-.92-2.23,3.19-.78,2.49-.17.62-1.6.83-.1,1.28-.07.86-2.61.83-.25,1.44.33.61-.6.79-1,.67-1.46.51,2.29,1.06.15,1.77-3.35.54,1.73,1-.25,1.91-3.5-.29,1.48,1.61-2.1,1.73,4.39,3.22-9.59.52,0-5.62-3.38-2.44-6.84.32-3-6.7-3,0-5.09.19-2.06-3,.24-3.13-5.17-.19-1-5.29-6.9-1.54.83-1-5.78-9.55-3.11-2.4-1.33,3.69-3.06,4.34-2.07.52-.4,2.41,1.11,1.88-.41,1.55-4,2.06-.24,3.21-.17,2.13-6.55,2.07-.63,3.59.81,1.53-1.5,2-2.62,1.68-3.67,1.25,5.71,2.65.37,4.43-8.39,1.33,4.33,2.58-.63,4.77-10.29-.54,5.25,3.78-5.27,4.33.17,2.09,4.61,1,4.49,3.25-1.86,2.78-9.73-.67-2.77,4.6-.93,2.4-7.89-1.42-6.27,2.23,3,1,4.86,3,1.14,4.22-7.71,1.52-5.08,12.81-10,18.06-5.1.06-1.56-2.95.16-4.78-2.44-1.6-4.9-.21-2.17-4.88-2.17,0-3.7.14-1.5-2.21,0-2.09-3.58-.63-.72-3.85-3.42-.85-2.75-.63-1.15-3.39-2.23-.08-2.15-2-3.06-3.56-2.27-1.75-1,2.68-2.23,3.16-1.51.38-.29,1.76.81,1.36-.3,1.13-2.92,1.51-.18,2.34-.12,1.55-4.77,1.51-.45,2.62.59,1.12-1.1,1.43-1.92,1.22-2.66.91,4.16,1.93.28,3.22-6.11,1,3.15,1.89-.46,3.48-7.48-.39,3.8,2.75-3.84,3.15,7.29,4.68.73,1.27-.63,4.23,4.63,2.76-1.08,1.54-2.84,2.22,7.79-7.19-4.17-1,.78-8.7-2.34,0-4,.15-1.62-2.39.19-2.45-4-.15-.78-4.14-7-1.38,1.23-2.62-2-3.9-1.94.3-2.84-7.35-4.22-2.47.76,1.91-3.55,3.76.17,3.75-.31,1.22-3.14,1.62-.18,2.52-.14,1.67-5.14,1.62-.5,2.82.64,1.2-1.18,1.54-2,1.32-2.88,1,4.48,2.07.29,3.47-6.58,1.05,3.4,2-.5,3.74-8-.42,4.11,3-4.13,3.4,10.59,6.3-6,.57,1.35,6.15-1,1.38-3.16.27-4.52.45-.43,4.06,7.08,2.38-3.37,6.12-5.71.48,4.63-4.45-1.52-3.51-1.79-.23-.1-1-1.27-3.68-.94-2.47-5.06-.15.31-3.89-2.34-.85-2.73-.16-1.62-2.67-.67-.09-2.75.44-1.75-.92,2.27-.89.7-1.45-.86-1.41-.24-.12.29-3.81-1.6-2.22.94,3.52-3.33,1.82-1.26,3.67,2.87,1.65-2.79-.14,0,2.82-4.35-.19,1,1.83-.75,3-2.89-.32.44,1.37-.16,2.26-7.36-1.67,2.25,3.67-3.09,3.05-1,1,2.9,1.6.69,2.6-4.72-1.34-4.13,1-.49,2.29-.37,1.72-5.23.65-3.18,3-2.82,1-8,1.39-4.29-2.77-4.08-.65-3.25-8.88-5.66-.42-1.62.4-.31,1.87.86,1.45-.32,1.21-3.13,1.61-.19,2.5-.13,1.67-5.1,1.62-.49,2.8.64,1.2-1.17,1.53-2,1.31-2.86,1,4.45,2.07.29,3.45-6.53,1,3.38,2-.49,3.72-8-.42,4.07,2.94-4.1,3.37,10.51,6.26-5.95.57,1.33,6.12-.94,1.36-3.14.26-4.49.44-2.75,1.84,6,2.62.45,4.63-1.57-.22-3.88,1.83-2,3.35-1.09,1.23-5.42,2.3-1.85.15-3.17-1.23-1.57-.8-.8-2.52-4.17-.05,1.54-1.41-1.15-1.88-2-.81,1.57-.63-.8-2.15,2.22,0-.35-1.1.1-2.25-.83-2.92-1.36,1.66-2.52,1.48-1.87.82,3.06,1.7-1.21,2.34,1.85,2.09-.48,1.12-.47,2.48,1.42,1.51.43,1.41-1,1.42,1.66,2.64.09,2.26-1.4,3.15,2.57,2.29,2,2.7-.94,3.56,6.39,5.32-13.47,7.73-3.13-.78-2.84-1.86-5.71-.24-2.53-5.68-2.53,0-4.3.16-1.74-2.58.2-2.64-4.38-.16-.85-4.48-5.53-1,.39-1.54-4.9-8.09-2.63-2-1.13,3.12-2.59,3.68-1.75.44-.34,2,.94,1.59-.34,1.31-3.4,1.75-.2,2.72-.15,1.8-5.56,1.75-.54,3,.69,1.3-1.27,1.67-2.22,1.43-3.11,1.06,4.84,2.24.32,3.75-7.11,1.13,3.67,2.19-.54,4.05-8.7-.46,4.44,3.19-4.46,3.66.14,1.77,3.9.84,3.8,2.76-11.08,2.45,4.62,4.82-7.23,4.38-3,2,6.48,3,.54,5-19.56,16.4-40,40.41-67.65,39.92C204.4,521.41,763.06,501.47,761.44,506.06ZM690.05,348.19c1.82-1.17,4.91,2.33.87,1.59C690.36,349.44,689.15,348.86,690.05,348.19Zm-11.51-.42c1.22-.95.69.18-.18.42C677.93,348.27,678.29,348,678.54,347.77Zm-54.73,30.29a4.74,4.74,0,0,0,1.56.73C624.69,378.93,623.4,378,623.81,378.06Z"
                 fill="url(#grad9)" />
@@ -471,22 +462,10 @@
     <!-- Footer -->
     <footer class="site-footer" aria-label="Site footer">
         <div class="footer-inner">
-            <p>&copy; 2025 Tiri-Tara</p>
-            <div class="social-icons" aria-hidden="false">
-                <a class="social-link" href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <!-- Instagram SVG -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.2" />
-                        <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.2" />
-                        <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" />
-                    </svg>
-                </a>
-                <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                    <!-- Facebook SVG -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M15.2 8.5H17V5.7h-2.1c-2.1 0-3.1 1.3-3.1 3.1V10H9.6v2.6h2.2V20h2.8v-7.4h2.1l.5-2.6h-2.6V9.6c0-.7.3-1.1 1-1.1z" fill="currentColor" />
-                    </svg>
-                </a>
+            <p>&copy;2025 Tiri Tara</p>
+            <div class="footer-links">
+                <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of Service</a>
+                <a href="refund-cancellation-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Refund and Cancellation Policies</a>
             </div>
         </div>
     </footer>
@@ -496,7 +475,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <!-- Join Form Popup Modal -->
-    <div id="joinFormPopup" class="form-popup-overlay">
+    <div id="joinFormPopup" class="form-popup-overlay" aria-hidden="true" role="dialog" aria-modal="true">
         <div class="form-popup-container">
             <div class="form-popup-header">
                 <h2 class="form-popup-title">Join the Tiri Tribe</h2>
@@ -504,14 +483,16 @@
             </div>
             <div class="form-popup-content">
                 <!-- Google Form Embedded -->
-                <iframe 
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSe5HxGSO54PIwLqk9pgOAM8XMpo86Pgz4HiHf0i17p-lFXX9w/viewform?embedded=true" 
+                <iframe
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSe5HxGSO54PIwLqk9pgOAM8XMpo86Pgz4HiHf0i17p-lFXX9w/viewform?embedded=true"
                     class="google-form-iframe"
-                    width="640" 
-                    height="4734" 
-                    frameborder="0" 
-                    marginheight="0" 
-                    marginwidth="0">
+                    title="Join the Tiri Tribe - Signup Form"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                    marginheight="0"
+                    marginwidth="0"
+                    aria-label="Join the Tiri Tribe form">
                     Loading…
                 </iframe>
             </div>
@@ -528,12 +509,21 @@
                     <img src="" alt="" id="escape-modal-image">
                 </div>
                 <div class="modal-info">
-                    <h3 id="escape-modal-title">Title</h3>
-                    <p id="escape-modal-desc">Description</p>
-                    <div class="modal-details">
-                        <p class="journey-data" id="escape-modal-journey">Journey details go here</p>
+                    <div class="modal-header">
+                        <h3 id="escape-modal-title">Title</h3>
                         <p class="journey-price" id="escape-modal-price">Price: —</p>
-                        <button class="book-now-btn" id="escape-modal-book" type="button">Request & Invite</button>
+                    </div>
+                    <p class="modal-description" id="escape-modal-desc">Description</p>
+                    <div class="modal-details">
+                        <div class="journey-info">
+                            <span class="journey-label">Journey Details:</span>
+                            <span class="journey-data" id="escape-modal-journey">Journey details go here</span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="book-now-btn" id="escape-modal-book" type="button">
+                            Request & Invite
+                        </button>
                     </div>
                 </div>
             </div>
@@ -601,13 +591,12 @@
 
                             <label class="form-field fullwidth">
                                 <span class="label-title">Additional Notes / Vision <small>(optional)</small></span>
-                                <textarea name="notes" rows="4" placeholder="Anything else you'd like us to know?"></textarea>
+                                <textarea name="notes" rows="2" placeholder="Anything else you'd like us to know?"></textarea>
                             </label>
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="submit-btn">Send — We'll reach out</button>
-                            <p class="form-note">Once you share your details, we’ll reach out personally to craft a journey that feels like you.</p>
+                            <button type="submit" class="submit-btn">Submit</button>
                         </div>
 
                         <div id="b2b-success" class="b2b-success" role="status" aria-live="polite" hidden>

@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     navbarToggle.addEventListener('click', function() {
         navbarToggle.classList.toggle('active');
-        navbarMenu.classList.toggle('active');
+        if (navbarMenu) navbarMenu.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     navbarLinks.forEach(link => {
         link.addEventListener('click', function() {
             navbarToggle.classList.remove('active');
-            navbarMenu.classList.remove('active');
+            if (navbarMenu) navbarMenu.classList.remove('active');
         });
     });
 
@@ -613,9 +613,17 @@ function openJoinForm() {
     // Show the popup modal with Google form
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
+        // save last focused element to restore later
+        window.__lastFocusBeforeJoin = document.activeElement;
+
         popup.style.display = 'flex';
+        popup.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         addPopupScrollBlockers(popup);
+
+        // focus the close button for accessibility
+        const closeBtn = popup.querySelector('.form-close-btn');
+        if (closeBtn) closeBtn.focus();
     }
 }
 
@@ -624,8 +632,15 @@ function closeJoinForm() {
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
         popup.style.display = 'none';
+        popup.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = 'auto'; // Re-enable scrolling
         removePopupScrollBlockers(popup);
+
+        // restore focus
+        try {
+            const prev = window.__lastFocusBeforeJoin;
+            if (prev && typeof prev.focus === 'function') prev.focus();
+        } catch (err) { /* ignore */ }
     }
 }
 

@@ -1,40 +1,11 @@
-Hero Section
-About Us & Brand Story Section - Highlighting company vision, mission, and story.
-
-Escapes:
-
-1. Hampi
-2. Araku
-3. Panchgani
-
-Destinations Listing - Displaying each destination with price, time, and key information.
-Individual Destination Pages - Each with hero image, what to expect and what not to expect, booking form, Zoho payment gateway integration, and footer.
-
-Contact Us Page - Form connected to Google Forms for storing enquiries.
-Booking Form Integration - Destination booking form integrated with Zoho payment gateway and linked to Google Forms for automatic storage.
-
-Footer - Standard footer with important links and information.
-
-TnC
-Refund Policy
-
-+1 for 50% off option
-
-Greenth font
-Remove Fossils
-Change background to white, clouds blue
-Contact Us
 Change Photos to cartoonish themed
-Join us Upar
-Bats to birds
-Moon Last mai
-Tiri Tara in Yellow
 Van Shaped Outline for Popups
-Yellow Orange Black
-Logo Center
-Reach out like Tourly
-Remove Tiri Meaning
-Van Tempo
-Make the Brand Masculine
-Add zoho refund policies
-Fixed Buttons
+
+1. Favicon
+2. add the point ki 5% gst is not included in the price
+3. Email backend
+4. Z index confg for buttons
+5. Responsive
+6. Mac Check
+7. Backend
+8. Connect social links
