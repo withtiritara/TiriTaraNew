@@ -261,6 +261,26 @@ ScrollTrigger.create({
     scrub: 3
 });
 
+// Footer pointer events management - matches footer visibility timing
+ScrollTrigger.create({
+    trigger: ".scrollElement",
+    start: "70% 50%",
+    end: "bottom 100%",
+    scrub: true,
+    onUpdate: (self) => {
+        const footer = document.querySelector('.site-footer');
+        if (footer) {
+            const progress = self.progress;
+            // Enable pointer events when we're 30% through the scene3 animation (when footer becomes visible)
+            if (progress >= 0.3) {
+                footer.style.pointerEvents = 'auto';
+            } else {
+                footer.style.pointerEvents = 'none';
+            }
+        }
+    }
+});
+
 //Hills motion
 scene3.fromTo("#h3-1", { y: 300 }, { y: -550 }, 0);
 scene3.fromTo("#h3-2", { y: 800 }, { y: -550 }, 0.03);
@@ -543,30 +563,30 @@ function isCheckpointActive(element) {
 
 // Override openJoinForm to check for active checkpoint
 const originalOpenJoinForm = window.openJoinForm;
-window.openJoinForm = function(clickedElement) {
+window.openJoinForm = function(eventOrUpdateURL, updateURL) {
     // If called from an event, check if the checkpoint is active
-    if (clickedElement && clickedElement instanceof Event) {
-        const target = clickedElement.target || clickedElement.currentTarget;
+    if (eventOrUpdateURL && eventOrUpdateURL instanceof Event) {
+        const target = eventOrUpdateURL.target || eventOrUpdateURL.currentTarget;
         if (target && !isCheckpointActive(target)) {
             console.log('Blocked interaction: checkpoint not active');
             return;
         }
     }
-    if (originalOpenJoinForm) originalOpenJoinForm();
+    if (originalOpenJoinForm) originalOpenJoinForm(eventOrUpdateURL, updateURL);
 };
 
 // Override openB2BForm to check for active checkpoint
 const originalOpenB2BForm = window.openB2BForm;
-window.openB2BForm = function(clickedElement) {
+window.openB2BForm = function(eventOrUpdateURL, updateURL) {
     // If called from an event, check if the checkpoint is active
-    if (clickedElement && clickedElement instanceof Event) {
-        const target = clickedElement.target || clickedElement.currentTarget;
+    if (eventOrUpdateURL && eventOrUpdateURL instanceof Event) {
+        const target = eventOrUpdateURL.target || eventOrUpdateURL.currentTarget;
         if (target && !isCheckpointActive(target)) {
             console.log('Blocked interaction: checkpoint not active');
             return;
         }
     }
-    if (originalOpenB2BForm) originalOpenB2BForm();
+    if (originalOpenB2BForm) originalOpenB2BForm(eventOrUpdateURL, updateURL);
 };
 
 // Add click event listeners to all buttons to check checkpoint status
@@ -649,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (modalBookBtn) modalBookBtn.addEventListener('click', function () {
         // prefer per-card booking link; fallback to default group link
-        const defaultWhatsApp = 'https://chat.whatsapp.com/your-group-invite-link-here';
+        const defaultWhatsApp = 'https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc';
         let link = defaultWhatsApp;
         try {
             if (lastClickedCard) {
@@ -669,7 +689,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-function openJoinForm() {
+function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
+    // Handle different parameter patterns:
+    // openJoinForm() - no URL update
+    // openJoinForm(event) - event passed, no URL update 
+    // openJoinForm(event, true) - event passed, update URL
+    // openJoinForm(true) - no event, update URL
+    let shouldUpdateURL = false;
+    
+    if (typeof eventOrUpdateURL === 'boolean') {
+        shouldUpdateURL = eventOrUpdateURL;
+    } else if (typeof updateURL === 'boolean') {
+        shouldUpdateURL = updateURL;
+    }
+    
     // Show the popup modal with Google form
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
@@ -680,6 +713,11 @@ function openJoinForm() {
         popup.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         addPopupScrollBlockers(popup);
+
+        // Update URL if requested (for direct links)
+        if (shouldUpdateURL && !window.location.search.includes('form=join')) {
+            updateURLForPopup('join');
+        }
 
         // focus the close button for accessibility
         const closeBtn = popup.querySelector('.form-close-btn');
@@ -695,6 +733,12 @@ function closeJoinForm() {
         popup.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = 'auto'; // Re-enable scrolling
         removePopupScrollBlockers(popup);
+
+        // Clear URL parameter if it exists
+        if (window.location.search.includes('form=join')) {
+            const newURL = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, '', newURL);
+        }
 
         // restore focus
         try {
@@ -734,12 +778,26 @@ function removePopupScrollBlockers(popup) {
     delete popup.__blockerHandlers;
 }
 
-function openB2BForm() {
+function openB2BForm(eventOrUpdateURL = false, updateURL = false) {
+    // Handle different parameter patterns similar to openJoinForm
+    let shouldUpdateURL = false;
+    
+    if (typeof eventOrUpdateURL === 'boolean') {
+        shouldUpdateURL = eventOrUpdateURL;
+    } else if (typeof updateURL === 'boolean') {
+        shouldUpdateURL = updateURL;
+    }
+    
     const popup = document.getElementById('b2bPopup');
     if (popup) {
         popup.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         addPopupScrollBlockers(popup);
+
+        // Update URL if requested (for direct links)
+        if (shouldUpdateURL && !window.location.search.includes('form=host')) {
+            updateURLForPopup('host');
+        }
     }
 }
 
@@ -749,6 +807,154 @@ function closeB2BForm() {
         popup.style.display = 'none';
         document.body.style.overflow = 'auto';
         removePopupScrollBlockers(popup);
+
+        // Clear URL parameter if it exists
+        if (window.location.search.includes('form=host')) {
+            const newURL = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, '', newURL);
+        }
+    }
+}
+
+// URL-based popup functionality
+function checkURLForPopup() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const formParam = urlParams.get('form');
+    
+    if (formParam === 'join') {
+        // Open join form popup
+        setTimeout(() => openJoinForm(), 100); // Small delay to ensure DOM is ready
+    } else if (formParam === 'host') {
+        // Open B2B/host form popup
+        setTimeout(() => openB2BForm(), 100);
+    }
+}
+
+// Function to generate shareable URLs for popups
+function getPopupURL(formType) {
+    const baseURL = window.location.origin + window.location.pathname;
+    return `${baseURL}?form=${formType}`;
+}
+
+// Function to update URL when popup opens (optional - adds to browser history)
+function updateURLForPopup(formType) {
+    const newURL = getPopupURL(formType);
+    window.history.pushState({ form: formType }, '', newURL);
+}
+
+// Function to copy popup URL to clipboard
+function copyPopupURL(formType) {
+    const url = getPopupURL(formType);
+    
+    if (navigator.clipboard && window.isSecureContext) {
+        // Use modern clipboard API
+        navigator.clipboard.writeText(url).then(() => {
+            showCopySuccess(formType);
+        }).catch(() => {
+            fallbackCopyToClipboard(url, formType);
+        });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyToClipboard(url, formType);
+    }
+}
+
+// Fallback copy method for older browsers
+function fallbackCopyToClipboard(text, formType) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showCopySuccess(formType);
+    } catch (err) {
+        console.error('Could not copy text: ', err);
+        // Show the URL in an alert as a final fallback
+        alert(`Copy this URL: ${text}`);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Show copy success message
+function showCopySuccess(formType) {
+    const formName = formType === 'join' ? 'Join Form' : 'Host Form';
+    
+    // Create a temporary notification
+    const notification = document.createElement('div');
+    notification.textContent = `${formName} link copied to clipboard!`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #2d5a2d;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        animation: slideInFromRight 0.3s ease-out;
+    `;
+    
+    // Add animation keyframes if not already present
+    if (!document.getElementById('copy-notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'copy-notification-styles';
+        style.textContent = `
+            @keyframes slideInFromRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutToRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds with slide out animation
+    setTimeout(() => {
+        notification.style.animation = 'slideOutToRight 0.3s ease-in';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Function to handle browser back button
+function handlePopupNavigation(event) {
+    if (event.state && event.state.form) {
+        // User navigated to a popup state
+        const formType = event.state.form;
+        if (formType === 'join') {
+            openJoinForm();
+        } else if (formType === 'host') {
+            openB2BForm();
+        }
+    } else {
+        // User navigated away from popup - close any open popups
+        const joinPopup = document.getElementById('joinFormPopup');
+        const b2bPopup = document.getElementById('b2bPopup');
+        
+        if (joinPopup && joinPopup.style.display === 'flex') {
+            closeJoinForm();
+        }
+        if (b2bPopup && b2bPopup.style.display === 'flex') {
+            closeB2BForm();
+        }
     }
 }
 
@@ -861,4 +1067,63 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+});
+
+// Scroll Down Arrow functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollArrow = document.getElementById('scrollDownArrow');
+    
+    if (!scrollArrow) return;
+    
+    let currentCheckpoint = 0;
+    
+    // Click handler to navigate to next section
+    scrollArrow.addEventListener('click', function() {
+        if (window.checkpointGoTo) {
+            // Navigate to next checkpoint (max 5 checkpoints: 0-5)
+            const nextCheckpoint = Math.min(currentCheckpoint + 1, 5);
+            window.checkpointGoTo(nextCheckpoint);
+            currentCheckpoint = nextCheckpoint;
+        }
+    });
+    
+    // Track scroll position to determine current checkpoint and hide arrow appropriately
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Estimate current checkpoint based on scroll position
+        const scrollPercent = scrollTop / (documentHeight - windowHeight);
+        
+        if (scrollPercent <= 0.1) {
+            currentCheckpoint = 0;
+        } else if (scrollPercent <= 0.25) {
+            currentCheckpoint = 1;
+        } else if (scrollPercent <= 0.45) {
+            currentCheckpoint = 2;
+        } else if (scrollPercent <= 0.65) {
+            currentCheckpoint = 3;
+        } else if (scrollPercent <= 0.85) {
+            currentCheckpoint = 4;
+        } else {
+            currentCheckpoint = 5;
+        }
+        
+        // Hide arrow when we're at the last checkpoint or near the bottom
+        if (currentCheckpoint >= 5 || scrollPercent > 0.9) {
+            scrollArrow.classList.add('hidden');
+        } else {
+            scrollArrow.classList.remove('hidden');
+        }
+    });
+});
+
+// Initialize URL-based popup functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Check URL on page load
+    checkURLForPopup();
+    
+    // Listen for browser back/forward navigation
+    window.addEventListener('popstate', handlePopupNavigation);
 });
