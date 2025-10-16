@@ -603,7 +603,8 @@ svg {
 /* Mobile versions - hide by default */
 .hero-text-mobile,
 .story-description-mobile,
-.story-subtitle-mobile {
+.story-subtitle-mobile,
+#journeys-mobile {
     display: none;
 }
 
@@ -878,6 +879,22 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     color: #1a1a1a;
 }
 
+/* Special positioning for checkpoint-4 to accommodate video carousel */
+#checkpoint-4.checkpoint-content {
+    position: fixed;
+    top: 15vh !important;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 1200px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
 #checkpoint-1 .checkpoint-header,
 #checkpoint-2 .checkpoint-header,
 #checkpoint-3 .checkpoint-header,
@@ -895,8 +912,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 #checkpoint-4 .checkpoint-header {
-    position: absolute;
-    top: 20vh !important;
+    position: relative;
+    /* top: 20vh !important; */
 }
 
 #checkpoint-4 .checkpoint-header,
@@ -938,6 +955,113 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     color: #4a4a4a;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
     font-weight: 500;
+}
+
+/* Video Carousel Styles */
+.video-carousel-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.video-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 320px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.video-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+.video-item.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.tribe-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.video-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 25px 20px 20px;
+    color: white;
+    border-radius: 0 0 12px 12px;
+}
+
+.video-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.video-description {
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.video-nav-controls {
+    display: none; /* Hide the bottom navigation controls */
+}
+
+.video-nav-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.video-nav-btn:hover {
+    transform: scale(1.1);
+}
+
+.video-nav-btn img {
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+.video-nav-btn:hover img {
+    transform: scale(1.1);
+}
+
+.video-indicators {
+    display: none; /* Hide the dots indicators */
+}
+
+.video-indicator {
+    display: none; /* Hide individual indicators */
 }
 
 #checkpoint-5 .checkpoint-subtitle {
@@ -985,9 +1109,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
         font-size: 1.5rem !important;
     }
 
-    #checkpoint-4 .checkpoint-header {
-        top:30vh !important;
-    }
     #checkpoint-5 .checkpoint-header {
         font-size: 1.5rem !important;
     }
@@ -1009,7 +1130,66 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     }
 
     #checkpoint-4 .checkpoint-header {
+        position: relative;
         font-size: 1.6rem !important;
+    }
+    
+    /* Checkpoint-4 mobile positioning */
+    #checkpoint-4.checkpoint-content {
+        top: 50vh !important;
+        width: 98%;
+        gap: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .video-carousel-container {
+        margin-top: 0;
+        max-width: 500px;
+        order: 2;
+    }
+    
+    #checkpoint-4 .checkpoint-header,
+    #checkpoint-4 .checkpoint-text {
+        order: 1;
+    }
+    
+    /* Video Carousel Mobile Styles */
+    .video-carousel-container {
+        gap: 12px;
+        max-width: 100%;
+    }
+    
+    .video-carousel {
+        height: 220px;
+        max-width: 280px;
+    }
+    
+    .video-overlay {
+        padding: 15px 12px 12px;
+    }
+    
+    .video-title {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+    
+    .video-description {
+        font-size: 12px;
+    }
+    
+    .video-nav-btn {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+    }
+    
+    .video-nav-btn img {
+        width: 18px;
+        height: 18px;
     }
     #checkpoint-5 .checkpoint-text {
         font-size: 0.8rem !important;
@@ -1030,8 +1210,14 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
     .hero-text-mobile,
     .story-description-mobile,
-    .story-subtitle-mobile {
+    .story-subtitle-mobile,
+    #journeys-mobile {
         display: block !important;
+    }
+
+    /* Hide regular journeys text on mobile */
+    #checkpoint-3 .checkpoint-text:first-of-type {
+        display: none !important;
     }
 
     .story-text-svg {
@@ -1606,6 +1792,61 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
     #checkpoint-4 .checkpoint-header {
         font-size: 1.4rem !important;
+    }
+    
+    /* Checkpoint-4 extra small mobile positioning */
+    #checkpoint-4.checkpoint-content {
+        top: 5vh !important;
+        gap: 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .video-carousel-container {
+        margin-top: 0;
+        max-width: 400px;
+        order: 2;
+    }
+    
+    #checkpoint-4 .checkpoint-header,
+    #checkpoint-4 .checkpoint-text {
+        order: 1;
+    }
+    
+    /* Video Carousel Extra Small Mobile Styles */
+    .video-carousel-container {
+        gap: 10px;
+    }
+    
+    .video-carousel {
+        height: 180px;
+        max-width: 240px;
+    }
+    
+    .video-overlay {
+        padding: 12px 10px 10px;
+    }
+    
+    .video-title {
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+    
+    .video-description {
+        font-size: 11px;
+    }
+    
+    .video-nav-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .video-nav-btn img {
+        width: 16px;
+        height: 16px;
     }
 
     /* Hero title for extra small screens */

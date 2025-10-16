@@ -39,7 +39,7 @@
         
         <div id="checkpoint-1" class="checkpoint-content" style="top: 25vh;">
             <h1 class="checkpoint-header">What is Tiri Tara</h1>
-            <p class="checkpoint-text">We don't just take you to places. We help you rediscover wonder, connect deeply, explore the cultures of the place, and meet like-minded strangers who may become your future best friends - that's who we aspire to be — a Tara in the Tiri of your life.</p>
+            <p class="checkpoint-text">We don't just take you to places. <br/>We help you rediscover wonder, connect deeply, explore the cultures of the place, and meet like-minded strangers who may become your future best friends - that's who we aspire to be —<br/> a Tara in the Tiri of your life.</p>
             <!-- <p class="checkpoint-subtitle">It's about feeling at home — wherever you are.<br>
             It's about seeing the world through stories, connections, and the small magic that makes you feel alive at least for a moment back.</p> -->
         </div>
@@ -55,6 +55,9 @@
         <div id="checkpoint-3" class="checkpoint-content" style="top: 20vh;">
             <h1 class="checkpoint-header">Journeys</h1>
             <p class="checkpoint-text">We don't just plan trips. We curate soulful escapes, <br>
+            journeys that connect you to the world, its people, and yourself.<br>
+            Travel that feels like home.</p>
+            <p class="checkpoint-text" id="journeys-mobile">We don't just plan trips.<br/>We curate soulful escapes,
             journeys that connect you to the world, its people, and yourself.<br>
             Travel that feels like home.</p>
             <!-- <p class="checkpoint-subtitle">Because the best stories are the ones that weren't planned at all</p> -->
@@ -96,8 +99,46 @@
         
         <div id="checkpoint-4" class="checkpoint-content">
             <h1 class="checkpoint-header">Stories from the Tribe</h1>
-            <!-- <p class="checkpoint-text">Once you fill the form we will suggest you the best trip and invite you personally for the trip over whatsapp or email?</p>
-            <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button> -->
+            <div class="video-carousel-container">
+                <button class="video-nav-btn video-nav-left" onclick="previousVideo()">
+                    <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/back.png" alt="previous video"/>
+                </button>
+                <div class="video-carousel">
+                    <div class="video-item active" data-video="1">
+                        <video class="tribe-video" loop muted autoplay>
+                            <source src="./assets/videos/T1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <h3 class="video-title">Journey to the Mountains</h3>
+                            <p class="video-description">Experience the breathtaking beauty of the Himalayas with fellow adventurers.</p>
+                        </div>
+                    </div>
+                    <div class="video-item" data-video="2">
+                        <video class="tribe-video" loop muted autoplay>
+                            <source src="./assets/videos/T1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <h3 class="video-title">Cultural Immersion</h3>
+                            <p class="video-description">Discover local traditions and connect with communities that welcome you as family.</p>
+                        </div>
+                    </div>
+                    <div class="video-item" data-video="3">
+                        <video class="tribe-video" loop muted autoplay>
+                            <source src="./assets/videos/T1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <h3 class="video-title">Unexpected Friendships</h3>
+                            <p class="video-description">Stories of strangers becoming lifelong friends through shared adventures.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="video-nav-btn video-nav-right" onclick="nextVideo()">
+                    <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/forward--v1.png" alt="next video"/>
+                </button>
+            </div>
         </div>
         
         <div id="checkpoint-5" class="checkpoint-content" style="top: 15vh;">

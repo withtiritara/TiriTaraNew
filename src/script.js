@@ -1127,3 +1127,163 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for browser back/forward navigation
     window.addEventListener('popstate', handlePopupNavigation);
 });
+
+// Video Carousel Functionality
+let currentVideoIndex = 1;
+const totalVideos = 3;
+
+function nextVideo() {
+    console.log('Next video clicked, current index:', currentVideoIndex);
+    
+    // Calculate next index
+    const nextIndex = currentVideoIndex === totalVideos ? 1 : currentVideoIndex + 1;
+    
+    // Remove active class from current video
+    const currentVideo = document.querySelector('.video-item.active');
+    if (currentVideo) {
+        const currentVideoEl = currentVideo.querySelector('.tribe-video');
+        if (currentVideoEl) {
+            currentVideoEl.pause();
+        }
+        currentVideo.classList.remove('active');
+    }
+    
+    // Add active class to next video
+    const nextVideo = document.querySelector(`[data-video="${nextIndex}"]`);
+    if (nextVideo) {
+        nextVideo.classList.add('active');
+        
+        // Play the new video
+        const nextVideoEl = nextVideo.querySelector('.tribe-video');
+        if (nextVideoEl) {
+            nextVideoEl.currentTime = 0;
+            nextVideoEl.muted = true;
+            nextVideoEl.play().catch(e => {
+                console.log('Video play failed:', e);
+            });
+        }
+    }
+    
+    currentVideoIndex = nextIndex;
+    console.log('Switched to video:', nextIndex);
+}
+
+function previousVideo() {
+    console.log('Previous video clicked, current index:', currentVideoIndex);
+    
+    // Calculate previous index
+    const prevIndex = currentVideoIndex === 1 ? totalVideos : currentVideoIndex - 1;
+    
+    // Remove active class from current video
+    const currentVideo = document.querySelector('.video-item.active');
+    if (currentVideo) {
+        const currentVideoEl = currentVideo.querySelector('.tribe-video');
+        if (currentVideoEl) {
+            currentVideoEl.pause();
+        }
+        currentVideo.classList.remove('active');
+    }
+    
+    // Add active class to previous video
+    const prevVideo = document.querySelector(`[data-video="${prevIndex}"]`);
+    if (prevVideo) {
+        prevVideo.classList.add('active');
+        
+        // Play the new video
+        const prevVideoEl = prevVideo.querySelector('.tribe-video');
+        if (prevVideoEl) {
+            prevVideoEl.currentTime = 0;
+            prevVideoEl.muted = true;
+            prevVideoEl.play().catch(e => {
+                console.log('Video play failed:', e);
+            });
+        }
+    }
+    
+    currentVideoIndex = prevIndex;
+    console.log('Switched to video:', prevIndex);
+}
+
+function goToVideo(index) {
+    if (index === currentVideoIndex) return;
+    
+    // Remove active class from current video
+    const currentVideo = document.querySelector('.video-item.active');
+    if (currentVideo) {
+        const currentVideoEl = currentVideo.querySelector('.tribe-video');
+        if (currentVideoEl) {
+            currentVideoEl.pause();
+        }
+        currentVideo.classList.remove('active');
+    }
+    
+    // Add active class to target video
+    const targetVideo = document.querySelector(`[data-video="${index}"]`);
+    if (targetVideo) {
+        targetVideo.classList.add('active');
+        
+        // Play the new video
+        const targetVideoEl = targetVideo.querySelector('.tribe-video');
+        if (targetVideoEl) {
+            targetVideoEl.currentTime = 0;
+            targetVideoEl.muted = true;
+            targetVideoEl.play().catch(e => {
+                console.log('Video play failed:', e);
+            });
+        }
+    }
+    
+    currentVideoIndex = index;
+    console.log('Switched to video:', index);
+}
+
+// Initialize video carousel
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing video carousel...');
+    
+    // Test all videos to make sure they exist and can load
+    const allVideos = document.querySelectorAll('.tribe-video');
+    allVideos.forEach((video, index) => {
+        console.log(`Video ${index + 1}:`, video.src);
+        video.addEventListener('loadeddata', () => {
+            console.log(`Video ${index + 1} loaded successfully`);
+        });
+        video.addEventListener('error', (e) => {
+            console.error(`Video ${index + 1} failed to load:`, e);
+        });
+    });
+    
+    // Add click handlers to indicators
+    const indicators = document.querySelectorAll('.video-indicator');
+    indicators.forEach(indicator => {
+        indicator.addEventListener('click', function() {
+            const videoIndex = parseInt(this.getAttribute('data-video'));
+            goToVideo(videoIndex);
+        });
+    });
+    
+    // Intersection observer to pause videos when not in view
+    const videoCarousel = document.querySelector('.video-carousel');
+    if (videoCarousel) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const videos = entry.target.querySelectorAll('.tribe-video');
+                if (entry.isIntersecting) {
+                    // Resume active video when carousel comes into view
+                    const activeVideo = entry.target.querySelector('.video-item.active .tribe-video');
+                    if (activeVideo) {
+                        activeVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+                    }
+                } else {
+                    // Pause all videos when carousel is out of view
+                    videos.forEach(video => video.pause());
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(videoCarousel);
+    }
+    
+    // Test the navigation functions
+    console.log('Video carousel initialized. Current video index:', currentVideoIndex);
+});
