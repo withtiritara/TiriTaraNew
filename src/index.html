@@ -94,7 +94,7 @@
             <!-- modal moved to end of body for proper stacking -->
         </div>
         
-        <div id="checkpoint-4" class="checkpoint-content" style="top: 20vh;">
+        <div id="checkpoint-4" class="checkpoint-content">
             <h1 class="checkpoint-header">Stories from the Tribe</h1>
             <!-- <p class="checkpoint-text">Once you fill the form we will suggest you the best trip and invite you personally for the trip over whatsapp or email?</p>
             <button class="tribe-join-btn" onclick="openJoinForm()">Join Now</button> -->
@@ -225,9 +225,15 @@
     </g>
 
     <!-- Hero Text Layer - Positioned after clouds but before hills -->
-    <text id="hero-text-svg" class="hero-text-svg" x="375" y="290" text-anchor="middle" dominant-baseline="middle">
+    <!-- Desktop version - single line -->
+    <text id="hero-text-svg-desktop" class="hero-text-svg hero-text-desktop" x="375" y="290" text-anchor="middle" dominant-baseline="middle">
         Tiri Tara
     </text>
+    <!-- Mobile version - two lines -->
+    <!-- <text id="hero-text-svg-mobile" class="hero-text-svg hero-text-mobile" x="375" y="270" text-anchor="middle" dominant-baseline="middle">
+        <tspan x="375" dy="0">Tiri</tspan>
+        <tspan x="375" dy="60">Tara</tspan>
+    </text> -->
 
     <!-- SCENE 2 -->
     <g id="scene2">
@@ -403,15 +409,56 @@
             <text id="story-text-svg" class="story-text-svg" x="375" y="280" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
                 <tspan x="375" dy="0">Our Story</tspan>
             </text>
-            <text id="story-description-svg" class="story-description-svg" x="375" y="320" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
+            <!-- Desktop story description -->
+            <!-- Desktop story description -->
+            <text id="story-description-svg-desktop" class="story-description-svg story-description-desktop" x="375" y="320" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
                 <tspan x="375" dy="0">For us, Tiri Tara is more than travel. We don't just plan trips. Not the kind with tight schedules</tspan>
                 <tspan x="375" dy="20">and guided checklists, we curate soulful escapes — journeys that connect you to the world,</tspan>
                 <tspan x="375" dy="20">its people, and yourself. The kind where you laugh under unfamiliar stars, share stories</tspan>
                 <tspan x="375" dy="20">with strangers, and find peace in the unexpected.</tspan>
             </text>
-            <text id="story-subtitle-svg" class="story-subtitle-svg" x="375" y="420" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
+            <!-- Mobile story description -->
+            <text id="story-description-svg-mobile" class="story-description-svg story-description-mobile" x="375" y="320" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
+                <tspan x="375" dy="0">For us, Tiri Tara is more than travel.</tspan>
+                <tspan x="375" dy="15">We don't just plan trips.</tspan>
+                <tspan x="375" dy="15">Not the kind with tight schedules</tspan>
+                <tspan x="375" dy="15">and guided checklists,</tspan>
+                <tspan x="375" dy="15">we curate soulful escapes —</tspan>
+                <tspan x="375" dy="15">journeys that connect you to the world,</tspan>
+                <tspan x="375" dy="15">its people, and yourself.</tspan>
+                <tspan x="375" dy="15">The kind where you laugh</tspan>
+                <tspan x="375" dy="15">under unfamiliar stars,</tspan>
+                <tspan x="375" dy="15">share stories with strangers,</tspan>
+                <tspan x="375" dy="15">and find peace in the unexpected.</tspan>
+            </text>
+            <!-- Mobile story description -->
+            <text id="story-description-svg-mobile" class="story-description-svg story-description-mobile" x="375" y="320" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
+                <tspan x="375" dy="0">For us, Tiri Tara is more than travel.</tspan>
+                <tspan x="375" dy="15">We don't just plan trips.</tspan>
+                <tspan x="375" dy="15">Not the kind with tight schedules</tspan>
+                <tspan x="375" dy="15">and guided checklists,</tspan>
+                <tspan x="375" dy="15">we curate soulful escapes —</tspan>
+                <tspan x="375" dy="15">journeys that connect you to the world,</tspan>
+                <tspan x="375" dy="15">its people, and yourself.</tspan>
+                <tspan x="375" dy="15">The kind where you laugh</tspan>
+                <tspan x="375" dy="15">under unfamiliar stars,</tspan>
+                <tspan x="375" dy="15">share stories with strangers,</tspan>
+                <tspan x="375" dy="15">and find peace in the unexpected.</tspan>
+            </text>
+            <!-- Desktop story subtitle -->
+            <text id="story-subtitle-svg-desktop" class="story-subtitle-svg story-subtitle-desktop" x="375" y="420" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
                 <tspan x="375" dy="0">It's about feeling at home — wherever you are. It's about seeing the world through stories,</tspan>
                 <tspan x="375" dy="20">connections, and the small magic that makes you feel alive at least for a moment back.</tspan>
+            </text>
+            <!-- Mobile story subtitle -->
+            <text id="story-subtitle-svg-mobile" class="story-subtitle-svg story-subtitle-mobile" x="375" y="470" text-anchor="middle" dominant-baseline="middle" style="opacity: 0;">
+                <tspan x="375" dy="0">It's about feeling at home</tspan>
+                <tspan x="375" dy="15">— wherever you are.</tspan>
+                <tspan x="375" dy="15">It's about seeing the world</tspan>
+                <tspan x="375" dy="15">through stories, connections,</tspan>
+                <tspan x="375" dy="15">and the small magic that makes</tspan>
+                <tspan x="375" dy="15">you feel alive at least</tspan>
+                <tspan x="375" dy="15">for a moment back.</tspan>
             </text>
 
 
