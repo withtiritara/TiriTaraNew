@@ -690,20 +690,17 @@ document.addEventListener('DOMContentLoaded', function () {
             window.va('track', 'Booking Requested', { destination: destination });
         }
         
-        // prefer per-card booking link; fallback to default group link
-        const defaultWhatsApp = 'https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc';
-        let link = defaultWhatsApp;
-        try {
-            if (lastClickedCard) {
-                const cardLink = lastClickedCard.getAttribute('data-book-link');
-                if (cardLink) link = cardLink;
-            }
-        } catch (err) {
-            // ignore and use default
-        }
+        // Get the trip name from the modal title
+        const tripPlace = modalTitle ? modalTitle.textContent.trim() : 'this amazing destination';
+        
+        // Create WhatsApp URL with phone number and pre-filled message
+        const phoneNumber = '918143120853'; // +91 81431 20853
+        const message = `Hi, Take me along to ${tripPlace} with you!`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
         // open in new tab/window
-        window.open(link, '_blank');
+        window.open(whatsappURL, '_blank');
     });
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
