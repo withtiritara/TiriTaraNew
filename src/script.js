@@ -432,6 +432,16 @@ window.onbeforeunload = function () {
     const goTo = (index) => {
         index = Math.max(0, Math.min(checkpoints.length - 1, index));
         if (index === current) return;
+        
+        // Track checkpoint navigation with Vercel Analytics
+        if (typeof window.va !== 'undefined') {
+            const checkpointNames = ['Hero', 'About', 'How to Join', 'Journeys', 'Stories', 'Contact'];
+            window.va('track', 'Section Navigation', { 
+                from: checkpointNames[current] || `Section ${current}`,
+                to: checkpointNames[index] || `Section ${index}`
+            });
+        }
+        
         current = index;
         isAnimating = true;
 
@@ -622,12 +632,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function openModal(data) {
         if (!modal) return;
+        
+        // Track escape card modal opening with Vercel Analytics
+        if (typeof window.va !== 'undefined') {
+            window.va('track', 'Escape Card Viewed', { destination: data.title || 'Unknown' });
+        }
+        
         modalImage.src = data.imgSrc || '';
         modalImage.alt = data.imgAlt || '';
         modalTitle.textContent = data.title || '';
         modalDesc.textContent = data.description || '';
-        modalJourney.textContent = data.journey || 'Details coming soon';
-        modalPrice.textContent = data.price || 'Price: Contact us';
+        modalJourney.textContent = data.journey || 'To be revealed soon';
+        modalPrice.textContent = data.price || 'To be revealed soon';
         // store card reference if available
         lastClickedCard = data._card || null;
         modal.setAttribute('aria-hidden', 'false');
@@ -656,9 +672,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const title = card.querySelector('.card-title')?.textContent || '';
             const desc = card.querySelector('.card-description')?.textContent || '';
 
-            // For now, derive journey and price from data attributes if present
-            const journey = card.getAttribute('data-journey') || (title ? `${title} - 3 days / 2 nights` : '3 days / 2 nights');
-            const price = card.getAttribute('data-price') || 'Price: ₹9,999';
+            // Set journey details and price to "to be revealed soon"
+            const journey = card.getAttribute('data-journey') || 'To be revealed soon';
+            const price = card.getAttribute('data-price') || 'To be revealed soon';
 
             openModal({ imgSrc: img?.src, imgAlt: img?.alt, title, description: desc, journey, price, _card: card });
         });
@@ -668,6 +684,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (modalBookBtn) modalBookBtn.addEventListener('click', function () {
+        // Track booking button click with Vercel Analytics
+        if (typeof window.va !== 'undefined') {
+            const destination = modalTitle ? modalTitle.textContent : 'Unknown';
+            window.va('track', 'Booking Requested', { destination: destination });
+        }
+        
         // prefer per-card booking link; fallback to default group link
         const defaultWhatsApp = 'https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc';
         let link = defaultWhatsApp;
@@ -701,6 +723,11 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
         shouldUpdateURL = eventOrUpdateURL;
     } else if (typeof updateURL === 'boolean') {
         shouldUpdateURL = updateURL;
+    }
+    
+    // Track join form opening with Vercel Analytics
+    if (typeof window.va !== 'undefined') {
+        window.va('track', 'Join Form Opened');
     }
     
     // Show the popup modal with Google form
@@ -786,6 +813,11 @@ function openB2BForm(eventOrUpdateURL = false, updateURL = false) {
         shouldUpdateURL = eventOrUpdateURL;
     } else if (typeof updateURL === 'boolean') {
         shouldUpdateURL = updateURL;
+    }
+    
+    // Track B2B form opening with Vercel Analytics
+    if (typeof window.va !== 'undefined') {
+        window.va('track', 'Host Form Opened');
     }
     
     const popup = document.getElementById('b2bPopup');
@@ -1036,6 +1068,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('EmailJS not configured. Form data:', formData);
             }
 
+            // Track successful form submission with Vercel Analytics
+            if (typeof window.va !== 'undefined') {
+                window.va('track', 'B2B Form Submitted', { 
+                    participants: formData.participants,
+                    destination: formData.destination,
+                    vibe: formData.vibe
+                });
+            }
+
             // Show success message
             const successEl = document.getElementById('b2b-success');
             if (successEl) {
@@ -1135,6 +1176,11 @@ const totalVideos = 3;
 function nextVideo() {
     console.log('Next video clicked, current index:', currentVideoIndex);
     
+    // Track video navigation with Vercel Analytics
+    if (typeof window.va !== 'undefined') {
+        window.va('track', 'Video Navigation', { action: 'next', from: currentVideoIndex });
+    }
+    
     // Calculate next index
     const nextIndex = currentVideoIndex === totalVideos ? 1 : currentVideoIndex + 1;
     
@@ -1170,6 +1216,11 @@ function nextVideo() {
 
 function previousVideo() {
     console.log('Previous video clicked, current index:', currentVideoIndex);
+    
+    // Track video navigation with Vercel Analytics
+    if (typeof window.va !== 'undefined') {
+        window.va('track', 'Video Navigation', { action: 'previous', from: currentVideoIndex });
+    }
     
     // Calculate previous index
     const prevIndex = currentVideoIndex === 1 ? totalVideos : currentVideoIndex - 1;
