@@ -60,6 +60,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Video Lazy Loading Functionality
+    const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const video = entry.target;
+                const videoSrc = video.getAttribute('data-lazy-video');
+                const source = video.querySelector('source[data-src]');
+                
+                if (videoSrc && source) {
+                    // Add loading indicator
+                    const videoItem = video.closest('.video-item');
+                    const existingIndicator = videoItem.querySelector('.video-loading');
+                    
+                    if (!existingIndicator) {
+                        const loadingIndicator = document.createElement('div');
+                        loadingIndicator.className = 'video-loading';
+                        loadingIndicator.textContent = 'Loading video...';
+                        videoItem.appendChild(loadingIndicator);
+                        
+                        // Load the video source
+                        source.src = source.getAttribute('data-src');
+                        video.load();
+                        
+                        // Remove lazy loading attributes
+                        video.removeAttribute('data-lazy-video');
+                        source.removeAttribute('data-src');
+                        
+                        // Stop observing this video
+                        videoObserver.unobserve(video);
+                        
+                        // Handle loading completion
+                        video.addEventListener('loadeddata', () => {
+                            if (loadingIndicator && loadingIndicator.parentNode) {
+                                loadingIndicator.parentNode.removeChild(loadingIndicator);
+                            }
+                            
+                            // If this is the active video, play it
+                            if (videoItem && videoItem.classList.contains('active')) {
+                                video.muted = true;
+                                video.play().catch(e => {
+                                    console.log('Lazy loaded video play failed:', e);
+                                });
+                            }
+                        }, { once: true });
+                        
+                        // Handle loading errors
+                        video.addEventListener('error', () => {
+                            if (loadingIndicator && loadingIndicator.parentNode) {
+                                loadingIndicator.textContent = 'Failed to load video';
+                                setTimeout(() => {
+                                    if (loadingIndicator.parentNode) {
+                                        loadingIndicator.parentNode.removeChild(loadingIndicator);
+                                    }
+                                }, 2000);
+                            }
+                        }, { once: true });
+                    }
+                }
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+    });
+
+    // Start observing all lazy videos
+    lazyVideos.forEach(video => {
+        videoObserver.observe(video);
+    });
+
 
 });
 
@@ -1168,7 +1240,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Video Carousel Functionality
 let currentVideoIndex = 1;
-const totalVideos = 3;
+const totalVideos = 5;
+
+// Helper function to load and play lazy videos
+function loadAndPlayVideo(videoEl) {
+    if (!videoEl) return;
+    
+    // Check if video is lazy loaded
+    const videoSrc = videoEl.getAttribute('data-lazy-video');
+    const source = videoEl.querySelector('source[data-src]');
+    
+    if (videoSrc && source) {
+        // Add loading indicator
+        const videoItem = videoEl.closest('.video-item');
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'video-loading';
+        loadingIndicator.textContent = 'Loading video...';
+        videoItem.appendChild(loadingIndicator);
+        
+        // Load the video source
+        source.src = source.getAttribute('data-src');
+        videoEl.load();
+        
+        // Remove lazy loading attributes
+        videoEl.removeAttribute('data-lazy-video');
+        source.removeAttribute('data-src');
+        
+        // Play after loading
+        videoEl.addEventListener('loadeddata', () => {
+            // Remove loading indicator
+            if (loadingIndicator && loadingIndicator.parentNode) {
+                loadingIndicator.parentNode.removeChild(loadingIndicator);
+            }
+            
+            videoEl.currentTime = 0;
+            videoEl.muted = true;
+            videoEl.play().catch(e => {
+                console.log('Video play failed after lazy load:', e);
+            });
+        }, { once: true });
+        
+        // Handle loading errors
+        videoEl.addEventListener('error', () => {
+            if (loadingIndicator && loadingIndicator.parentNode) {
+                loadingIndicator.textContent = 'Failed to load video';
+                setTimeout(() => {
+                    if (loadingIndicator.parentNode) {
+                        loadingIndicator.parentNode.removeChild(loadingIndicator);
+                    }
+                }, 2000);
+            }
+        }, { once: true });
+    } else {
+        // Video already loaded, just play
+        videoEl.currentTime = 0;
+        videoEl.muted = true;
+        videoEl.play().catch(e => {
+            console.log('Video play failed:', e);
+        });
+    }
+}
 
 function nextVideo() {
     console.log('Next video clicked, current index:', currentVideoIndex);
@@ -1196,14 +1327,10 @@ function nextVideo() {
     if (nextVideo) {
         nextVideo.classList.add('active');
         
-        // Play the new video
+        // Play the new video (only if it's actually a video, not an image)
         const nextVideoEl = nextVideo.querySelector('.tribe-video');
         if (nextVideoEl) {
-            nextVideoEl.currentTime = 0;
-            nextVideoEl.muted = true;
-            nextVideoEl.play().catch(e => {
-                console.log('Video play failed:', e);
-            });
+            loadAndPlayVideo(nextVideoEl);
         }
     }
     
@@ -1237,14 +1364,10 @@ function previousVideo() {
     if (prevVideo) {
         prevVideo.classList.add('active');
         
-        // Play the new video
+        // Play the new video (only if it's actually a video, not an image)
         const prevVideoEl = prevVideo.querySelector('.tribe-video');
         if (prevVideoEl) {
-            prevVideoEl.currentTime = 0;
-            prevVideoEl.muted = true;
-            prevVideoEl.play().catch(e => {
-                console.log('Video play failed:', e);
-            });
+            loadAndPlayVideo(prevVideoEl);
         }
     }
     
@@ -1273,11 +1396,7 @@ function goToVideo(index) {
         // Play the new video
         const targetVideoEl = targetVideo.querySelector('.tribe-video');
         if (targetVideoEl) {
-            targetVideoEl.currentTime = 0;
-            targetVideoEl.muted = true;
-            targetVideoEl.play().catch(e => {
-                console.log('Video play failed:', e);
-            });
+            loadAndPlayVideo(targetVideoEl);
         }
     }
     
@@ -1317,10 +1436,10 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 const videos = entry.target.querySelectorAll('.tribe-video');
                 if (entry.isIntersecting) {
-                    // Resume active video when carousel comes into view
+                    // Load and play active video when carousel comes into view
                     const activeVideo = entry.target.querySelector('.video-item.active .tribe-video');
                     if (activeVideo) {
-                        activeVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+                        loadAndPlayVideo(activeVideo);
                     }
                 } else {
                     // Pause all videos when carousel is out of view

@@ -104,8 +104,8 @@
                 </button>
                 <div class="video-carousel">
                     <div class="video-item active" data-video="1">
-                        <video class="tribe-video" loop muted autoplay>
-                            <source src="./assets/videos/story1.mp4" type="video/mp4">
+                        <video class="tribe-video" loop muted preload="none" data-lazy-video="./assets/videos/story1.mp4">
+                            <source data-src="./assets/videos/story1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <!-- <div class="video-overlay">
@@ -114,8 +114,8 @@
                         </div> -->
                     </div>
                     <div class="video-item" data-video="2">
-                        <video class="tribe-video" loop muted autoplay>
-                            <source src="./assets/videos/story2.mp4" type="video/mp4">
+                        <video class="tribe-video" loop muted preload="none" data-lazy-video="./assets/videos/story2.mp4">
+                            <source data-src="./assets/videos/story2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <!-- <div class="video-overlay">
@@ -123,15 +123,11 @@
                             <p class="video-description">Discover local traditions and connect with communities that welcome you as family.</p>
                         </div> -->
                     </div>
-                    <div class="video-item" data-video="3">
-                        <video class="tribe-video" loop muted autoplay>
-                            <source src="./assets/videos/story3.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <!-- <div class="video-overlay">
-                            <h3 class="video-title">Unexpected Friendships</h3>
-                            <p class="video-description">Stories of strangers becoming lifelong friends through shared adventures.</p>
-                        </div> -->
+                    <div class="video-item" data-video="4">
+                        <img src="./assets/videos/story3.png" alt="Story 3" class="tribe-story-image">
+                    </div>
+                    <div class="video-item" data-video="5">
+                        <img src="./assets/videos/story4.png" alt="Story 4" class="tribe-story-image">
                     </div>
                 </div>
                 <button class="video-nav-btn video-nav-right" onclick="nextVideo()">
