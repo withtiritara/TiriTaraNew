@@ -1,12 +1,33 @@
-1.⁠ ⁠The first landing page mountains issue   //Done
-2.⁠ ⁠⁠The videos responsiveness is missing  //Done
-3.⁠ ⁠⁠Please add the rest of the testimonialsf  //Done
+1. The first landing page mountains issue
+2. videos responsiveness is missing
+3. add the rest of the testimonials
 4. Add Lazy Loading
 5. Fix Carousel Functionality and add a Play Button
-6. Add whatsapp functionality to 'request an invite'
-7. Add black down arrow
+6. Add better arrow controls
+7. Click on logo to go up
+8. Mobile First
+9. Escape Cards Data
+10. About Us and Contact Us
+11. Journeys with own URL
+12. Improve About us and contact info UI
+13. Hi, Don’t go to Hampi without me!
+14. ⁠⁠Turn off the website except for the Hampi URL, Form filling and people need to know the brand story and the testimonials - by sunday
+15. ⁠⁠Hampi URL link (need URL links for every journey)
+16. No Scroll, just arrows
+17. Fix Navbar on mobile
+18. Fix Misclicks
 
-Future: 
-1. Van Shaped Outline for Popups 
+Future:
+
+1. Van Shaped Outline for Popups
 2. Check Analytics
 
+Additional:
+
+1. Menu button beside “Join the Tribe” that could take us to the pages directly
+2. Upon clicking the logo it should redirect to the home page
+3. Content to be changed as shared with you
+4. Jouneys should have the requested format shared with you (we may add many more journeys so please keep that in mind while it doesn't mess up with the UI or is clumsy)
+5. Access to journeys content updation to be shared with me to add new journeys or edit existing journeys, or the content and to add a group image after the trip is completed and mark it as finished as discussed earlier
+6. Request an Invite to have a WhatsApp chat created with the custom message to me basing the trip to be integrated
+7. Stories from tribe to be updated

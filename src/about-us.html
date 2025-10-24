@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Tiri Tara</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* About Us specific styles */
+        .about-us-page {
+            min-height: 100vh;
+            background: url('./assets/bg.png') center center/cover no-repeat;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 60px;
+        }
+
+        .about-us-content {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            margin: auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about-us-title {
+            font-family: var(--primary-font);
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .about-us-text {
+            font-family: var(--description-font);
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 25px;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .about-us-text p {
+            margin-bottom: 16px;
+        }
+
+        .back-home-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-family: var(--description-font);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Mobile responsive - Single breakpoint at 425px */
+        @media (max-width: 425px) {
+            .about-us-page {
+                padding: 80px 10px 40px;
+                background-attachment: scroll; /* Better performance on mobile */
+                min-height: 100vh;
+                align-items: flex-start;
+            }
+
+            .about-us-content {
+                padding: 20px 15px;
+                border-radius: 15px;
+                margin: 20px 5px;
+                width: calc(100% - 10px);
+            }
+
+            .about-us-title {
+                font-size: 1.5rem !important;
+                margin-bottom: 15px;
+                letter-spacing: 0.02em;
+            }
+
+            .about-us-text {
+                font-size: 0.8rem !important;
+                line-height: 1.4;
+                margin-bottom: 20px;
+            }
+
+            .about-us-text p {
+                margin-bottom: 12px;
+            }
+
+            .back-home-btn {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+                margin-top: 10px;
+                border-radius: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Navigation -->
+    <nav class="floating-navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <!-- Logo moved to extreme left -->
+                <div class="navbar-brand">
+                    <a href="index.html">
+                        <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="navbar-right">
+                <!-- All icons grouped together -->
+                <div class="navbar-icons">
+                    <a href="about-us.html" class="nav-icon-link active" title="About Us" aria-label="About Us">
+                        <img src="./assets/social/about.svg" alt="About Us" class="nav-icon">
+                    </a>
+                    <a href="contact-us.html" class="nav-icon-link" title="Contact Us" aria-label="Contact Us">
+                        <img src="./assets/social/contact.svg" alt="Contact Us" class="nav-icon">
+                    </a>
+                    <a href="https://www.instagram.com/withtiritara?igsh=NGg5YXF3NDNuNHNm&utm_source=qr" class="nav-icon-link" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+                        <img src="./assets/social/instagram.svg" alt="Instagram" class="nav-icon">
+                    </a>
+                    <a href="https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc" class="nav-icon-link" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+                        <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="nav-icon">
+                    </a>
+                </div>
+                <a onclick="openJoinForm(event, true)" class="navbar-link join-tribe" id="nav-join-tribe">Join the Tribe</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Us Page Content -->
+    <div class="about-us-page">
+        <div class="about-us-content">
+            <h1 class="about-us-title">About Us — The Story of Tiri Tara</h1>
+            
+            <div class="about-us-text">
+                <p>Our name comes from Sanskrit: "Tiri" meaning journey, and "Tara" meaning a star. Together, they stand for what we aspire to be — a guiding star in your journey.</p>
+
+                <p>It all started with the passion to travel, and our kind of travel is really different- We want to travel like a traveller, not a tourist. At Tiri Tara, we curate soulful escapes that go beyond itineraries — 40% of the trip only will be revealed to you, while the rest 60% is beautifully discovered or maybe unknown to you.</p>
+
+                <p>Don't worry, you'll know just enough. All you should need to know is that we will take care of your travel, accommodation (we would want you to stay at home stays at the places we go to, but trust us, we don't wanna compromise on giving you the best experience), and food (our idea is for you to get the local food). Hence, a curation with us would include the travel+stay+food plus the very best thing - it will include you to have the best time.</p>
+
+                <p>It's not luxury travel or checklist tourism; it's about feeling alive in the unknown. We want to curate trips that will help you experience the places we travel to as it is.</p>
+
+                <p>We want to bring together curious souls — people who seek connection, not just destinations. Those who find home in conversations around a bonfire, laughter under starlit skies, and stories that stay long after the trip ends.</p>
+
+                <p><strong>Welcome to Tiri Tara — Your Journey, Our Story.</strong></p>
+            </div>
+
+            <a href="index.html" class="back-home-btn">Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Include necessary scripts if needed -->
+    <script src="script.js"></script>
+</body>
+</html>
