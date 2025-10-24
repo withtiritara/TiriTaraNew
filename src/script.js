@@ -1322,8 +1322,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// iPhone SVG gradient fix
+function isIPhone() {
+    return /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+function applyIPhoneSVGFix() {
+    if (isIPhone()) {
+        // Add iPhone-specific class for CSS targeting
+        document.documentElement.classList.add('ios-device');
+        
+        // Force SVG re-render on iPhone to fix gradient issues
+        const svg = document.querySelector('svg.parallax');
+        if (svg) {
+            // Force a repaint by temporarily modifying a style
+            const originalDisplay = svg.style.display;
+            svg.style.display = 'none';
+            
+            // Force reflow
+            svg.offsetHeight;
+            
+            // Restore display
+            svg.style.display = originalDisplay || '';
+            
+            // Add iPhone-specific attributes to problematic elements
+            const gradientPaths = svg.querySelectorAll('path[fill*="url(#grad"], polygon[fill*="url(#grad"]');
+            gradientPaths.forEach(path => {
+                // Force hardware acceleration
+                path.style.transform = 'translateZ(0)';
+                path.style.webkitTransform = 'translateZ(0)';
+            });
+        }
+        
+        console.log('iPhone SVG fixes applied');
+    }
+}
+
 // Initialize URL-based popup functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Apply iPhone-specific fixes first
+    applyIPhoneSVGFix();
+    
     // Check URL on page load
     checkURLForPopup();
     

@@ -45,6 +45,38 @@ body::-webkit-scrollbar,
     height: 0px;
 }
 
+/* iPhone SVG rendering optimization */
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+    svg {
+        /* Force hardware acceleration on high-DPI screens (iPhone) */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        /* Improve rendering quality */
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        /* Optimize SVG rendering */
+        shape-rendering: optimizeQuality;
+    }
+    
+    /* Ensure gradients render properly on iPhone */
+    svg linearGradient,
+    svg radialGradient {
+        /* Force gradient recomputation on iOS */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    /* Specific fixes for mountain gradients on iPhone */
+    svg path[fill*="grad"],
+    svg polygon[fill*="grad"] {
+        /* Ensure proper fill rendering on iOS Safari */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        /* Alternative rendering method for problematic gradients */
+        will-change: transform;
+    }
+}
+
 /* Floating Glassmorphic Navbar */
 .floating-navbar {
     position: fixed;
@@ -383,6 +415,61 @@ svg {
     z-index: 3;
     top: 0;
     left: 0;
+}
+
+/* iPhone-specific SVG fixes */
+@media screen and (max-device-width: 896px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* Target iPhone specifically (up to iPhone 11 Pro Max) */
+    svg {
+        /* Prevent rendering issues on iOS Safari */
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        /* Smooth anti-aliasing for better gradient rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        /* Force layer creation for better gradient support */
+        will-change: transform;
+    }
+    
+    /* Ensure all SVG gradients work properly on iPhone */
+    svg linearGradient stop {
+        /* Force iOS to properly process gradient stops */
+        stop-opacity: 1;
+    }
+    
+    /* Mountain paths that use gradients - ensure they render */
+    svg path[fill*="url(#grad"],
+    svg polygon[fill*="url(#grad"] {
+        /* Force hardware acceleration for gradient rendering */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        /* Improve rendering quality */
+        shape-rendering: geometricPrecision;
+    }
+}
+
+/* iOS device class-based fixes */
+.ios-device svg {
+    /* Additional iOS optimizations */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+
+.ios-device svg linearGradient {
+    /* Ensure gradients are properly processed on iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.ios-device svg path[fill*="url(#grad"],
+.ios-device svg polygon[fill*="url(#grad"] {
+    /* Force GPU rendering for gradient-filled elements on iOS */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .scrollElement {
