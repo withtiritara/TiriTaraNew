@@ -383,17 +383,6 @@ svg {
     z-index: 3;
     top: 0;
     left: 0;
-    /* iOS-specific fixes for SVG rendering */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    /* Additional iOS rendering improvements */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* Ensure proper gradient support */
-    shape-rendering: geometricPrecision;
 }
 
 .scrollElement {
@@ -543,70 +532,6 @@ body:has(#checkpoint-0.active) .hero-text-svg {
 /* Alternative approach for better browser support */
 .checkpoint-0-active .hero-text-svg {
     opacity: 1;
-}
-
-/* iOS-specific SVG fixes */
-@supports (-webkit-touch-callout: none) {
-    /* Target iOS Safari specifically */
-    svg {
-        /* Force hardware acceleration and improve rendering */
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        -webkit-perspective: 1000px;
-        perspective: 1000px;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-    }
-    
-    svg path,
-    svg g {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        will-change: transform;
-        /* Ensure paths render with proper colors */
-        shape-rendering: geometricPrecision;
-    }
-    
-    /* Force hardware acceleration for gradients */
-    svg path[fill*="url("] {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-    }
-    
-    /* Ensure gradient definitions render properly */
-    svg defs {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-    
-    /* Specific fixes for mountain paths that may appear black */
-    #h1-1, #h1-2, #h1-3, #h1-4, #h1-5, #h1-6, #h1-7, #h1-8, #h1-9 {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        will-change: transform;
-        /* Ensure proper gradient rendering */
-        shape-rendering: optimizeQuality;
-    }
-    
-    /* Force redraw on iOS when gradients fail */
-    svg:hover path[fill*="url("] {
-        opacity: 0.999;
-    }
-    
-    /* Animation to trigger iOS repaints */
-    @keyframes iosGradientFix {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.999; }
-    }
-    
-    /* Apply subtle animation to mountain paths on iOS */
-    #h1-1, #h1-2, #h1-3, #h1-4, #h1-5, #h1-6, #h1-7, #h1-8, #h1-9 {
-        animation: iosGradientFix 0.1s ease-in-out;
-        animation-delay: 0.5s;
-        animation-iteration-count: 1;
-    }
 }
 
 /* SVG Hero Description Text - Between Hills */
@@ -1489,34 +1414,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 
 /* Small devices starting from 425px and smaller - Priority fixes */
-/* iPhone-specific fixes for SVG rendering */
-@media screen and (max-device-width: 896px) and (-webkit-min-device-pixel-ratio: 2) {
-    /* Target iPhone devices specifically */
-    svg {
-        /* Force composite layer creation */
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        -webkit-perspective: 1000px;
-        perspective: 1000px;
-    }
-    
-    /* Ensure mountain gradients render correctly on iPhone */
-    path[id^="h1-"], path[id^="h2-"], path[id^="h3-"] {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        /* Force repaint */
-        will-change: transform, opacity;
-    }
-    
-    /* Force hardware acceleration for all gradient paths */
-    path[fill*="url("] {
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-}
-
 @media (max-width: 425px) {
     .floating-navbar {
         width: 92%;

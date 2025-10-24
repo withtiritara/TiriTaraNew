@@ -62,50 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // iOS SVG Gradient Fix
-    function fixiOSSVGGradients() {
-        // Check if running on iOS
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        
-        if (isIOS) {
-            // Force gradients to re-render on iOS
-            const gradientPaths = document.querySelectorAll('path[fill*="url("]');
-            gradientPaths.forEach(path => {
-                // Store original fill
-                const originalFill = path.getAttribute('fill');
-                
-                // Temporarily change to solid color, then back to gradient
-                setTimeout(() => {
-                    const pathId = path.getAttribute('id');
-                    if (pathId && (pathId.includes('h1-') || pathId.includes('h2-') || pathId.includes('h3-'))) {
-                        // Set fallback color briefly
-                        path.setAttribute('fill', '#2a2a2a');
-                        
-                        // Force reflow
-                        path.getBoundingClientRect();
-                        
-                        // Restore gradient
-                        setTimeout(() => {
-                            path.setAttribute('fill', originalFill);
-                        }, 50);
-                    }
-                }, 100);
-            });
-            
-            // Add viewport meta tag optimization for iOS
-            let viewport = document.querySelector('meta[name="viewport"]');
-            if (viewport) {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no');
-            }
-        }
-    }
-    
-    // Run the fix after DOM is loaded
-    fixiOSSVGGradients();
-    
-    // Also run after a short delay to catch any late-loading elements
-    setTimeout(fixiOSSVGGradients, 500);
-
     // Video Lazy Loading Functionality
     const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
     const videoObserver = new IntersectionObserver((entries) => {
