@@ -2297,6 +2297,14 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     pointer-events: none;
 }
 
+/* Mobile transform fixes - matches original working version */
+@media (max-width: 490px) {
+    svg {
+        transform: scale(0.9) translateY(20px);
+        transform-origin: center top;
+    }
+}
+
 /* Responsive adjustments for mobile */
 @media (max-width: 768px) {
     .scroll-down-arrow {
