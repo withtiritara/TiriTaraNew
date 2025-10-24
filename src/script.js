@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+
+
     // Navbar checkpoint navigation and special actions (e.g. open join form)
     navbarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -702,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Keep reference to the last clicked card so we can use per-card book links if provided
     let lastClickedCard = null;
 
-    function openModal(data) {
+    function openModal(data, updateURL = false) {
         if (!modal) return;
         
         // Track escape card modal opening with Vercel Analytics
@@ -720,12 +722,24 @@ document.addEventListener('DOMContentLoaded', function () {
         lastClickedCard = data._card || null;
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        
+        // Update URL if requested
+        if (updateURL && data.title) {
+            const destination = data.title.toLowerCase().replace(/\s+/g, '-');
+            updateURLForJourney(destination);
+        }
     }
 
     function closeModal() {
         if (!modal) return;
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        
+        // Clear URL parameter if it exists
+        if (window.location.search.includes('journey=')) {
+            const newURL = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, '', newURL);
+        }
     }
 
     // Click on card to open modal
@@ -748,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const journey = card.getAttribute('data-journey') || 'To be revealed soon';
             const price = card.getAttribute('data-price') || 'To be revealed soon';
 
-            openModal({ imgSrc: img?.src, imgAlt: img?.alt, title, description: desc, journey, price, _card: card });
+            openModal({ imgSrc: img?.src, imgAlt: img?.alt, title, description: desc, journey, price, _card: card }, true);
         });
     });
 
@@ -921,6 +935,7 @@ function closeB2BForm() {
 function checkURLForPopup() {
     const urlParams = new URLSearchParams(window.location.search);
     const formParam = urlParams.get('form');
+    const journeyParam = urlParams.get('journey');
     
     if (formParam === 'join') {
         // Open join form popup
@@ -928,6 +943,9 @@ function checkURLForPopup() {
     } else if (formParam === 'host') {
         // Open B2B/host form popup
         setTimeout(() => openB2BForm(), 100);
+    } else if (journeyParam) {
+        // Open journey card modal
+        setTimeout(() => openJourneyFromURL(journeyParam), 100);
     }
 }
 
@@ -941,6 +959,72 @@ function getPopupURL(formType) {
 function updateURLForPopup(formType) {
     const newURL = getPopupURL(formType);
     window.history.pushState({ form: formType }, '', newURL);
+}
+
+// Function to update URL for journey modal
+function updateURLForJourney(destination) {
+    const baseURL = window.location.origin + window.location.pathname;
+    const newURL = `${baseURL}?journey=${encodeURIComponent(destination)}`;
+    window.history.pushState({ journey: destination }, '', newURL);
+}
+
+// Function to get shareable URL for journey
+function getJourneyURL(destination) {
+    const baseURL = window.location.origin + window.location.pathname;
+    return `${baseURL}?journey=${encodeURIComponent(destination)}`;
+}
+
+// Function to open journey modal from URL parameter
+function openJourneyFromURL(journeyParam) {
+    // Decode the journey parameter and find matching card
+    const decodedJourney = decodeURIComponent(journeyParam).toLowerCase();
+    
+    // Find the matching escape card
+    const cards = document.querySelectorAll('.escape-card');
+    let matchingCard = null;
+    
+    cards.forEach(card => {
+        const title = card.querySelector('.card-title')?.textContent || '';
+        const normalizedTitle = title.toLowerCase().replace(/\s+/g, '-');
+        
+        if (normalizedTitle === decodedJourney) {
+            matchingCard = card;
+        }
+    });
+    
+    if (matchingCard) {
+        // Collect data from the matching card
+        const img = matchingCard.querySelector('.card-image img');
+        const title = matchingCard.querySelector('.card-title')?.textContent || '';
+        const desc = matchingCard.querySelector('.card-description')?.textContent || '';
+        const journey = matchingCard.getAttribute('data-journey') || 'To be revealed soon';
+        const price = matchingCard.getAttribute('data-price') || 'To be revealed soon';
+        
+        // Get reference to the modal elements and open modal
+        const modal = document.getElementById('escape-modal');
+        const modalImage = document.getElementById('escape-modal-image');
+        const modalTitle = document.getElementById('escape-modal-title');
+        const modalDesc = document.getElementById('escape-modal-desc');
+        const modalJourney = document.getElementById('escape-modal-journey');
+        const modalPrice = document.getElementById('escape-modal-price');
+        
+        if (modal && modalImage && modalTitle && modalDesc && modalJourney && modalPrice) {
+            // Track modal opening from URL
+            if (typeof window.va !== 'undefined') {
+                window.va('track', 'Journey Opened From URL', { destination: title });
+            }
+            
+            modalImage.src = img?.src || '';
+            modalImage.alt = img?.alt || '';
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            modalJourney.textContent = journey;
+            modalPrice.textContent = price;
+            
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+    }
 }
 
 // Function to copy popup URL to clipboard
@@ -1045,16 +1129,25 @@ function handlePopupNavigation(event) {
         } else if (formType === 'host') {
             openB2BForm();
         }
+    } else if (event.state && event.state.journey) {
+        // User navigated to a journey modal state
+        openJourneyFromURL(event.state.journey);
     } else {
         // User navigated away from popup - close any open popups
         const joinPopup = document.getElementById('joinFormPopup');
         const b2bPopup = document.getElementById('b2bPopup');
+        const journeyModal = document.getElementById('escape-modal');
         
         if (joinPopup && joinPopup.style.display === 'flex') {
             closeJoinForm();
         }
         if (b2bPopup && b2bPopup.style.display === 'flex') {
             closeB2BForm();
+        }
+        if (journeyModal && journeyModal.getAttribute('aria-hidden') === 'false') {
+            // Close the journey modal
+            journeyModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
         }
     }
 }
@@ -1453,4 +1546,50 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Test the navigation functions
     console.log('Video carousel initialized. Current video index:', currentVideoIndex);
+});
+
+// Logo click handler - scroll to home page
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for all elements to be ready
+    setTimeout(function() {
+        const logo = document.querySelector('.navbar-brand');
+        const logoImg = document.querySelector('.navbar-brand .brand-logo');
+        
+        if (logo) {
+            // Add click handler to the logo container
+            logo.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Track logo click with Vercel Analytics
+                if (typeof window.va !== 'undefined') {
+                    window.va('track', 'Logo Clicked', { action: 'scroll_to_home' });
+                }
+                
+                // Navigate to checkpoint 0 (home/hero section)
+                if (window.checkpointGoTo) {
+                    window.checkpointGoTo(0);
+                }
+            });
+            
+            // Make sure the logo has the proper cursor style
+            logo.style.cursor = 'pointer';
+        }
+        
+        // Also add click handler to the logo image itself for better coverage
+        if (logoImg) {
+            logoImg.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Navigate to checkpoint 0 (home/hero section)
+                if (window.checkpointGoTo) {
+                    window.checkpointGoTo(0);
+                }
+            });
+            
+            logoImg.style.cursor = 'pointer';
+        }
+        
+    }, 100); // Small delay to ensure DOM is fully ready
 });
