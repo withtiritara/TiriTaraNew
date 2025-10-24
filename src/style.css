@@ -75,28 +75,25 @@ body::-webkit-scrollbar,
     align-items: center;
     justify-content: space-between;
     max-width: 100%;
-    position: relative; /* allow absolute centering of the brand */
+    position: relative;
 }
 
-/* Layout groups for centered logo with left and right controls */
-.navbar-left,
+/* Layout groups - logo on left, navigation on right */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
-.navbar-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    pointer-events: none; /* allow clicks to pass through if needed */
-}
-
-.navbar-center .navbar-brand {
-    pointer-events: auto; /* enable clicks on the brand/logo */
+/* Logo styling in navbar-left */
+.navbar-brand {
+    pointer-events: auto;
 }
 
 .navbar-brand .brand-text:hover {
@@ -253,16 +250,36 @@ body::-webkit-scrollbar,
         display: flex;
     }
 
-    /* On tablet and smaller, restore normal flow for the centered logo */
-    .navbar-center {
-        position: static;
-        transform: none;
-        margin: 0 auto;
-        pointer-events: auto;
+    /* On tablet and smaller, keep logo on left */
+    .navbar-left {
+        gap: 12px;
     }
 
-    .navbar-left, .navbar-right {
+    .navbar-right {
         gap: 8px;
+    }
+
+    /* On very small screens, stack navbar links vertically if needed */
+    @media (max-width: 480px) {
+        .navbar-link {
+            font-size: 0.7rem;
+            padding: 4px 6px;
+        }
+        
+        .navbar-right {
+            gap: 4px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .navbar-link {
+            font-size: 0.65rem;
+            padding: 3px 5px;
+        }
+        
+        .navbar-right {
+            gap: 3px;
+        }
     }
 
     /* make social icons slightly smaller on mobile */
@@ -364,11 +381,9 @@ body::-webkit-scrollbar,
         height: 24px;
     }
 
-    /* Ensure centered logo doesn't overlap controls on very small screens */
-    .navbar-center {
-        position: static;
-        transform: none;
-        margin: 0 auto;
+    /* Keep logo positioning on very small screens */
+    .navbar-left {
+        gap: 8px;
     }
 
     .navbar-left, .navbar-right {
