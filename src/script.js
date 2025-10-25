@@ -1606,6 +1606,110 @@ function loadAndPlayVideo(videoEl) {
     }
 }
 
+// Enhanced helper function to handle video play/pause with button UI updates
+function playVideo(videoEl) {
+    if (!videoEl) return;
+    
+    const videoItem = videoEl.closest('.video-item');
+    const playButton = videoItem.querySelector('.video-play-button');
+    
+    // Check if video is lazy loaded
+    const videoSrc = videoEl.getAttribute('data-lazy-video');
+    const source = videoEl.querySelector('source[data-src]');
+    
+    if (videoSrc && source) {
+        // Add loading indicator
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'video-loading';
+        loadingIndicator.textContent = 'Loading video...';
+        videoItem.appendChild(loadingIndicator);
+        
+        // Load the video source
+        source.src = source.getAttribute('data-src');
+        videoEl.load();
+        
+        // Remove lazy loading attributes
+        videoEl.removeAttribute('data-lazy-video');
+        source.removeAttribute('data-src');
+        
+        // Play after loading
+        videoEl.addEventListener('loadeddata', () => {
+            // Remove loading indicator
+            if (loadingIndicator && loadingIndicator.parentNode) {
+                loadingIndicator.parentNode.removeChild(loadingIndicator);
+            }
+            
+            videoEl.currentTime = 0;
+            videoEl.muted = true;
+            videoEl.play().then(() => {
+                // Update button to pause state
+                if (playButton) {
+                    playButton.classList.remove('play');
+                    playButton.classList.add('pause');
+                    playButton.setAttribute('aria-label', 'Pause video');
+                }
+                videoItem.classList.add('playing');
+            }).catch(e => {
+                console.log('Video play failed after lazy load:', e);
+            });
+        }, { once: true });
+        
+        // Handle loading errors
+        videoEl.addEventListener('error', () => {
+            if (loadingIndicator && loadingIndicator.parentNode) {
+                loadingIndicator.textContent = 'Failed to load video';
+                setTimeout(() => {
+                    if (loadingIndicator.parentNode) {
+                        loadingIndicator.parentNode.removeChild(loadingIndicator);
+                    }
+                }, 2000);
+            }
+        }, { once: true });
+    } else {
+        // Video already loaded, just play
+        videoEl.currentTime = 0;
+        videoEl.muted = true;
+        videoEl.play().then(() => {
+            // Update button to pause state
+            if (playButton) {
+                playButton.classList.remove('play');
+                playButton.classList.add('pause');
+                playButton.setAttribute('aria-label', 'Pause video');
+            }
+            videoItem.classList.add('playing');
+        }).catch(e => {
+            console.log('Video play failed:', e);
+        });
+    }
+}
+
+function pauseVideo(videoEl) {
+    if (!videoEl) return;
+    
+    const videoItem = videoEl.closest('.video-item');
+    const playButton = videoItem.querySelector('.video-play-button');
+    
+    videoEl.pause();
+    
+    // Update button to play state
+    if (playButton) {
+        playButton.classList.remove('pause');
+        playButton.classList.add('play');
+        playButton.setAttribute('aria-label', 'Play video');
+    }
+    videoItem.classList.remove('playing');
+}
+
+function toggleVideoPlayback(videoEl) {
+    if (!videoEl) return;
+    
+    if (videoEl.paused) {
+        playVideo(videoEl);
+    } else {
+        pauseVideo(videoEl);
+    }
+}
+
 function nextVideo() {
     console.log('Next video clicked, current index:', currentVideoIndex);
     
@@ -1617,12 +1721,12 @@ function nextVideo() {
     // Calculate next index
     const nextIndex = currentVideoIndex === totalVideos ? 1 : currentVideoIndex + 1;
     
-    // Remove active class from current video
+    // Remove active class from current video and pause it
     const currentVideo = document.querySelector('.video-item.active');
     if (currentVideo) {
         const currentVideoEl = currentVideo.querySelector('.tribe-video');
         if (currentVideoEl) {
-            currentVideoEl.pause();
+            pauseVideo(currentVideoEl);
         }
         currentVideo.classList.remove('active');
     }
@@ -1632,10 +1736,20 @@ function nextVideo() {
     if (nextVideo) {
         nextVideo.classList.add('active');
         
-        // Play the new video (only if it's actually a video, not an image)
+        // Reset play button for new video (don't auto-play)
         const nextVideoEl = nextVideo.querySelector('.tribe-video');
         if (nextVideoEl) {
-            loadAndPlayVideo(nextVideoEl);
+            const playButton = nextVideo.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.classList.remove('pause');
+                playButton.classList.add('play');
+                playButton.setAttribute('aria-label', 'Play video');
+            }
+            nextVideo.classList.remove('playing');
+            
+            // Reset video to beginning but don't play
+            nextVideoEl.currentTime = 0;
+            nextVideoEl.pause();
         }
     }
     
@@ -1654,12 +1768,12 @@ function previousVideo() {
     // Calculate previous index
     const prevIndex = currentVideoIndex === 1 ? totalVideos : currentVideoIndex - 1;
     
-    // Remove active class from current video
+    // Remove active class from current video and pause it
     const currentVideo = document.querySelector('.video-item.active');
     if (currentVideo) {
         const currentVideoEl = currentVideo.querySelector('.tribe-video');
         if (currentVideoEl) {
-            currentVideoEl.pause();
+            pauseVideo(currentVideoEl);
         }
         currentVideo.classList.remove('active');
     }
@@ -1669,10 +1783,20 @@ function previousVideo() {
     if (prevVideo) {
         prevVideo.classList.add('active');
         
-        // Play the new video (only if it's actually a video, not an image)
+        // Reset play button for new video (don't auto-play)
         const prevVideoEl = prevVideo.querySelector('.tribe-video');
         if (prevVideoEl) {
-            loadAndPlayVideo(prevVideoEl);
+            const playButton = prevVideo.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.classList.remove('pause');
+                playButton.classList.add('play');
+                playButton.setAttribute('aria-label', 'Play video');
+            }
+            prevVideo.classList.remove('playing');
+            
+            // Reset video to beginning but don't play
+            prevVideoEl.currentTime = 0;
+            prevVideoEl.pause();
         }
     }
     
@@ -1683,12 +1807,12 @@ function previousVideo() {
 function goToVideo(index) {
     if (index === currentVideoIndex) return;
     
-    // Remove active class from current video
+    // Remove active class from current video and pause it
     const currentVideo = document.querySelector('.video-item.active');
     if (currentVideo) {
         const currentVideoEl = currentVideo.querySelector('.tribe-video');
         if (currentVideoEl) {
-            currentVideoEl.pause();
+            pauseVideo(currentVideoEl);
         }
         currentVideo.classList.remove('active');
     }
@@ -1698,10 +1822,20 @@ function goToVideo(index) {
     if (targetVideo) {
         targetVideo.classList.add('active');
         
-        // Play the new video
+        // Reset play button for new video (don't auto-play)
         const targetVideoEl = targetVideo.querySelector('.tribe-video');
         if (targetVideoEl) {
-            loadAndPlayVideo(targetVideoEl);
+            const playButton = targetVideo.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.classList.remove('pause');
+                playButton.classList.add('play');
+                playButton.setAttribute('aria-label', 'Play video');
+            }
+            targetVideo.classList.remove('playing');
+            
+            // Reset video to beginning but don't play
+            targetVideoEl.currentTime = 0;
+            targetVideoEl.pause();
         }
     }
     
@@ -1725,6 +1859,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Add play/pause button event listeners
+    const playButtons = document.querySelectorAll('.video-play-button');
+    playButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
+            
+            const videoItem = this.closest('.video-item');
+            const video = videoItem.querySelector('.tribe-video');
+            
+            if (video) {
+                toggleVideoPlayback(video);
+                
+                // Track play/pause interaction with Vercel Analytics
+                if (typeof window.va !== 'undefined') {
+                    const action = video.paused ? 'pause' : 'play';
+                    window.va('track', 'Video Interaction', { 
+                        action: action,
+                        video: videoItem.getAttribute('data-video')
+                    });
+                }
+            }
+        });
+    });
+    
+    // Add overlay click event listeners for play/pause
+    const playOverlays = document.querySelectorAll('.video-play-button-overlay');
+    playOverlays.forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            // Only handle clicks if they're not on the button itself
+            if (!e.target.classList.contains('video-play-button')) {
+                const videoItem = this.closest('.video-item');
+                const video = videoItem.querySelector('.tribe-video');
+                
+                if (video) {
+                    toggleVideoPlayback(video);
+                }
+            }
+        });
+    });
+    
+    // Add video ended event listeners to reset button state
+    allVideos.forEach(video => {
+        video.addEventListener('ended', function() {
+            const videoItem = this.closest('.video-item');
+            const playButton = videoItem.querySelector('.video-play-button');
+            
+            if (playButton) {
+                playButton.classList.remove('pause');
+                playButton.classList.add('play');
+                playButton.setAttribute('aria-label', 'Play video');
+            }
+            videoItem.classList.remove('playing');
+            
+            // Reset video to beginning
+            this.currentTime = 0;
+        });
+    });
+    
     // Add click handlers to indicators
     const indicators = document.querySelectorAll('.video-indicator');
     indicators.forEach(indicator => {
@@ -1741,14 +1933,16 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 const videos = entry.target.querySelectorAll('.tribe-video');
                 if (entry.isIntersecting) {
-                    // Load and play active video when carousel comes into view
-                    const activeVideo = entry.target.querySelector('.video-item.active .tribe-video');
-                    if (activeVideo) {
-                        loadAndPlayVideo(activeVideo);
-                    }
+                    // When carousel comes into view, don't auto-play videos
+                    // Let users decide when to play by clicking the button
+                    console.log('Video carousel is in view');
                 } else {
                     // Pause all videos when carousel is out of view
-                    videos.forEach(video => video.pause());
+                    videos.forEach(video => {
+                        if (!video.paused) {
+                            pauseVideo(video);
+                        }
+                    });
                 }
             });
         }, { threshold: 0.5 });

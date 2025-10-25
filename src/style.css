@@ -926,6 +926,113 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     border-radius: 12px;
 }
 
+/* Video Play/Pause Button Overlay */
+.video-play-button-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 10;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.video-play-button-overlay:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.video-play-button {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.video-play-button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.video-play-button:active {
+    transform: scale(0.95);
+}
+
+/* Play icon */
+.video-play-button.play::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 16px solid #333;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    margin-left: 3px;
+}
+
+/* Pause icon */
+.video-play-button.pause::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: #333;
+    box-shadow: 8px 0 0 #333;
+    border-radius: 1px;
+}
+
+/* Hide overlay when video is playing (unless hovering) */
+.video-item.playing .video-play-button-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.video-item.playing:hover .video-play-button-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile-specific play button adjustments */
+@media (max-width: 768px) {
+    .video-play-button {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .video-play-button.play::before {
+        border-left: 12px solid #333;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        margin-left: 2px;
+    }
+    
+    .video-play-button.pause::before {
+        width: 3px;
+        height: 16px;
+        box-shadow: 6px 0 0 #333;
+    }
+    
+    /* Always show overlay on mobile for better touch interaction */
+    .video-item.playing .video-play-button-overlay {
+        opacity: 1;
+        pointer-events: auto;
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
 .video-overlay {
     position: absolute;
     bottom: 0;
