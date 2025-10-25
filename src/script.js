@@ -686,6 +686,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, true); // Use capture phase to intercept before onclick handlers
     });
+    
+    // Global handler to prevent escape card clicks when join form is open
+    document.addEventListener('click', function(e) {
+        const joinForm = document.getElementById('joinFormPopup');
+        if (joinForm && joinForm.style.display === 'flex') {
+            // Allow clicks on the join form itself (close buttons, form elements, etc.)
+            const isJoinFormClick = e.target.closest('#joinFormPopup');
+            if (isJoinFormClick) {
+                return; // Allow all clicks within the join form
+            }
+            
+            // Block only escape card clicks
+            const escapeCard = e.target.closest('.escape-card');
+            if (escapeCard) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Global block: prevented escape card click while join form is open');
+                return false;
+            }
+        }
+    }, true); // Use capture phase to catch before other handlers
 });
 
 // Join form functionality
@@ -853,6 +874,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Click on card to open modal
     document.querySelectorAll('.escape-card').forEach(card => {
         card.addEventListener('click', function (e) {
+            // Check if join form is open - prevent escape card clicks
+            const joinForm = document.getElementById('joinFormPopup');
+            if (joinForm && joinForm.style.display === 'flex') {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Blocked escape card click: join form is open');
+                return false;
+            }
+            
             // Check if the card's checkpoint is active
             if (!isCheckpointActive(this)) {
                 e.preventDefault();
@@ -941,6 +971,12 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
         window.va('track', 'Join Form Opened');
     }
     
+    // Close any open escape modal first to prevent conflicts
+    const escapeModal = document.getElementById('escape-modal');
+    if (escapeModal && escapeModal.getAttribute('aria-hidden') === 'false') {
+        escapeModal.setAttribute('aria-hidden', 'true');
+    }
+    
     // Show the popup modal with Google form
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
@@ -952,6 +988,14 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
         document.body.style.overflow = 'hidden'; // Prevent scrolling
         addPopupScrollBlockers(popup);
 
+        // Add click handler for overlay background to close popup
+        popup.addEventListener('click', function(e) {
+            // If clicking the overlay background (not the container), close the popup
+            if (e.target === popup) {
+                closeJoinForm();
+            }
+        });
+
         // Update URL if requested (for direct links)
         if (shouldUpdateURL && !window.location.search.includes('form=join')) {
             updateURLForPopup('join');
@@ -959,7 +1003,14 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
 
         // focus the close button for accessibility
         const closeBtn = popup.querySelector('.form-close-btn');
-        if (closeBtn) closeBtn.focus();
+        if (closeBtn) {
+            closeBtn.focus();
+            // Ensure close button works by adding explicit event listener
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent our event blocking
+                closeJoinForm();
+            });
+        }
     }
 }
 
@@ -997,6 +1048,32 @@ function addPopupScrollBlockers(popup) {
         e.stopPropagation();
         // don't call preventDefault so inner scroll still works
     };
+    
+    // Prevent clicks inside the popup from bubbling up and triggering other events
+    const clickHandler = function (e) {
+        // ALWAYS allow clicks on close button and header actions - don't interfere
+        const closeBtn = e.target.closest('.form-close-btn');
+        const headerActions = e.target.closest('.form-header-actions');
+        
+        if (closeBtn || headerActions) {
+            // Don't prevent or stop any events for close buttons
+            return;
+        }
+        
+        // Allow clicks on the overlay background (not the container) for closing
+        const overlay = e.target.closest('.form-popup-overlay');
+        if (overlay && !e.target.closest('.form-popup-container')) {
+            return; // Allow overlay clicks to close the popup
+        }
+        
+        // Only stop propagation for clicks inside the form content area (not close buttons)
+        const container = popup.querySelector('.form-popup-container');
+        const isInContentArea = container && container.contains(e.target) && !closeBtn && !headerActions;
+        
+        if (isInContentArea) {
+            e.stopPropagation();
+        }
+    };
 
     const touchHandler = function (e) {
         e.stopPropagation();
@@ -1004,15 +1081,17 @@ function addPopupScrollBlockers(popup) {
 
     popup.addEventListener('wheel', wheelHandler, { passive: false });
     popup.addEventListener('touchmove', touchHandler, { passive: false });
+    popup.addEventListener('click', clickHandler, false); // Don't use capture phase to allow onclick handlers to work first
 
-    popup.__blockerHandlers = { wheelHandler, touchHandler };
+    popup.__blockerHandlers = { wheelHandler, touchHandler, clickHandler };
 }
 
 function removePopupScrollBlockers(popup) {
     if (!popup || !popup.__blockerHandlers) return;
-    const { wheelHandler, touchHandler } = popup.__blockerHandlers;
+    const { wheelHandler, touchHandler, clickHandler } = popup.__blockerHandlers;
     popup.removeEventListener('wheel', wheelHandler, { passive: false });
     popup.removeEventListener('touchmove', touchHandler, { passive: false });
+    if (clickHandler) popup.removeEventListener('click', clickHandler, true);
     delete popup.__blockerHandlers;
 }
 

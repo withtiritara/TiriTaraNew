@@ -1274,7 +1274,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     background: rgba(6,6,12,0.6);
     backdrop-filter: blur(6px) saturate(120%);
     -webkit-backdrop-filter: blur(6px) saturate(120%);
-    z-index: 10000;
+    z-index: 25000; /* Higher than escape modal to prevent conflicts */
     justify-content: center;
     align-items: center;
     /* Reduced horizontal padding so the popup feels tighter on wide screens */
@@ -1294,6 +1294,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     display: flex;
     flex-direction: column;
     animation: popupFadeIn 260ms cubic-bezier(.2,.9,.2,1);
+    z-index: 25001; /* Ensure container is above backdrop */
+    position: relative;
 }
 
 @keyframes popupFadeIn {
@@ -1405,6 +1407,15 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     border: none;
     background: transparent;
     display: block;
+    pointer-events: auto; /* Ensure iframe can receive clicks */
+    z-index: 25002; /* Highest z-index for iframe */
+    position: relative;
+}
+
+/* Ensure escape cards are not clickable when join form is open */
+.form-popup-overlay[aria-hidden="false"] ~ * .escape-card,
+body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
+    pointer-events: none !important;
 }
 
 
@@ -1415,6 +1426,38 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 /* Small devices starting from 425px and smaller - Priority fixes */
 @media (max-width: 425px) {
+    /* Fix join form popup on mobile */
+    .form-popup-overlay {
+        z-index: 30000; /* Even higher on mobile to prevent conflicts */
+        padding: 0;
+        touch-action: none; /* Prevent unwanted touch behaviors */
+    }
+    
+    .form-popup-container {
+        z-index: 30001;
+        border-radius: 0;
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        touch-action: auto; /* Allow touch interactions inside container */
+    }
+    
+    .google-form-iframe {
+        z-index: 30002;
+        touch-action: auto; /* Allow touch interactions in iframe */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    
+    .form-popup-header {
+        padding: 0.7rem 0.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 30003;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(10px);
+    }
+
     .floating-navbar {
         width: 92%;
         padding: 4px 8px;
@@ -1961,6 +2004,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 .modal-body {
     padding: 1.2rem;
+    padding-top: 4rem;
     min-height: 400px;
     flex: 1;
     overflow-y: auto;
@@ -2096,6 +2140,15 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 .modal-header {
     margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-right: 3rem;
+}
+
+.modal-title-section {
+    flex: 1;
 }
 
 .modal-header h3 {
@@ -2211,6 +2264,38 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .btn-icon {
     font-size: 1.2rem;
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+}
+
+/* Small version of Book Now button for modal header */
+.book-now-btn-small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #00e676 0%, #00e676 50%, #00e676 100%);
+    color: #062018;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--description-font);
+    white-space: nowrap;
+    flex-shrink: 0;
+    max-width: 120px;
+}
+
+.book-now-btn-small:hover {
+    background: linear-gradient(135deg, #00c96a 0%, #00c96a 50%, #00c96a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 230, 118, 0.4);
+}
+
+.book-now-btn-small:active {
+    transform: translateY(0);
 }
 
 /* Enhanced Modal Detailed Sections */
@@ -2493,16 +2578,22 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     }
     
     /* Modal responsive adjustments */
+    .modal {
+        align-items: flex-start;
+        padding: 20px 10px 40px 10px;
+    }
+    
     .modal-content {
         max-width: 95vw;
         max-height: 95vh;
-        margin: 10px;
+        margin: 0 10px;
         border-radius: 16px;
     }
     
     .modal-body {
         padding: 0.8rem;
-        max-height: calc(95vh - 100px);
+        padding-top: 3.5rem;
+        max-height: calc(95vh - 120px);
         overflow-y: auto;
     }
     
@@ -2562,10 +2653,20 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     
     .modal-header {
         margin-bottom: 0.4rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding-right: 2.5rem;
     }
     
     .modal-intro {
         gap: 0.5rem;
+    }
+    
+    .book-now-btn-small {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        align-self: flex-start;
     }
     
     .schedule-item,
@@ -2588,6 +2689,11 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 /* Extra small devices */
 @media (max-width: 425px) {
+    .modal {
+        align-items: flex-start;
+        padding: 0;
+    }
+    
     .modal-content {
         max-width: 100vw;
         max-height: 100vh;
@@ -2598,7 +2704,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     
     .modal-body {
         padding: 0.7rem;
-        max-height: calc(100vh - 80px);
+        padding-top: 3rem;
+        max-height: calc(100vh - 60px);
     }
     
     .modal-top-section {
@@ -2631,6 +2738,11 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     .schedule-item,
     .availability-item {
         font-size: 0.75rem;
+    }
+    
+    .book-now-btn-small {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
     }
     
     .modal-media-small {
