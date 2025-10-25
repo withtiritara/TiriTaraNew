@@ -69,12 +69,21 @@
             
             <!-- Escape Cards -->
             <div class="escape-cards">
-                <div class="escape-card">
+                <div class="escape-card" 
+                     data-journey="Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi."
+                     data-price="7499/-"
+                     data-dates="7th – 10th November 2025"
+                     data-start="7th November, Friday, 8:00 PM (from Hyderabad)"
+                     data-return="10th November, Monday, 7:00 AM (to Hyderabad)"
+                     data-accommodation="Dorm (8-share): ₹7,499 | Room (2-share): ₹7,899"
+                     data-includes="travel, stay, food, activities & tickets (₹300/day meal cap)"
+                     data-max-spots="15 only"
+                     data-last-date="1st November">
                     <div class="card-image">
                         <img src="./assets/humpy.png" alt="Mountain Escape" />
                     </div>
                     <div class="card-overlay">
-                        <h3 class="card-title">Hampi</h3>
+                        <h3 class="card-title">Hampi Weekend Getaway</h3>
                         <p class="card-description">Upcoming</p>
                     </div>
                 </div>
@@ -574,27 +583,79 @@
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="escape-modal-title">
             <button class="modal-close" id="escape-modal-close" aria-label="Close">×</button>
             <div class="modal-body">
-                <div class="modal-media">
-                    <img src="" alt="" id="escape-modal-image">
-                </div>
-                <div class="modal-info">
-                    <div class="modal-header">
-                        <h3 id="escape-modal-title">Title</h3>
-                        <p class="journey-price" id="escape-modal-price">Price: —</p>
+                <!-- Top section with small image and intro -->
+                <div class="modal-top-section">
+                    <div class="modal-media-small">
+                        <img src="" alt="" id="escape-modal-image">
                     </div>
-                    <p class="modal-description" id="escape-modal-desc">Description</p>
-                    <div class="modal-details">
+                    <div class="modal-intro">
+                        <div class="modal-header">
+                            <h3 id="escape-modal-title">Title</h3>
+                            <p class="journey-price" id="escape-modal-price">Price: —</p>
+                        </div>
+                        <!-- What to Expect section moved to top intro -->
+                        <div class="expectation-section" id="escape-modal-expectation-section" style="display: none;">
+                            <p class="modal-description" id="escape-modal-desc">Description</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Details sections below - Compact Layout -->
+                <div class="modal-details-section">
+                    
+                    <!-- First Row: Dates and Schedule side by side -->
+                    <div class="details-row">
+                        <div class="trip-dates" id="escape-modal-dates-section" style="display: none;">
+                            <h4>Dates</h4>
+                            <p id="escape-modal-dates"></p>
+                        </div>
+                        
+                        <div class="trip-schedule" id="escape-modal-schedule-section" style="display: none;">
+                            <h4>Schedule</h4>
+                            <div class="schedule-compact">
+                                <div class="schedule-item"><strong>Start:</strong> <span id="escape-modal-start"></span></div>
+                                <div class="schedule-item"><strong>Return:</strong> <span id="escape-modal-return"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Second Row: Accommodation and Availability side by side -->
+                    <div class="details-row">
+                        <div class="accommodation-section" id="escape-modal-accommodation-section" style="display: none;">
+                            <h4>Accommodation</h4>
+                            <p id="escape-modal-accommodation"></p>
+                        </div>
+                        
+                        <div class="availability-section" id="escape-modal-availability-section" style="display: none;">
+                            <h4>Availability</h4>
+                            <div class="availability-compact">
+                                <div class="availability-item"><strong>Max Spots:</strong> <span id="escape-modal-max-spots"></span></div>
+                                <div class="availability-item"><strong>Last Date:</strong> <span id="escape-modal-last-date"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Full Width: Includes section -->
+                    <div class="includes-section" id="escape-modal-includes-section" style="display: none;">
+                        <h4>What's Included</h4>
+                        <p id="escape-modal-includes"></p>
+                    </div>
+                    
+                    <!-- Fallback journey details for cards without detailed data -->
+                    <div class="modal-details" id="escape-modal-simple-journey">
                         <div class="journey-info">
                             <span class="journey-label">Journey Details:</span>
                             <span class="journey-data" id="escape-modal-journey">Journey details go here</span>
                         </div>
                     </div>
+                    
                     <div class="modal-actions">
                         <button class="book-now-btn" id="escape-modal-book" type="button">
                             Request an Invite
                         </button>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

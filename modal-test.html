@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Test - Hampi Weekend Getaway</title>
+    <link rel="stylesheet" href="src/style.css">
+    <style>
+        body {
+            background: #1a1d23;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            padding: 50px;
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .test-btn {
+            padding: 15px 30px;
+            background: #00e676;
+            color: #062018;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 200, 83, 0.3);
+        }
+        .checkpoint-content {
+            position: static;
+        }
+        .checkpoint-content.active .escape-card {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .escape-card {
+            display: inline-block;
+            width: 300px;
+            height: 200px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            margin: 20px;
+        }
+        .card-image {
+            width: 100%;
+            height: 100%;
+        }
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 20px;
+            color: white;
+        }
+        .card-title {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .card-description {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Modal Test - Hampi Weekend Getaway</h1>
+        <p>Click the buttons below to test the modal functionality:</p>
+        
+        <button class="test-btn" onclick="testHampiModal()">Open Hampi Modal (Detailed)</button>
+        <button class="test-btn" onclick="testSimpleModal()">Open Simple Modal (Fallback)</button>
+        
+        <div class="checkpoint-content active">
+            <div class="escape-card" 
+                 data-journey="Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi."
+                 data-price="7499/-"
+                 data-dates="7th – 10th November 2025"
+                 data-start="7th November, Friday, 8:00 PM (from Hyderabad)"
+                 data-return="10th November, Monday, 7:00 AM (to Hyderabad)"
+                 data-accommodation="Dorm (8-share): ₹7,499 | Room (2-share): ₹7,899"
+                 data-includes="travel, stay, food, activities & tickets (₹300/day meal cap)"
+                 data-max-spots="15 only"
+                 data-last-date="1st November">
+                <div class="card-image">
+                    <img src="src/assets/humpy.png" alt="Hampi Weekend Getaway" />
+                </div>
+                <div class="card-overlay">
+                    <h3 class="card-title">Hampi Weekend Getaway</h3>
+                    <p class="card-description">Upcoming</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for escape card details -->
+    <div id="escape-modal" class="modal" aria-hidden="true">
+        <div class="modal-backdrop" id="escape-modal-backdrop"></div>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="escape-modal-title">
+            <button class="modal-close" id="escape-modal-close" aria-label="Close">×</button>
+            <div class="modal-body">
+                <!-- Top section with small image and intro -->
+                <div class="modal-top-section">
+                    <div class="modal-media-small">
+                        <img src="" alt="" id="escape-modal-image">
+                    </div>
+                    <div class="modal-intro">
+                        <div class="modal-header">
+                            <h3 id="escape-modal-title">Title</h3>
+                            <p class="journey-price" id="escape-modal-price">Price: —</p>
+                        </div>
+                        <!-- What to Expect section moved to top intro -->
+                        <div class="expectation-section" id="escape-modal-expectation-section" style="display: none;">
+                            <p class="modal-description" id="escape-modal-desc">Description</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Details sections below -->
+                <div class="modal-details-section">
+                    
+                    <!-- Trip dates section -->
+                    <div class="trip-dates" id="escape-modal-dates-section" style="display: none;">
+                        <h4>Dates</h4>
+                        <p id="escape-modal-dates"></p>
+                    </div>
+                    
+                    <!-- Schedule section -->
+                    <div class="trip-schedule" id="escape-modal-schedule-section" style="display: none;">
+                        <h4>Schedule</h4>
+                        <div class="schedule-item">
+                            <strong>Start:</strong> <span id="escape-modal-start"></span>
+                        </div>
+                        <div class="schedule-item">
+                            <strong>Return:</strong> <span id="escape-modal-return"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation & pricing section -->
+                    <div class="accommodation-section" id="escape-modal-accommodation-section" style="display: none;">
+                        <h4>Accommodation & Pricing</h4>
+                        <p id="escape-modal-accommodation"></p>
+                    </div>
+                    
+                    <!-- Includes section -->
+                    <div class="includes-section" id="escape-modal-includes-section" style="display: none;">
+                        <h4>What's Included</h4>
+                        <p id="escape-modal-includes"></p>
+                    </div>
+                    
+                    <!-- Availability section -->
+                    <div class="availability-section" id="escape-modal-availability-section" style="display: none;">
+                        <h4>Availability</h4>
+                        <div class="availability-item">
+                            <strong>Max Spots:</strong> <span id="escape-modal-max-spots"></span>
+                        </div>
+                        <div class="availability-item">
+                            <strong>Last day to request an invite:</strong> <span id="escape-modal-last-date"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Fallback journey details for cards without detailed data -->
+                    <div class="modal-details" id="escape-modal-simple-journey">
+                        <div class="journey-info">
+                            <span class="journey-label">Journey Details:</span>
+                            <span class="journey-data" id="escape-modal-journey">Journey details go here</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="book-now-btn" id="escape-modal-book" type="button">
+                            Request an Invite
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock functions for testing
+        function isCheckpointActive() { return true; }
+        
+        // Test functions
+        function testHampiModal() {
+            const cardData = {
+                imgSrc: 'src/assets/humpy.png',
+                imgAlt: 'Hampi Weekend Getaway',
+                title: 'Hampi Weekend Getaway',
+                journey: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi.",
+                price: "7499/-",
+                dates: "7th – 10th November 2025",
+                start: "7th November, Friday, 8:00 PM (from Hyderabad)",
+                return: "10th November, Monday, 7:00 AM (to Hyderabad)",
+                accommodation: "Dorm (8-share): ₹7,499 | Room (2-share): ₹7,899",
+                includes: "travel, stay, food, activities & tickets (₹300/day meal cap)",
+                maxSpots: "15 only",
+                lastDate: "1st November"
+            };
+            openModal(cardData, false);
+        }
+        
+        function testSimpleModal() {
+            const cardData = {
+                imgSrc: 'src/assets/humpy.png',
+                imgAlt: 'Simple Journey',
+                title: 'Simple Journey',
+                description: 'Just a regular upcoming journey',
+                journey: 'To be revealed soon',
+                price: 'To be revealed soon'
+            };
+            openModal(cardData, false);
+        }
+        
+        // Include the modal handling code from script.js (simplified version)
+        const modal = document.getElementById('escape-modal');
+        const backdrop = document.getElementById('escape-modal-backdrop');
+        const closeBtn = document.getElementById('escape-modal-close');
+        const modalImage = document.getElementById('escape-modal-image');
+        const modalTitle = document.getElementById('escape-modal-title');
+        const modalDesc = document.getElementById('escape-modal-desc');
+        const modalJourney = document.getElementById('escape-modal-journey');
+        const modalPrice = document.getElementById('escape-modal-price');
+        const modalBookBtn = document.getElementById('escape-modal-book');
+
+        function openModal(data, updateURL = false) {
+            if (!modal) return;
+            
+            // Basic modal data
+            modalImage.src = data.imgSrc || '';
+            modalImage.alt = data.imgAlt || '';
+            modalTitle.textContent = data.title || '';
+            modalPrice.textContent = data.price || 'To be revealed soon';
+            
+            // Get all the new modal elements
+            const datesSection = document.getElementById('escape-modal-dates-section');
+            const scheduleSection = document.getElementById('escape-modal-schedule-section');
+            const accommodationSection = document.getElementById('escape-modal-accommodation-section');
+            const includesSection = document.getElementById('escape-modal-includes-section');
+            const availabilitySection = document.getElementById('escape-modal-availability-section');
+            const expectationSection = document.getElementById('escape-modal-expectation-section');
+            const simpleJourneySection = document.getElementById('escape-modal-simple-journey');
+            
+            const datesEl = document.getElementById('escape-modal-dates');
+            const startEl = document.getElementById('escape-modal-start');
+            const returnEl = document.getElementById('escape-modal-return');
+            const accommodationEl = document.getElementById('escape-modal-accommodation');
+            const includesEl = document.getElementById('escape-modal-includes');
+            const maxSpotsEl = document.getElementById('escape-modal-max-spots');
+            const lastDateEl = document.getElementById('escape-modal-last-date');
+            
+            // Check if we have detailed data (for Hampi)
+            const hasDetailedData = data.dates || data.start || data.return || data.accommodation;
+            
+            if (hasDetailedData) {
+                // Hide simple journey section and show detailed sections
+                if (simpleJourneySection) simpleJourneySection.style.display = 'none';
+                
+                // Show and populate detailed sections
+                if (data.dates && datesSection && datesEl) {
+                    datesSection.style.display = 'block';
+                    datesEl.textContent = data.dates;
+                } else if (datesSection) {
+                    datesSection.style.display = 'none';
+                }
+                
+                if ((data.start || data.return) && scheduleSection && startEl && returnEl) {
+                    scheduleSection.style.display = 'block';
+                    startEl.textContent = data.start || 'TBD';
+                    returnEl.textContent = data.return || 'TBD';
+                } else if (scheduleSection) {
+                    scheduleSection.style.display = 'none';
+                }
+                
+                if (data.accommodation && accommodationSection && accommodationEl) {
+                    accommodationSection.style.display = 'block';
+                    accommodationEl.textContent = data.accommodation;
+                } else if (accommodationSection) {
+                    accommodationSection.style.display = 'none';
+                }
+                
+                if (data.includes && includesSection && includesEl) {
+                    includesSection.style.display = 'block';
+                    includesEl.textContent = data.includes;
+                } else if (includesSection) {
+                    includesSection.style.display = 'none';
+                }
+                
+                if ((data.maxSpots || data.lastDate) && availabilitySection && maxSpotsEl && lastDateEl) {
+                    availabilitySection.style.display = 'block';
+                    maxSpotsEl.textContent = data.maxSpots || 'TBD';
+                    lastDateEl.textContent = data.lastDate || 'TBD';
+                } else if (availabilitySection) {
+                    availabilitySection.style.display = 'none';
+                }
+                
+                if (data.journey && expectationSection) {
+                    expectationSection.style.display = 'block';
+                    modalDesc.textContent = data.journey;
+                } else if (expectationSection) {
+                    expectationSection.style.display = 'none';
+                }
+            } else {
+                // Show simple journey section and hide detailed sections
+                if (simpleJourneySection) simpleJourneySection.style.display = 'block';
+                if (datesSection) datesSection.style.display = 'none';
+                if (scheduleSection) scheduleSection.style.display = 'none';
+                if (accommodationSection) accommodationSection.style.display = 'none';
+                if (includesSection) includesSection.style.display = 'none';
+                if (availabilitySection) availabilitySection.style.display = 'none';
+                if (expectationSection) expectationSection.style.display = 'none';
+                
+                // Use fallback data for simple display
+                modalDesc.textContent = data.description || '';
+                modalJourney.textContent = data.journey || 'To be revealed soon';
+            }
+            
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (!modal) return;
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        // Close interactions
+        if (backdrop) backdrop.addEventListener('click', closeModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (modalBookBtn) modalBookBtn.addEventListener('click', function () {
+            const tripPlace = modalTitle ? modalTitle.textContent.trim() : 'this amazing destination';
+            const phoneNumber = '918143120853';
+            const message = `Hi, Take me along to ${tripPlace} with you!`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+        });
+        
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
+                closeModal();
+            }
+        });
+        
+        // Add click handler to escape card
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.escape-card').forEach(card => {
+                card.addEventListener('click', function (e) {
+                    const img = card.querySelector('.card-image img');
+                    const title = card.querySelector('.card-title')?.textContent || '';
+                    const desc = card.querySelector('.card-description')?.textContent || '';
+
+                    const cardData = {
+                        imgSrc: img?.src,
+                        imgAlt: img?.alt,
+                        title: title,
+                        description: desc,
+                        journey: card.getAttribute('data-journey'),
+                        price: card.getAttribute('data-price'),
+                        dates: card.getAttribute('data-dates'),
+                        start: card.getAttribute('data-start'),
+                        return: card.getAttribute('data-return'),
+                        accommodation: card.getAttribute('data-accommodation'),
+                        includes: card.getAttribute('data-includes'),
+                        maxSpots: card.getAttribute('data-max-spots'),
+                        lastDate: card.getAttribute('data-last-date'),
+                        _card: card
+                    };
+
+                    if (!cardData.journey && !cardData.price) {
+                        cardData.journey = 'To be revealed soon';
+                        cardData.price = 'To be revealed soon';
+                    }
+
+                    openModal(cardData, true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

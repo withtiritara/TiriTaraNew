@@ -1928,6 +1928,9 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     z-index: 20002; /* above the backdrop */
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--description-font);
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-close {
@@ -1957,33 +1960,132 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 .modal-body {
-    display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    align-items: stretch;
+    padding: 1.2rem;
     min-height: 400px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
 }
 
-.modal-media {
-    flex: 0 0 45%;
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Top section with small image and intro side by side */
+.modal-top-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: stretch;
+}
+
+.modal-media-small {
+    flex: 0 0 200px;
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 12px;
+    display: flex;
+    align-self: stretch;
 }
 
-.modal-media img {
+.modal-media-small img {
     width: 100%;
     height: 100%;
-    min-height: 350px;
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease;
 }
 
-.modal-media:hover img {
+.modal-media-small:hover img {
     transform: scale(1.05);
 }
 
+.modal-intro {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+/* Details section below the top section */
+.modal-details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Compact layout for details in rows */
+.details-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.details-row > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-details-section h4,
+.modal-intro h3,
+.trip-dates h4,
+.trip-schedule h4,
+.included-section h4,
+.booking-section h4 {
+    font-family: var(--description-font);
+    color: #fff;
+    margin: 0 0 0.3rem 0;
+    font-size: 1.1rem;
+}
+
+.modal-details-section p,
+.trip-dates p,
+.trip-schedule p,
+.included-section p,
+.booking-section p,
+.schedule-item span {
+    font-family: var(--description-font);
+    color: #b8b8b8;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Compact styles for schedule and availability */
+.schedule-compact,
+.availability-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.schedule-item,
+.availability-item {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.schedule-item strong,
+.availability-item strong {
+    color: #4ff3d6;
+    font-weight: 600;
+}
+
+/* Keep the old modal-info class for backward compatibility */
 .modal-info {
     flex: 1;
     display: flex;
@@ -1993,12 +2095,12 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 .modal-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .modal-header h3 {
-    margin: 0 0 1rem 0;
-    font-size: 2.2rem;
+    margin: 0 0 0.3rem 0;
+    font-size: 1.8rem;
     font-weight: 700;
     line-height: 1.2;
     background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
@@ -2009,19 +2111,27 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 .journey-price {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: #00e676;
-    margin: 0;
+    margin: 0 0 0.3rem 0;
+    font-family: var(--description-font);
+}
+
+.journey-dates {
+    font-size: 1.1rem;
+    color: #a8b3cf;
+    margin-bottom: 1rem;
     font-family: var(--description-font);
 }
 
 .modal-description {
-    margin: 0 0 2rem 0;
+    margin: 0;
     color: #b8b8b8;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     flex-grow: 1;
+    font-family: var(--description-font);
 }
 
 .modal-details {
@@ -2101,6 +2211,75 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .btn-icon {
     font-size: 1.2rem;
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+}
+
+/* Enhanced Modal Detailed Sections */
+.trip-dates,
+.trip-schedule,
+.accommodation-section,
+.includes-section,
+.availability-section,
+.expectation-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.trip-dates h4,
+.trip-schedule h4,
+.accommodation-section h4,
+.includes-section h4,
+.availability-section h4,
+.expectation-section h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #00e676;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: var(--description-font);
+}
+
+.trip-dates p,
+.accommodation-section p,
+.includes-section p,
+.expectation-section p {
+    margin: 0;
+    color: #dcdcdc;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: var(--description-font);
+}
+
+.schedule-item,
+.availability-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.schedule-item:last-child,
+.availability-item:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-item strong,
+.availability-item strong {
+    color: #fff;
+    font-weight: 600;
+    flex-shrink: 0;
+    min-width: 60px;
+}
+
+.schedule-item span,
+.availability-item span {
+    color: #dcdcdc;
+    text-align: right;
+    flex-grow: 1;
 }
 
 
@@ -2311,5 +2490,163 @@ body:has(#checkpoint-0.active) .hero-description-svg {
         bottom: 20px;
         width: 45px;
         height: 45px;
+    }
+    
+    /* Modal responsive adjustments */
+    .modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+        margin: 10px;
+        border-radius: 16px;
+    }
+    
+    .modal-body {
+        padding: 0.8rem;
+        max-height: calc(95vh - 100px);
+        overflow-y: auto;
+    }
+    
+    .modal-top-section {
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .details-row {
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .modal-media-small {
+        flex: none;
+        width: 100%;
+        height: 150px;
+    }
+    
+    .modal-intro {
+        gap: 0.75rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.4rem;
+    }
+    
+    .journey-price {
+        font-size: 1rem;
+    }
+    
+    .modal-description {
+        font-size: 0.9rem;
+    }
+    
+    .modal-details-section h4 {
+        font-size: 1rem;
+    }
+    
+    .modal-details-section p,
+    .schedule-item,
+    .availability-item {
+        font-size: 0.85rem;
+    }
+    
+    .trip-dates,
+    .trip-schedule,
+    .accommodation-section,
+    .includes-section,
+    .availability-section,
+    .expectation-section {
+        padding: 0.5rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .modal-header {
+        margin-bottom: 0.4rem;
+    }
+    
+    .modal-intro {
+        gap: 0.5rem;
+    }
+    
+    .schedule-item,
+    .availability-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .schedule-item strong,
+    .availability-item strong {
+        min-width: auto;
+    }
+    
+    .schedule-item span,
+    .availability-item span {
+        text-align: left;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 425px) {
+    .modal-content {
+        max-width: 100vw;
+        max-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+    
+    .modal-body {
+        padding: 0.7rem;
+        max-height: calc(100vh - 80px);
+    }
+    
+    .modal-top-section {
+        margin-bottom: 0.6rem;
+        gap: 0.5rem;
+    }
+    
+    .details-row {
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .journey-price {
+        font-size: 0.9rem;
+    }
+    
+    .modal-description {
+        font-size: 0.8rem;
+    }
+    
+    .modal-details-section h4 {
+        font-size: 0.9rem;
+    }
+    
+    .modal-details-section p,
+    .schedule-item,
+    .availability-item {
+        font-size: 0.75rem;
+    }
+    
+    .modal-media-small {
+        height: 120px;
+    }
+    
+    .modal-close {
+        right: 15px;
+        top: 15px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.6rem;
+        margin-right: 50px; /* Space for close button */
     }
 }

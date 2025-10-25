@@ -712,16 +712,113 @@ document.addEventListener('DOMContentLoaded', function () {
             window.va('track', 'Escape Card Viewed', { destination: data.title || 'Unknown' });
         }
         
+        // Basic modal data
         modalImage.src = data.imgSrc || '';
         modalImage.alt = data.imgAlt || '';
         modalTitle.textContent = data.title || '';
-        modalDesc.textContent = data.description || '';
-        modalJourney.textContent = data.journey || 'To be revealed soon';
         modalPrice.textContent = data.price || 'To be revealed soon';
+        
+        // Get all the new modal elements
+        const datesSection = document.getElementById('escape-modal-dates-section');
+        const scheduleSection = document.getElementById('escape-modal-schedule-section');
+        const accommodationSection = document.getElementById('escape-modal-accommodation-section');
+        const includesSection = document.getElementById('escape-modal-includes-section');
+        const availabilitySection = document.getElementById('escape-modal-availability-section');
+        const expectationSection = document.getElementById('escape-modal-expectation-section');
+        const simpleJourneySection = document.getElementById('escape-modal-simple-journey');
+        
+        const datesEl = document.getElementById('escape-modal-dates');
+        const startEl = document.getElementById('escape-modal-start');
+        const returnEl = document.getElementById('escape-modal-return');
+        const accommodationEl = document.getElementById('escape-modal-accommodation');
+        const includesEl = document.getElementById('escape-modal-includes');
+        const maxSpotsEl = document.getElementById('escape-modal-max-spots');
+        const lastDateEl = document.getElementById('escape-modal-last-date');
+        
+        // Check if we have detailed data (for Hampi)
+        const hasDetailedData = data.dates || data.start || data.return || data.accommodation;
+        
+        if (hasDetailedData) {
+            // Hide simple journey section and show detailed sections
+            if (simpleJourneySection) simpleJourneySection.style.display = 'none';
+            
+            // Show and populate detailed sections
+            if (data.dates && datesSection && datesEl) {
+                datesSection.style.display = 'block';
+                datesEl.textContent = data.dates;
+            } else if (datesSection) {
+                datesSection.style.display = 'none';
+            }
+            
+            if ((data.start || data.return) && scheduleSection && startEl && returnEl) {
+                scheduleSection.style.display = 'block';
+                startEl.textContent = data.start || 'TBD';
+                returnEl.textContent = data.return || 'TBD';
+            } else if (scheduleSection) {
+                scheduleSection.style.display = 'none';
+            }
+            
+            if (data.accommodation && accommodationSection && accommodationEl) {
+                accommodationSection.style.display = 'block';
+                accommodationEl.textContent = data.accommodation;
+            } else if (accommodationSection) {
+                accommodationSection.style.display = 'none';
+            }
+            
+            if (data.includes && includesSection && includesEl) {
+                includesSection.style.display = 'block';
+                includesEl.textContent = data.includes;
+            } else if (includesSection) {
+                includesSection.style.display = 'none';
+            }
+            
+            if ((data.maxSpots || data.lastDate) && availabilitySection && maxSpotsEl && lastDateEl) {
+                availabilitySection.style.display = 'block';
+                maxSpotsEl.textContent = data.maxSpots || 'TBD';
+                lastDateEl.textContent = data.lastDate || 'TBD';
+            } else if (availabilitySection) {
+                availabilitySection.style.display = 'none';
+            }
+            
+            if (data.journey && expectationSection) {
+                expectationSection.style.display = 'block';
+                modalDesc.textContent = data.journey;
+            } else if (expectationSection) {
+                expectationSection.style.display = 'none';
+                modalDesc.textContent = '';
+            }
+        } else {
+            // Show simple journey section and hide detailed sections
+            if (simpleJourneySection) simpleJourneySection.style.display = 'block';
+            if (datesSection) datesSection.style.display = 'none';
+            if (scheduleSection) scheduleSection.style.display = 'none';
+            if (accommodationSection) accommodationSection.style.display = 'none';
+            if (includesSection) includesSection.style.display = 'none';
+            if (availabilitySection) availabilitySection.style.display = 'none';
+            if (expectationSection) {
+                expectationSection.style.display = 'block';
+                modalDesc.textContent = data.description || '';
+            }
+            
+            // Use fallback data for simple display  
+            modalJourney.textContent = data.journey || 'To be revealed soon';
+        }
+        
         // store card reference if available
         lastClickedCard = data._card || null;
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        
+        // Prevent scroll events from bubbling to the main page
+        const modalBody = document.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.addEventListener('wheel', function(e) {
+                e.stopPropagation();
+            });
+            modalBody.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            });
+        }
         
         // Update URL if requested
         if (updateURL && data.title) {
@@ -734,6 +831,17 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!modal) return;
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        
+        // Remove scroll event listeners
+        const modalBody = document.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.removeEventListener('wheel', function(e) {
+                e.stopPropagation();
+            });
+            modalBody.removeEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            });
+        }
         
         // Clear URL parameter if it exists
         if (window.location.search.includes('journey=')) {
@@ -753,16 +861,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
-            // Collect data from card
+            // Collect basic data from card
             const img = card.querySelector('.card-image img');
             const title = card.querySelector('.card-title')?.textContent || '';
             const desc = card.querySelector('.card-description')?.textContent || '';
 
-            // Set journey details and price to "to be revealed soon"
-            const journey = card.getAttribute('data-journey') || 'To be revealed soon';
-            const price = card.getAttribute('data-price') || 'To be revealed soon';
+            // Collect all detailed data attributes
+            const cardData = {
+                imgSrc: img?.src,
+                imgAlt: img?.alt,
+                title: title,
+                description: desc,
+                journey: card.getAttribute('data-journey'),
+                price: card.getAttribute('data-price'),
+                dates: card.getAttribute('data-dates'),
+                start: card.getAttribute('data-start'),
+                return: card.getAttribute('data-return'),
+                accommodation: card.getAttribute('data-accommodation'),
+                includes: card.getAttribute('data-includes'),
+                maxSpots: card.getAttribute('data-max-spots'),
+                lastDate: card.getAttribute('data-last-date'),
+                _card: card
+            };
 
-            openModal({ imgSrc: img?.src, imgAlt: img?.alt, title, description: desc, journey, price, _card: card }, true);
+            // Fallback to simple data if no detailed attributes exist
+            if (!cardData.journey && !cardData.price) {
+                cardData.journey = 'To be revealed soon';
+                cardData.price = 'To be revealed soon';
+            }
+
+            openModal(cardData, true);
         });
     });
 
@@ -993,37 +1121,42 @@ function openJourneyFromURL(journeyParam) {
     });
     
     if (matchingCard) {
-        // Collect data from the matching card
+        // Collect all data from the matching card using same structure as click handler
         const img = matchingCard.querySelector('.card-image img');
         const title = matchingCard.querySelector('.card-title')?.textContent || '';
         const desc = matchingCard.querySelector('.card-description')?.textContent || '';
-        const journey = matchingCard.getAttribute('data-journey') || 'To be revealed soon';
-        const price = matchingCard.getAttribute('data-price') || 'To be revealed soon';
-        
-        // Get reference to the modal elements and open modal
-        const modal = document.getElementById('escape-modal');
-        const modalImage = document.getElementById('escape-modal-image');
-        const modalTitle = document.getElementById('escape-modal-title');
-        const modalDesc = document.getElementById('escape-modal-desc');
-        const modalJourney = document.getElementById('escape-modal-journey');
-        const modalPrice = document.getElementById('escape-modal-price');
-        
-        if (modal && modalImage && modalTitle && modalDesc && modalJourney && modalPrice) {
-            // Track modal opening from URL
-            if (typeof window.va !== 'undefined') {
-                window.va('track', 'Journey Opened From URL', { destination: title });
-            }
-            
-            modalImage.src = img?.src || '';
-            modalImage.alt = img?.alt || '';
-            modalTitle.textContent = title;
-            modalDesc.textContent = desc;
-            modalJourney.textContent = journey;
-            modalPrice.textContent = price;
-            
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+
+        // Collect all detailed data attributes
+        const cardData = {
+            imgSrc: img?.src,
+            imgAlt: img?.alt,
+            title: title,
+            description: desc,
+            journey: matchingCard.getAttribute('data-journey'),
+            price: matchingCard.getAttribute('data-price'),
+            dates: matchingCard.getAttribute('data-dates'),
+            start: matchingCard.getAttribute('data-start'),
+            return: matchingCard.getAttribute('data-return'),
+            accommodation: matchingCard.getAttribute('data-accommodation'),
+            includes: matchingCard.getAttribute('data-includes'),
+            maxSpots: matchingCard.getAttribute('data-max-spots'),
+            lastDate: matchingCard.getAttribute('data-last-date'),
+            _card: matchingCard
+        };
+
+        // Fallback to simple data if no detailed attributes exist
+        if (!cardData.journey && !cardData.price) {
+            cardData.journey = 'To be revealed soon';
+            cardData.price = 'To be revealed soon';
         }
+        
+        // Track modal opening from URL
+        if (typeof window.va !== 'undefined') {
+            window.va('track', 'Journey Opened From URL', { destination: title });
+        }
+        
+        // Use the same openModal function to handle all the detailed data
+        openModal(cardData, false); // false to avoid URL update loop
     }
 }
 
