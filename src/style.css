@@ -379,11 +379,14 @@ body::-webkit-scrollbar,
 
     .card-overlay {
         padding: 0.8rem !important;
-        height: 20% !important; /* Exactly 20% to complement 80% image area */
+        height: 20% !important; /* Text overlay area */
+        z-index: 3 !important; /* Ensure overlay is above full image */
+        align-items: center !important; /* Center text horizontally */
+        text-align: center !important; /* Center text alignment */
     }
 
     .card-image {
-        height: 80% !important; /* Reduced to ensure no overlap with text area */
+        height: 100% !important; /* Cover entire card including glassmorphic area */
     }
 
     .card-image img {
@@ -1346,7 +1349,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     top: 0;
     left: 0;
     width: 100%;
-    height: 69%; /* Reduced to ensure no overlap with text area */
+    height: 100%; /* Cover entire card including glassmorphic area */
     z-index: 1;
 }
 
@@ -1374,7 +1377,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 20%; /* Exactly 20% to complement the 80% image area */
+    height: 20%; /* Text overlay area */
     padding: 1rem;
     /* Glassmorphism effect for text area */
     background: rgba(255, 255, 255, 0.12);
@@ -1382,13 +1385,13 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     -webkit-backdrop-filter: blur(18px);
     border-top: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 0 0 20px 20px;
-    z-index: 2;
+    z-index: 3; /* Higher z-index to ensure it's above the full image */
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Smooth shadow for better text readability */
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    align-items: center; /* Center text horizontally */
+    text-align: center; /* Center text alignment */
 }
 
 .card-title {
@@ -1396,7 +1399,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     font-size: 1.3rem;
     font-weight: 600;
     margin: 0 0 0.1rem 0;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
     color: #fff;
     line-height: 1.1;
 }
@@ -1407,7 +1409,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     font-weight: 300;
     margin: 0;
     opacity: 0.95;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
     color: #fff;
     line-height: 1.2;
 }
@@ -1460,6 +1461,26 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 /* Mobile responsive styles for button */
 
+/* Explore All Trips Button Container */
+.explore-trips-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+.checkpoint-content.active .explore-trips-cta {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1s; /* Delay after journey cards appear */
+}
+
+.explore-trips-btn {
+    margin-top: 0; /* Override default margin since container handles spacing */
+}
 
 /* Join Form Popup Styles */
 .form-popup-overlay {
@@ -1967,11 +1988,14 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     .card-overlay {
         padding: 0.8rem !important;
-        height: 20% !important; /* Exactly 20% to complement 80% image area */
+        height: 20% !important; /* Text overlay area */
+        z-index: 3 !important; /* Ensure overlay is above full image */
+        align-items: center !important; /* Center text horizontally */
+        text-align: center !important; /* Center text alignment */
     }
 
     .card-image {
-        height: 80% !important; /* Reduced to ensure no overlap with text area */
+        height: 100% !important; /* Cover entire card including glassmorphic area */
     }
 
     .card-image img {

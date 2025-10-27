@@ -93,7 +93,7 @@
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Hampi</h3>
-                        <p class="card-description">Upcoming</p>
+                        <p class="card-description">Request Invite</p>
                     </div>
                 </div>
                 <div class="escape-card">
@@ -102,7 +102,7 @@
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Panchgani</h3>
-                        <p class="card-description">Upcoming</p>
+                        <p class="card-description">Request Invite</p>
                     </div>
                 </div>
                 <div class="escape-card">
@@ -111,10 +111,17 @@
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Araku</h3>
-                        <p class="card-description">Upcoming</p>
+                        <p class="card-description">Request Invite</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Explore All Trips Button -->
+            <div class="explore-trips-cta">
+                <button class="tribe-join-btn explore-trips-btn" onclick="trackAndOpenAllTrips()">Explore All
+                    Trips</button>
+            </div>
+
             <!-- modal moved to end of body for proper stacking -->
         </div>
 
@@ -691,6 +698,19 @@
 
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
+
+    <!-- Additional JavaScript for Explore All Trips Button -->
+    <script>
+        function trackAndOpenAllTrips() {
+            // Track button click with Vercel Analytics
+            if (typeof window.va !== 'undefined') {
+                window.va('track', 'Explore All Trips Clicked', { source: 'index_page' });
+            }
+
+            // Open all-trips page in new tab
+            window.open('all-trips.html', '_blank');
+        }
+    </script>
 
     <!-- Vercel Web Analytics -->
     <script>
