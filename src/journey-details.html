@@ -8,6 +8,11 @@
     <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Global overflow fix */
+        body {
+            overflow-x: hidden;
+        }
+
         /* Journey Details Page Specific Styles */
         .journey-details-page {
             min-height: 100vh;
@@ -16,6 +21,7 @@
             background-attachment: fixed;
             position: relative;
             padding-top: 100px;
+            overflow-x: hidden;
         }
 
         .journey-details-page::before {
@@ -33,7 +39,7 @@
             position: relative;
             z-index: 2;
             max-width: 800px;
-            width: 90%;
+            width: calc(100% - 2rem);
             margin: 5rem auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
@@ -64,6 +70,8 @@
             gap: 2rem;
             margin-top: 1rem;
             align-items: start;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .journey-info {
@@ -75,6 +83,8 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 0.5rem 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .journey-info-label {
@@ -94,6 +104,8 @@
             margin-left: 1rem;
             font-size: 0.9rem;
             font-weight: 500;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .price-highlight {
@@ -197,6 +209,7 @@
                 padding: 1.5rem;
                 max-width: none;
                 width: calc(100% - 2rem);
+                box-sizing: border-box;
             }
 
             .journey-card h1 {
@@ -207,12 +220,16 @@
             .journey-content-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .journey-info-item {
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 0.5rem 0;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .journey-info-label {
@@ -225,6 +242,9 @@
                 text-align: left;
                 margin-left: 0;
                 font-size: 0.85rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                width: 100%;
             }
 
             .back-button {
@@ -245,6 +265,27 @@
             .book-now-btn {
                 padding: 0.75rem 2rem;
                 font-size: 0.9rem;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .journey-card {
+                margin: 0.5rem;
+                padding: 1rem;
+                width: calc(100% - 1rem);
+            }
+
+            .journey-card h1 {
+                font-size: 1.5rem;
+            }
+
+            .journey-info-label {
+                font-size: 0.8rem;
+            }
+
+            .journey-info-value {
+                font-size: 0.8rem;
             }
         }
 
@@ -407,7 +448,7 @@
                 return: "10th November, Monday, 7:00 AM (to Hyderabad)",
                 price: "Dorm (8-share): ₹7,499 Room (2-share): ₹7,899",
                 maxSpots: "15 only",
-                lastDate: "1st November",
+                lastDate: "3rd November",
                 includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
                 description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
                 status: "active"
