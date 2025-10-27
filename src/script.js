@@ -4,30 +4,30 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // Floating Navbar functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.floating-navbar');
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
     const navbarLinks = document.querySelectorAll('.navbar-link');
 
     // Mobile menu toggle
-    navbarToggle.addEventListener('click', function() {
+    navbarToggle.addEventListener('click', function () {
         navbarToggle.classList.toggle('active');
         if (navbarMenu) navbarMenu.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     navbarLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             navbarToggle.classList.remove('active');
             if (navbarMenu) navbarMenu.classList.remove('active');
         });
     });
 
     // Navbar scroll effect
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         if (scrollTop > 100) {
             navbar.classList.add('scrolled');
         } else {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Navbar checkpoint navigation and special actions (e.g. open join form)
     navbarLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             // If this is the join-tribe link, open the embedded Google form popup
             if (this.classList.contains('join-tribe') || this.id === 'nav-join-tribe') {
                 e.preventDefault();
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update navbar active state
                 navbarLinks.forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 // Navigate to checkpoint using existing goTo function
                 if (window.checkpointGoTo) {
                     window.checkpointGoTo(checkpointIndex);
@@ -70,35 +70,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 const video = entry.target;
                 const videoSrc = video.getAttribute('data-lazy-video');
                 const source = video.querySelector('source[data-src]');
-                
+
                 if (videoSrc && source) {
                     // Add loading indicator
                     const videoItem = video.closest('.video-item');
                     const existingIndicator = videoItem.querySelector('.video-loading');
-                    
+
                     if (!existingIndicator) {
                         const loadingIndicator = document.createElement('div');
                         loadingIndicator.className = 'video-loading';
                         loadingIndicator.textContent = 'Loading video...';
                         videoItem.appendChild(loadingIndicator);
-                        
+
                         // Load the video source
                         source.src = source.getAttribute('data-src');
                         video.load();
-                        
+
                         // Remove lazy loading attributes
                         video.removeAttribute('data-lazy-video');
                         source.removeAttribute('data-src');
-                        
+
                         // Stop observing this video
                         videoObserver.unobserve(video);
-                        
+
                         // Handle loading completion
                         video.addEventListener('loadeddata', () => {
                             if (loadingIndicator && loadingIndicator.parentNode) {
                                 loadingIndicator.parentNode.removeChild(loadingIndicator);
                             }
-                            
+
                             // If this is the active video, play it
                             if (videoItem && videoItem.classList.contains('active')) {
                                 video.muted = true;
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 });
                             }
                         }, { once: true });
-                        
+
                         // Handle loading errors
                         video.addEventListener('error', () => {
                             if (loadingIndicator && loadingIndicator.parentNode) {
@@ -417,7 +417,7 @@ window.onbeforeunload = function () {
     if (!scrollElement) return;
 
     // percentages of the scrollElement's scrollable range we want checkpoints at
-    const percents = [0, 0.15, 0.4, 0.6, 0.8, 1]; 
+    const percents = [0, 0.15, 0.4, 0.6, 0.8, 1];
     let maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
     let checkpoints = percents.map(p => Math.round(p * maxScroll));
     let current = 0;
@@ -465,7 +465,7 @@ window.onbeforeunload = function () {
         document.querySelectorAll('.checkpoint-content').forEach(content => {
             content.classList.remove('active');
         });
-        
+
         // Update navbar active state
         document.querySelectorAll('.navbar-link').forEach(link => {
             link.classList.remove('active');
@@ -474,10 +474,10 @@ window.onbeforeunload = function () {
         if (activeNavLink) {
             activeNavLink.classList.add('active');
         }
-        
+
         // Always hide hero text initially
         document.body.classList.remove('checkpoint-0-active');
-        
+
         // Show content after animations complete
         if (index === 0) {
             // For hero text, wait longer to let all animations finish
@@ -498,16 +498,16 @@ window.onbeforeunload = function () {
     const goTo = (index) => {
         index = Math.max(0, Math.min(checkpoints.length - 1, index));
         if (index === current) return;
-        
+
         // Track checkpoint navigation with Vercel Analytics
         if (typeof window.va !== 'undefined') {
             const checkpointNames = ['Hero', 'About', 'How to Join', 'Journeys', 'Stories', 'Contact'];
-            window.va('track', 'Section Navigation', { 
+            window.va('track', 'Section Navigation', {
                 from: checkpointNames[current] || `Section ${current}`,
                 to: checkpointNames[index] || `Section ${index}`
             });
         }
-        
+
         current = index;
         isAnimating = true;
 
@@ -515,14 +515,14 @@ window.onbeforeunload = function () {
         document.querySelectorAll('.checkpoint-content').forEach(content => {
             content.classList.remove('active');
         });
-        
+
         // Always hide hero text initially
         document.body.classList.remove('checkpoint-0-active');
 
         // animate to checkpoint with a controlled duration
         smoothScrollTo(checkpoints[index], snapDuration).then(() => {
             isAnimating = false;
-            
+
             if (index === 0) {
                 // For hero text, add additional delay to let GSAP animations finish
                 setTimeout(() => {
@@ -585,12 +585,12 @@ window.onbeforeunload = function () {
     initIndex();
     // Initialize content visibility for current checkpoint
     updateCheckpointContent(current);
-    
+
     // Add scroll listener to update navbar on manual scroll
     let scrollTimeout;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (isAnimating) return; // Don't update during programmatic scrolling
-        
+
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
             const y = window.scrollY;
@@ -598,7 +598,7 @@ window.onbeforeunload = function () {
             for (let j = 0; j < checkpoints.length; j++) {
                 if (y >= checkpoints[j]) newIndex = j;
             }
-            
+
             if (newIndex !== current) {
                 current = newIndex;
                 // Update navbar active state directly using existing logic
@@ -612,10 +612,10 @@ window.onbeforeunload = function () {
             }
         }, 50);
     });
-    
+
     // Expose goTo function globally for navbar
     window.checkpointGoTo = goTo;
-    
+
     // attach wheel listener as non-passive so we can preventDefault
     window.addEventListener('wheel', wheelHandler, { passive: false });
 })();
@@ -631,7 +631,7 @@ function isCheckpointActive(element) {
 
 // Override openJoinForm to check for active checkpoint
 const originalOpenJoinForm = window.openJoinForm;
-window.openJoinForm = function(eventOrUpdateURL, updateURL) {
+window.openJoinForm = function (eventOrUpdateURL, updateURL) {
     // If called from an event, check if the checkpoint is active
     if (eventOrUpdateURL && eventOrUpdateURL instanceof Event) {
         const target = eventOrUpdateURL.target || eventOrUpdateURL.currentTarget;
@@ -645,7 +645,7 @@ window.openJoinForm = function(eventOrUpdateURL, updateURL) {
 
 // Override openB2BForm to check for active checkpoint
 const originalOpenB2BForm = window.openB2BForm;
-window.openB2BForm = function(eventOrUpdateURL, updateURL) {
+window.openB2BForm = function (eventOrUpdateURL, updateURL) {
     // If called from an event, check if the checkpoint is active
     if (eventOrUpdateURL && eventOrUpdateURL instanceof Event) {
         const target = eventOrUpdateURL.target || eventOrUpdateURL.currentTarget;
@@ -658,10 +658,10 @@ window.openB2BForm = function(eventOrUpdateURL, updateURL) {
 };
 
 // Add click event listeners to all buttons to check checkpoint status
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Add checkpoint safety to all buttons
     document.querySelectorAll('.tribe-join-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             if (!isCheckpointActive(this)) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -670,9 +670,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, true); // Use capture phase to intercept before onclick handlers
     });
-    
+
     // Global handler to prevent escape card clicks when join form is open
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         const joinForm = document.getElementById('joinFormPopup');
         if (joinForm && joinForm.style.display === 'flex') {
             // Allow clicks on the join form itself (close buttons, form elements, etc.)
@@ -680,7 +680,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isJoinFormClick) {
                 return; // Allow all clicks within the join form
             }
-            
+
             // Block only escape card clicks
             const escapeCard = e.target.closest('.escape-card');
             if (escapeCard) {
@@ -708,18 +708,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function openModal(data, updateURL = false) {
         if (!modal) return;
-        
+
         // Track escape card modal opening with Vercel Analytics
         if (typeof window.va !== 'undefined') {
             window.va('track', 'Escape Card Viewed', { destination: data.title || 'Unknown' });
         }
-        
+
         // Set the title
         modalTitle.textContent = data.title || '';
-        
+
         // Create unified content based on the destination
         let content = '';
-        
+
         if (data.title === 'Hampi') {
             content = `Hampi Weekend Getaway
 
@@ -743,28 +743,28 @@ Coming Soon
 Details about this destination will be revealed soon.
 Stay tuned for an amazing experience!`;
         }
-        
+
         // Set the unified content
         if (modalUnifiedContent) {
             modalUnifiedContent.textContent = content;
         }
-        
+
         // Store card reference if available
         lastClickedCard = data._card || null;
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        
+
         // Prevent scroll events from bubbling to the main page
         const modalBody = document.querySelector('.modal-body');
         if (modalBody) {
-            modalBody.addEventListener('wheel', function(e) {
+            modalBody.addEventListener('wheel', function (e) {
                 e.stopPropagation();
             });
-            modalBody.addEventListener('touchmove', function(e) {
+            modalBody.addEventListener('touchmove', function (e) {
                 e.stopPropagation();
             });
         }
-        
+
         // Update URL if requested
         if (updateURL && data.title) {
             const destination = data.title.toLowerCase().replace(/\s+/g, '-');
@@ -776,18 +776,18 @@ Stay tuned for an amazing experience!`;
         if (!modal) return;
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
-        
+
         // Remove scroll event listeners
         const modalBody = document.querySelector('.modal-body');
         if (modalBody) {
-            modalBody.removeEventListener('wheel', function(e) {
+            modalBody.removeEventListener('wheel', function (e) {
                 e.stopPropagation();
             });
-            modalBody.removeEventListener('touchmove', function(e) {
+            modalBody.removeEventListener('touchmove', function (e) {
                 e.stopPropagation();
             });
         }
-        
+
         // Clear URL parameter if it exists
         if (window.location.search.includes('journey=')) {
             const newURL = window.location.origin + window.location.pathname;
@@ -806,7 +806,7 @@ Stay tuned for an amazing experience!`;
                 console.log('Blocked escape card click: join form is open');
                 return false;
             }
-            
+
             // Check if the card's checkpoint is active
             if (!isCheckpointActive(this)) {
                 e.preventDefault();
@@ -817,13 +817,13 @@ Stay tuned for an amazing experience!`;
 
             // Get the destination name from the card title
             const title = card.querySelector('.card-title')?.textContent || '';
-            
+
             if (title) {
                 // Track journey page navigation with Vercel Analytics
                 if (typeof window.va !== 'undefined') {
                     window.va('track', 'Journey Page Opened', { destination: title });
                 }
-                
+
                 // Navigate to journey details page in a new tab
                 const destination = title.toLowerCase().replace(/\s+/g, '');
                 window.open(`journey-details.html?destination=${destination}`, '_blank');
@@ -840,10 +840,10 @@ Stay tuned for an amazing experience!`;
             const destination = modalTitle ? modalTitle.textContent : 'Unknown';
             window.va('track', 'Booking Requested', { destination: destination });
         }
-        
+
         // Get the trip name from the modal title
         const tripPlace = modalTitle ? modalTitle.textContent.trim() : 'this amazing destination';
-        
+
         // Create WhatsApp URL with phone number and pre-filled message
         const phoneNumber = '918143120853'; // +91 81431 20853
         const message = `Hi, Don't go to ${tripPlace} without me!`;
@@ -866,24 +866,24 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
     // openJoinForm(event, true) - event passed, update URL
     // openJoinForm(true) - no event, update URL
     let shouldUpdateURL = false;
-    
+
     if (typeof eventOrUpdateURL === 'boolean') {
         shouldUpdateURL = eventOrUpdateURL;
     } else if (typeof updateURL === 'boolean') {
         shouldUpdateURL = updateURL;
     }
-    
+
     // Track join form opening with Vercel Analytics
     if (typeof window.va !== 'undefined') {
         window.va('track', 'Join Form Opened');
     }
-    
+
     // Close any open escape modal first to prevent conflicts
     const escapeModal = document.getElementById('escape-modal');
     if (escapeModal && escapeModal.getAttribute('aria-hidden') === 'false') {
         escapeModal.setAttribute('aria-hidden', 'true');
     }
-    
+
     // Show the popup modal with Google form
     const popup = document.getElementById('joinFormPopup');
     if (popup) {
@@ -896,7 +896,7 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
         addPopupScrollBlockers(popup);
 
         // Add click handler for overlay background to close popup
-        popup.addEventListener('click', function(e) {
+        popup.addEventListener('click', function (e) {
             // If clicking the overlay background (not the container), close the popup
             if (e.target === popup) {
                 closeJoinForm();
@@ -913,7 +913,7 @@ function openJoinForm(eventOrUpdateURL = false, updateURL = false) {
         if (closeBtn) {
             closeBtn.focus();
             // Ensure close button works by adding explicit event listener
-            closeBtn.addEventListener('click', function(e) {
+            closeBtn.addEventListener('click', function (e) {
                 e.stopPropagation(); // Prevent our event blocking
                 closeJoinForm();
             });
@@ -955,28 +955,28 @@ function addPopupScrollBlockers(popup) {
         e.stopPropagation();
         // don't call preventDefault so inner scroll still works
     };
-    
+
     // Prevent clicks inside the popup from bubbling up and triggering other events
     const clickHandler = function (e) {
         // ALWAYS allow clicks on close button and header actions - don't interfere
         const closeBtn = e.target.closest('.form-close-btn');
         const headerActions = e.target.closest('.form-header-actions');
-        
+
         if (closeBtn || headerActions) {
             // Don't prevent or stop any events for close buttons
             return;
         }
-        
+
         // Allow clicks on the overlay background (not the container) for closing
         const overlay = e.target.closest('.form-popup-overlay');
         if (overlay && !e.target.closest('.form-popup-container')) {
             return; // Allow overlay clicks to close the popup
         }
-        
+
         // Only stop propagation for clicks inside the form content area (not close buttons)
         const container = popup.querySelector('.form-popup-container');
         const isInContentArea = container && container.contains(e.target) && !closeBtn && !headerActions;
-        
+
         if (isInContentArea) {
             e.stopPropagation();
         }
@@ -1005,18 +1005,18 @@ function removePopupScrollBlockers(popup) {
 function openB2BForm(eventOrUpdateURL = false, updateURL = false) {
     // Handle different parameter patterns similar to openJoinForm
     let shouldUpdateURL = false;
-    
+
     if (typeof eventOrUpdateURL === 'boolean') {
         shouldUpdateURL = eventOrUpdateURL;
     } else if (typeof updateURL === 'boolean') {
         shouldUpdateURL = updateURL;
     }
-    
+
     // Track B2B form opening with Vercel Analytics
     if (typeof window.va !== 'undefined') {
         window.va('track', 'Host Form Opened');
     }
-    
+
     const popup = document.getElementById('b2bPopup');
     if (popup) {
         popup.style.display = 'flex';
@@ -1050,7 +1050,7 @@ function checkURLForPopup() {
     const urlParams = new URLSearchParams(window.location.search);
     const formParam = urlParams.get('form');
     const journeyParam = urlParams.get('journey');
-    
+
     if (formParam === 'join') {
         // Open join form popup
         setTimeout(() => openJoinForm(), 100); // Small delay to ensure DOM is ready
@@ -1092,22 +1092,22 @@ function getJourneyURL(destination) {
 function openJourneyFromURL(journeyParam) {
     // Decode the journey parameter and redirect to journey details page
     const decodedJourney = decodeURIComponent(journeyParam).toLowerCase();
-    
+
     // Map URL parameters to destination names
     const destinationMap = {
         'hampi': 'hampi',
-        'panchgani': 'panchgani', 
+        'panchgani': 'panchgani',
         'araku': 'araku'
     };
-    
+
     const destination = destinationMap[decodedJourney];
-    
+
     if (destination) {
         // Track journey opening from URL
         if (typeof window.va !== 'undefined') {
             window.va('track', 'Journey Opened From URL', { destination: destination });
         }
-        
+
         // Redirect to journey details page in a new tab
         window.open(`journey-details.html?destination=${destination}`, '_blank');
     } else {
@@ -1119,7 +1119,7 @@ function openJourneyFromURL(journeyParam) {
 // Function to copy popup URL to clipboard
 function copyPopupURL(formType) {
     const url = getPopupURL(formType);
-    
+
     if (navigator.clipboard && window.isSecureContext) {
         // Use modern clipboard API
         navigator.clipboard.writeText(url).then(() => {
@@ -1142,7 +1142,7 @@ function fallbackCopyToClipboard(text, formType) {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
         document.execCommand('copy');
         showCopySuccess(formType);
@@ -1151,14 +1151,14 @@ function fallbackCopyToClipboard(text, formType) {
         // Show the URL in an alert as a final fallback
         alert(`Copy this URL: ${text}`);
     }
-    
+
     document.body.removeChild(textArea);
 }
 
 // Show copy success message
 function showCopySuccess(formType) {
     const formName = formType === 'join' ? 'Join Form' : 'Host Form';
-    
+
     // Create a temporary notification
     const notification = document.createElement('div');
     notification.textContent = `${formName} link copied to clipboard!`;
@@ -1177,7 +1177,7 @@ function showCopySuccess(formType) {
         z-index: 10000;
         animation: slideInFromRight 0.3s ease-out;
     `;
-    
+
     // Add animation keyframes if not already present
     if (!document.getElementById('copy-notification-styles')) {
         const style = document.createElement('style');
@@ -1194,9 +1194,9 @@ function showCopySuccess(formType) {
         `;
         document.head.appendChild(style);
     }
-    
+
     document.body.appendChild(notification);
-    
+
     // Remove after 3 seconds with slide out animation
     setTimeout(() => {
         notification.style.animation = 'slideOutToRight 0.3s ease-in';
@@ -1226,7 +1226,7 @@ function handlePopupNavigation(event) {
         const joinPopup = document.getElementById('joinFormPopup');
         const b2bPopup = document.getElementById('b2bPopup');
         const journeyModal = document.getElementById('escape-modal');
-        
+
         if (joinPopup && joinPopup.style.display === 'flex') {
             closeJoinForm();
         }
@@ -1299,7 +1299,7 @@ document.addEventListener('DOMContentLoaded', function () {
             notes: b2bForm.elements['notes']?.value?.trim() || 'No additional notes',
             submissionDate: new Date().toLocaleDateString('en-IN', {
                 year: 'numeric',
-                month: 'long', 
+                month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
@@ -1321,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Track successful form submission with Vercel Analytics
             if (typeof window.va !== 'undefined') {
-                window.va('track', 'B2B Form Submitted', { 
+                window.va('track', 'B2B Form Submitted', {
                     participants: formData.participants,
                     destination: formData.destination,
                     vibe: formData.vibe
@@ -1348,10 +1348,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Error sending email:', error);
-            
+
             // Show error message to user
             alert('There was an error sending your message. Please try again or contact us directly.');
-            
+
             // Reset submit button
             if (submitBtn) {
                 submitBtn.textContent = originalBtnText;
@@ -1362,16 +1362,16 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Scroll Down Arrow functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const scrollArrow = document.getElementById('scrollDownArrow');
     const scrollUpArrow = document.getElementById('scrollUpArrow');
-    
+
     if (!scrollArrow) return;
-    
+
     let currentCheckpoint = 0;
-    
+
     // Click handler to navigate to next section
-    scrollArrow.addEventListener('click', function() {
+    scrollArrow.addEventListener('click', function () {
         if (window.checkpointGoTo) {
             // Navigate to next checkpoint (max 5 checkpoints: 0-5)
             const nextCheckpoint = Math.min(currentCheckpoint + 1, 5);
@@ -1379,10 +1379,10 @@ document.addEventListener('DOMContentLoaded', function() {
             currentCheckpoint = nextCheckpoint;
         }
     });
-    
+
     // Click handler for up arrow to navigate to previous section
     if (scrollUpArrow) {
-        scrollUpArrow.addEventListener('click', function() {
+        scrollUpArrow.addEventListener('click', function () {
             if (window.checkpointGoTo) {
                 // Navigate to previous checkpoint (min 0)
                 const prevCheckpoint = Math.max(currentCheckpoint - 1, 0);
@@ -1391,16 +1391,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Track scroll position to determine current checkpoint and hide/show arrows appropriately
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
-        
+
         // Estimate current checkpoint based on scroll position
         const scrollPercent = scrollTop / (documentHeight - windowHeight);
-        
+
         if (scrollPercent <= 0.1) {
             currentCheckpoint = 0;
         } else if (scrollPercent <= 0.25) {
@@ -1414,14 +1414,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             currentCheckpoint = 5;
         }
-        
+
         // Hide down arrow when we're at the last checkpoint or near the bottom
         if (currentCheckpoint >= 5 || scrollPercent > 0.9) {
             scrollArrow.classList.add('hidden');
         } else {
             scrollArrow.classList.remove('hidden');
         }
-        
+
         // Show up arrow when we're not at the first checkpoint
         if (scrollUpArrow) {
             if (currentCheckpoint <= 0 || scrollPercent < 0.1) {
@@ -1434,26 +1434,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Initialize URL-based popup functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check URL on page load
     checkURLForPopup();
-    
+
     // Listen for browser back/forward navigation
     window.addEventListener('popstate', handlePopupNavigation);
 });
 
 // Video Carousel Functionality
 let currentVideoIndex = 1;
-const totalVideos = 5;
+const totalVideos = 4;
 
 // Helper function to load and play lazy videos
 function loadAndPlayVideo(videoEl) {
     if (!videoEl) return;
-    
+
     // Check if video is lazy loaded
     const videoSrc = videoEl.getAttribute('data-lazy-video');
     const source = videoEl.querySelector('source[data-src]');
-    
+
     if (videoSrc && source) {
         // Add loading indicator
         const videoItem = videoEl.closest('.video-item');
@@ -1461,29 +1461,29 @@ function loadAndPlayVideo(videoEl) {
         loadingIndicator.className = 'video-loading';
         loadingIndicator.textContent = 'Loading video...';
         videoItem.appendChild(loadingIndicator);
-        
+
         // Load the video source
         source.src = source.getAttribute('data-src');
         videoEl.load();
-        
+
         // Remove lazy loading attributes
         videoEl.removeAttribute('data-lazy-video');
         source.removeAttribute('data-src');
-        
+
         // Play after loading
         videoEl.addEventListener('loadeddata', () => {
             // Remove loading indicator
             if (loadingIndicator && loadingIndicator.parentNode) {
                 loadingIndicator.parentNode.removeChild(loadingIndicator);
             }
-            
+
             videoEl.currentTime = 0;
             videoEl.muted = true;
             videoEl.play().catch(e => {
                 console.log('Video play failed after lazy load:', e);
             });
         }, { once: true });
-        
+
         // Handle loading errors
         videoEl.addEventListener('error', () => {
             if (loadingIndicator && loadingIndicator.parentNode) {
@@ -1508,36 +1508,36 @@ function loadAndPlayVideo(videoEl) {
 // Enhanced helper function to handle video play/pause with button UI updates
 function playVideo(videoEl) {
     if (!videoEl) return;
-    
+
     const videoItem = videoEl.closest('.video-item');
     const playButton = videoItem.querySelector('.video-play-button');
-    
+
     // Check if video is lazy loaded
     const videoSrc = videoEl.getAttribute('data-lazy-video');
     const source = videoEl.querySelector('source[data-src]');
-    
+
     if (videoSrc && source) {
         // Add loading indicator
         const loadingIndicator = document.createElement('div');
         loadingIndicator.className = 'video-loading';
         loadingIndicator.textContent = 'Loading video...';
         videoItem.appendChild(loadingIndicator);
-        
+
         // Load the video source
         source.src = source.getAttribute('data-src');
         videoEl.load();
-        
+
         // Remove lazy loading attributes
         videoEl.removeAttribute('data-lazy-video');
         source.removeAttribute('data-src');
-        
+
         // Play after loading
         videoEl.addEventListener('loadeddata', () => {
             // Remove loading indicator
             if (loadingIndicator && loadingIndicator.parentNode) {
                 loadingIndicator.parentNode.removeChild(loadingIndicator);
             }
-            
+
             videoEl.currentTime = 0;
             videoEl.muted = true;
             videoEl.play().then(() => {
@@ -1552,7 +1552,7 @@ function playVideo(videoEl) {
                 console.log('Video play failed after lazy load:', e);
             });
         }, { once: true });
-        
+
         // Handle loading errors
         videoEl.addEventListener('error', () => {
             if (loadingIndicator && loadingIndicator.parentNode) {
@@ -1584,12 +1584,12 @@ function playVideo(videoEl) {
 
 function pauseVideo(videoEl) {
     if (!videoEl) return;
-    
+
     const videoItem = videoEl.closest('.video-item');
     const playButton = videoItem.querySelector('.video-play-button');
-    
+
     videoEl.pause();
-    
+
     // Update button to play state
     if (playButton) {
         playButton.classList.remove('pause');
@@ -1601,7 +1601,7 @@ function pauseVideo(videoEl) {
 
 function toggleVideoPlayback(videoEl) {
     if (!videoEl) return;
-    
+
     if (videoEl.paused) {
         playVideo(videoEl);
     } else {
@@ -1610,102 +1610,102 @@ function toggleVideoPlayback(videoEl) {
 }
 
 function nextVideo() {
-    console.log('Next video clicked, current index:', currentVideoIndex);
-    
-    // Track video navigation with Vercel Analytics
+    console.log('Next item clicked, current index:', currentVideoIndex);
+
+    // Track navigation with Vercel Analytics
     if (typeof window.va !== 'undefined') {
-        window.va('track', 'Video Navigation', { action: 'next', from: currentVideoIndex });
+        window.va('track', 'Testimonial Navigation', { action: 'next', from: currentVideoIndex });
     }
-    
+
     // Calculate next index
     const nextIndex = currentVideoIndex === totalVideos ? 1 : currentVideoIndex + 1;
-    
-    // Remove active class from current video and pause it
-    const currentVideo = document.querySelector('.video-item.active');
-    if (currentVideo) {
-        const currentVideoEl = currentVideo.querySelector('.tribe-video');
+
+    // Remove active class from current item and pause video if it's a video
+    const currentItem = document.querySelector('.video-item.active');
+    if (currentItem) {
+        const currentVideoEl = currentItem.querySelector('.tribe-video');
         if (currentVideoEl) {
             pauseVideo(currentVideoEl);
         }
-        currentVideo.classList.remove('active');
+        currentItem.classList.remove('active');
     }
-    
-    // Add active class to next video
-    const nextVideo = document.querySelector(`[data-video="${nextIndex}"]`);
-    if (nextVideo) {
-        nextVideo.classList.add('active');
-        
-        // Reset play button for new video (don't auto-play)
-        const nextVideoEl = nextVideo.querySelector('.tribe-video');
+
+    // Add active class to next item
+    const nextItem = document.querySelector(`[data-video="${nextIndex}"]`);
+    if (nextItem) {
+        nextItem.classList.add('active');
+
+        // Reset play button for new video (don't auto-play) - only if it's a video
+        const nextVideoEl = nextItem.querySelector('.tribe-video');
         if (nextVideoEl) {
-            const playButton = nextVideo.querySelector('.video-play-button');
+            const playButton = nextItem.querySelector('.video-play-button');
             if (playButton) {
                 playButton.classList.remove('pause');
                 playButton.classList.add('play');
                 playButton.setAttribute('aria-label', 'Play video');
             }
-            nextVideo.classList.remove('playing');
-            
+            nextItem.classList.remove('playing');
+
             // Reset video to beginning but don't play
             nextVideoEl.currentTime = 0;
             nextVideoEl.pause();
         }
     }
-    
+
     currentVideoIndex = nextIndex;
-    console.log('Switched to video:', nextIndex);
+    console.log('Switched to item:', nextIndex);
 }
 
 function previousVideo() {
-    console.log('Previous video clicked, current index:', currentVideoIndex);
-    
-    // Track video navigation with Vercel Analytics
+    console.log('Previous item clicked, current index:', currentVideoIndex);
+
+    // Track navigation with Vercel Analytics
     if (typeof window.va !== 'undefined') {
-        window.va('track', 'Video Navigation', { action: 'previous', from: currentVideoIndex });
+        window.va('track', 'Testimonial Navigation', { action: 'previous', from: currentVideoIndex });
     }
-    
+
     // Calculate previous index
     const prevIndex = currentVideoIndex === 1 ? totalVideos : currentVideoIndex - 1;
-    
-    // Remove active class from current video and pause it
-    const currentVideo = document.querySelector('.video-item.active');
-    if (currentVideo) {
-        const currentVideoEl = currentVideo.querySelector('.tribe-video');
+
+    // Remove active class from current item and pause video if it's a video
+    const currentItem = document.querySelector('.video-item.active');
+    if (currentItem) {
+        const currentVideoEl = currentItem.querySelector('.tribe-video');
         if (currentVideoEl) {
             pauseVideo(currentVideoEl);
         }
-        currentVideo.classList.remove('active');
+        currentItem.classList.remove('active');
     }
-    
-    // Add active class to previous video
-    const prevVideo = document.querySelector(`[data-video="${prevIndex}"]`);
-    if (prevVideo) {
-        prevVideo.classList.add('active');
-        
-        // Reset play button for new video (don't auto-play)
-        const prevVideoEl = prevVideo.querySelector('.tribe-video');
+
+    // Add active class to previous item
+    const prevItem = document.querySelector(`[data-video="${prevIndex}"]`);
+    if (prevItem) {
+        prevItem.classList.add('active');
+
+        // Reset play button for new video (don't auto-play) - only if it's a video
+        const prevVideoEl = prevItem.querySelector('.tribe-video');
         if (prevVideoEl) {
-            const playButton = prevVideo.querySelector('.video-play-button');
+            const playButton = prevItem.querySelector('.video-play-button');
             if (playButton) {
                 playButton.classList.remove('pause');
                 playButton.classList.add('play');
                 playButton.setAttribute('aria-label', 'Play video');
             }
-            prevVideo.classList.remove('playing');
-            
+            prevItem.classList.remove('playing');
+
             // Reset video to beginning but don't play
             prevVideoEl.currentTime = 0;
             prevVideoEl.pause();
         }
     }
-    
+
     currentVideoIndex = prevIndex;
-    console.log('Switched to video:', prevIndex);
+    console.log('Switched to item:', prevIndex);
 }
 
 function goToVideo(index) {
     if (index === currentVideoIndex) return;
-    
+
     // Remove active class from current video and pause it
     const currentVideo = document.querySelector('.video-item.active');
     if (currentVideo) {
@@ -1715,12 +1715,12 @@ function goToVideo(index) {
         }
         currentVideo.classList.remove('active');
     }
-    
+
     // Add active class to target video
     const targetVideo = document.querySelector(`[data-video="${index}"]`);
     if (targetVideo) {
         targetVideo.classList.add('active');
-        
+
         // Reset play button for new video (don't auto-play)
         const targetVideoEl = targetVideo.querySelector('.tribe-video');
         if (targetVideoEl) {
@@ -1731,21 +1731,21 @@ function goToVideo(index) {
                 playButton.setAttribute('aria-label', 'Play video');
             }
             targetVideo.classList.remove('playing');
-            
+
             // Reset video to beginning but don't play
             targetVideoEl.currentTime = 0;
             targetVideoEl.pause();
         }
     }
-    
+
     currentVideoIndex = index;
     console.log('Switched to video:', index);
 }
 
 // Initialize video carousel
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM loaded, initializing video carousel...');
-    
+
     // Test all videos to make sure they exist and can load
     const allVideos = document.querySelectorAll('.tribe-video');
     allVideos.forEach((video, index) => {
@@ -1757,23 +1757,23 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error(`Video ${index + 1} failed to load:`, e);
         });
     });
-    
+
     // Add play/pause button event listeners
     const playButtons = document.querySelectorAll('.video-play-button');
     playButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             e.stopPropagation(); // Prevent event bubbling
-            
+
             const videoItem = this.closest('.video-item');
             const video = videoItem.querySelector('.tribe-video');
-            
+
             if (video) {
                 toggleVideoPlayback(video);
-                
+
                 // Track play/pause interaction with Vercel Analytics
                 if (typeof window.va !== 'undefined') {
                     const action = video.paused ? 'pause' : 'play';
-                    window.va('track', 'Video Interaction', { 
+                    window.va('track', 'Video Interaction', {
                         action: action,
                         video: videoItem.getAttribute('data-video')
                     });
@@ -1781,50 +1781,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Add overlay click event listeners for play/pause
     const playOverlays = document.querySelectorAll('.video-play-button-overlay');
     playOverlays.forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
+        overlay.addEventListener('click', function (e) {
             // Only handle clicks if they're not on the button itself
             if (!e.target.classList.contains('video-play-button')) {
                 const videoItem = this.closest('.video-item');
                 const video = videoItem.querySelector('.tribe-video');
-                
+
                 if (video) {
                     toggleVideoPlayback(video);
                 }
             }
         });
     });
-    
+
     // Add video ended event listeners to reset button state
     allVideos.forEach(video => {
-        video.addEventListener('ended', function() {
+        video.addEventListener('ended', function () {
             const videoItem = this.closest('.video-item');
             const playButton = videoItem.querySelector('.video-play-button');
-            
+
             if (playButton) {
                 playButton.classList.remove('pause');
                 playButton.classList.add('play');
                 playButton.setAttribute('aria-label', 'Play video');
             }
             videoItem.classList.remove('playing');
-            
+
             // Reset video to beginning
             this.currentTime = 0;
         });
     });
-    
+
     // Add click handlers to indicators
     const indicators = document.querySelectorAll('.video-indicator');
     indicators.forEach(indicator => {
-        indicator.addEventListener('click', function() {
+        indicator.addEventListener('click', function () {
             const videoIndex = parseInt(this.getAttribute('data-video'));
             goToVideo(videoIndex);
         });
     });
-    
+
     // Intersection observer to pause videos when not in view
     const videoCarousel = document.querySelector('.video-carousel');
     if (videoCarousel) {
@@ -1845,56 +1845,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }, { threshold: 0.5 });
-        
+
         observer.observe(videoCarousel);
     }
-    
+
     // Test the navigation functions
     console.log('Video carousel initialized. Current video index:', currentVideoIndex);
 });
 
 // Logo click handler - scroll to home page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Wait a bit for all elements to be ready
-    setTimeout(function() {
+    setTimeout(function () {
         const logo = document.querySelector('.navbar-brand');
         const logoImg = document.querySelector('.navbar-brand .brand-logo');
-        
+
         if (logo) {
             // Add click handler to the logo container
-            logo.addEventListener('click', function(e) {
+            logo.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 // Track logo click with Vercel Analytics
                 if (typeof window.va !== 'undefined') {
                     window.va('track', 'Logo Clicked', { action: 'scroll_to_home' });
                 }
-                
+
                 // Navigate to checkpoint 0 (home/hero section)
                 if (window.checkpointGoTo) {
                     window.checkpointGoTo(0);
                 }
             });
-            
+
             // Make sure the logo has the proper cursor style
             logo.style.cursor = 'pointer';
         }
-        
+
         // Also add click handler to the logo image itself for better coverage
         if (logoImg) {
-            logoImg.addEventListener('click', function(e) {
+            logoImg.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 // Navigate to checkpoint 0 (home/hero section)
                 if (window.checkpointGoTo) {
                     window.checkpointGoTo(0);
                 }
             });
-            
+
             logoImg.style.cursor = 'pointer';
         }
-        
+
     }, 100); // Small delay to ensure DOM is fully ready
 });

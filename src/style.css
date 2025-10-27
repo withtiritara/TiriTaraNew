@@ -128,6 +128,7 @@ body::-webkit-scrollbar,
     display: flex;
     align-items: center;
     gap: 2px; /* Reduced gap for closer spacing between About and Contact */
+    flex-shrink: 0;
 }
 
 /* Social icons container - for Instagram/WhatsApp icons */
@@ -135,6 +136,7 @@ body::-webkit-scrollbar,
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .nav-icon-link {
@@ -216,7 +218,7 @@ body::-webkit-scrollbar,
 @media (max-width: 768px) {
     .floating-navbar {
         width: 90%;
-        padding: 14px 22px;
+        padding: 12px 18px;
     }
     
     .navbar-brand .brand-text {
@@ -224,83 +226,78 @@ body::-webkit-scrollbar,
     }
     
     .navbar-brand .brand-logo {
-        height: 32px;
+        height: 28px;
     }
     
     .main-logo {
         max-width: 250px;
     }
-    
-    .navbar-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 15px;
-        margin-top: 10px;
-        flex-direction: column;
-        gap: 0;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        padding: 20px;
-    }
-    
-    .navbar-menu.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-    
-    .navbar-link {
-        padding: 12px 18px;
-        border-radius: 10px;
-        width: 100%;
-        text-align: center;
-        font-size: 0.8rem;
-    }
-    
-    .navbar-toggle {
-        display: flex;
+
+    /* Better mobile navbar organization */
+    .navbar-container {
+        gap: 8px;
+        align-items: center;
     }
 
-    /* Icon navigation for tablets */
-    .navbar-icons {
-        gap: 8px;
-    }
-    
-    .navbar-text-links {
-        gap: 3px; /* Even tighter spacing on mobile */
-    }
-    
-    .navbar-social-icons {
-        gap: 8px;
-    }
-    
-    .nav-icon-link {
-        padding: 6px;
-    }
-    
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-    }
-
-    /* On tablet and smaller, keep logo on left */
     .navbar-left {
-        gap: 12px;
+        gap: 8px;
+        flex-shrink: 0;
     }
 
     .navbar-right {
-        gap: 10px;
+        gap: 6px;
+        flex-shrink: 1;
+        overflow: hidden;
+        justify-content: flex-end;
     }
 
-    /* These styles are now handled by the more specific media queries below */
+    /* Organize navbar elements better for mobile */
+    .navbar-text-links {
+        gap: 2px;
+        order: 1;
+    }
+    
+    .navbar-social-icons {
+        gap: 6px;
+        order: 2;
+    }
+    
+    .navbar-link.join-tribe {
+        order: 3;
+        font-size: 0.8rem !important;
+        padding: 8px 12px !important;
+        border-radius: 12px !important;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    .nav-text-link {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+    
+    /* Hide Contact link on mobile */
+    .nav-text-link[href="contact-us.html"] {
+        display: none;
+    }
+    
+    .nav-icon-link {
+        padding: 4px;
+    }
+    
+    .nav-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Hide unused elements on mobile */
+    .navbar-menu {
+        display: none;
+    }
+    
+    .navbar-toggle {
+        display: none;
+    }
 
     /* make social icons slightly smaller on mobile */
     .navbar-social {
@@ -317,24 +314,17 @@ body::-webkit-scrollbar,
         width: 18px;
     }
     
-    .navbar-toggle.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .navbar-toggle.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-    
-    .navbar-toggle.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-    
     .hero-title {
         font-size: clamp(4rem, 12vw, 8rem);
     }
     
     .hero-text-svg {
-        font-size: 48px;
+        font-size: 56px;
+    }
+    
+    /* Move Tiri Tara text closer to Welcome text on mobile */
+    .hero-text-svg {
+        transform: translateY(-15px);
     }
     
     .hero-description-svg {
@@ -686,6 +676,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     box-shadow: 0 8px 24px rgba(255, 180, 50, 0.12);
     transition: none !important;
     transform: none !important;
+    flex-shrink: 0;
+    white-space: nowrap;
     /* transform-origin: center; */
 }
 
@@ -697,6 +689,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 @media (max-width: 768px) {
     .navbar-link.join-tribe {
         padding: 10px 16px;
+        font-size: 0.9rem !important;
     }
 }
 
@@ -751,20 +744,22 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .b2b-form .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.9rem;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-field {
     display: flex;
     flex-direction: column;
+    margin-bottom: 0.5rem;
 }
 
 .form-field.fullwidth { grid-column: 1 / -1; }
 
 .label-title {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #333;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
     font-family: var(--description-font);
 }
@@ -777,10 +772,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .b2b-form select,
 .b2b-form textarea {
     border: 1px solid rgba(27,23,52,0.06);
-    padding: 0.6rem 0.7rem;
+    padding: 0.8rem 1rem;
     border-radius: 8px;
     font-family: var(--description-font);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #111;
     outline: none;
     transition: box-shadow 0.15s ease, border-color 0.12s ease;
@@ -806,7 +801,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 .b2b-form .form-actions {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -989,8 +984,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .tribe-story-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 12px;
+    background: #000000;
 }
 
 /* Video Play/Pause Button Overlay */
@@ -1059,6 +1056,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     background: #333;
     box-shadow: 8px 0 0 #333;
     border-radius: 1px;
+    margin-left: -6px;
 }
 
 /* Hide overlay when video is playing (unless hovering) */
@@ -1089,7 +1087,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     .video-play-button.pause::before {
         width: 3px;
         height: 16px;
-        box-shadow: 6px 0 0 #333;
+        box-shadow: 8px 0 0 #333;
+        margin-left: -6px;
     }
     
     /* Always show overlay on mobile for better touch interaction */
@@ -1274,7 +1273,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
     /* SVG text elements for tablet */
     .hero-text-svg {
-        font-size: 60px !important;
+        font-size: 68px !important;
+        transform: translateY(-12px) !important;
     }
 
     .story-text-svg {
@@ -1640,6 +1640,63 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
 
 
+/* Medium mobile devices - 426px to 490px */
+@media (min-width: 426px) and (max-width: 490px) {
+    /* SVG text elements for medium mobile */
+    .hero-text-svg {
+        font-size: 50px !important;
+        transform: translateY(-18px) !important;
+    }
+    .floating-navbar {
+        width: 94%;
+        padding: 10px 14px;
+    }
+    
+    .navbar-container {
+        gap: 7px;
+    }
+    
+    .navbar-right {
+        gap: 5px;
+    }
+    
+    .navbar-brand .brand-logo {
+        height: 26px;
+    }
+    
+    .navbar-text-links {
+        gap: 2px;
+    }
+    
+    .navbar-social-icons {
+        gap: 5px;
+    }
+    
+    .navbar-link.join-tribe {
+        font-size: 0.75rem !important;
+        padding: 7px 11px !important;
+    }
+    
+    .nav-text-link {
+        font-size: 0.75rem;
+        padding: 5px 7px;
+    }
+    
+    /* Hide Contact link on medium mobile */
+    .nav-text-link[href="contact-us.html"] {
+        display: none;
+    }
+    
+    .nav-icon-link {
+        padding: 4px;
+    }
+    
+    .nav-icon {
+        width: 17px;
+        height: 17px;
+    }
+}
+
 /* Small devices starting from 425px and smaller - Priority fixes */
 @media (max-width: 425px) {
     /* Fix join form popup on mobile */
@@ -1681,7 +1738,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     }
     
     .navbar-container {
-        gap: 8px;
+        gap: 6px;
         align-items: center;
     }
     
@@ -1691,42 +1748,53 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     }
     
     .navbar-right {
-        gap: 6px;
+        gap: 4px;
         flex-shrink: 1;
         overflow: hidden;
+        justify-content: flex-end;
     }
     
     .navbar-brand .brand-logo {
         height: 24px;
     }
     
-    /* Icon navigation for small screens */
-    .navbar-icons {
-        gap: 6px;
-    }
-    
+    /* Better organization for small screens */
     .navbar-text-links {
-        gap: 2px; /* Very tight spacing on small mobile screens */
+        gap: 1px;
+        order: 1;
     }
     
     .navbar-social-icons {
-        gap: 6px;
+        gap: 4px;
+        order: 2;
+    }
+    
+    .navbar-link.join-tribe {
+        order: 3;
+        font-size: 0.7rem !important;
+        padding: 6px 10px !important;
+        border-radius: 10px !important;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    .nav-text-link {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+    }
+    
+    /* Hide Contact link on small mobile */
+    .nav-text-link[href="contact-us.html"] {
+        display: none;
     }
     
     .nav-icon-link {
-        padding: 4px;
+        padding: 3px;
     }
     
     .nav-icon {
-        width: 18px;
-        height: 18px;
-    }
-    
-    /* Join tribe button smaller */
-    .navbar-link.join-tribe {
-        font-size: 0.6rem !important;
-        padding: 3px 6px !important;
-        border-radius: 10px !important;
+        width: 16px;
+        height: 16px;
     }
     
     /* Footer fixes for small screens - prevent overflow */
@@ -1739,31 +1807,34 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     
     .footer-inner {
         flex-direction: column;
-        gap: 2px;
-        padding: 3px 6px;
+        gap: 8px;
+        padding: 8px 12px;
         align-items: center;
         max-width: 100%;
+        border-radius: 12px;
+        margin: 0 8px;
     }
     
     .footer-top-row {
         flex-direction: row;
-        gap: 4px;
+        gap: 8px;
         align-items: center;
         white-space: nowrap;
     }
     
     .footer-top-row p,
     .footer-contact p {
-        font-size: 0.55rem !important;
+        font-size: 0.7rem !important;
         margin: 0;
-        line-height: 1.2;
+        line-height: 1.3;
+        font-weight: 500;
     }
     
     /* Make footer links wrap properly in multiple lines */
     .footer-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 1px;
+        gap: 6px;
         justify-content: center;
         align-items: center;
         max-width: 100%;
@@ -1771,29 +1842,24 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     }
     
     .footer-link {
-        font-size: 0.45rem !important;
-        padding: 1px 2px !important;
-        line-height: 1.1;
+        font-size: 0.65rem !important;
+        padding: 4px 8px !important;
+        line-height: 1.2;
         text-align: center;
         white-space: nowrap;
-        border-radius: 2px;
+        border-radius: 6px;
         flex-shrink: 1;
         min-width: 0;
+        font-weight: 500;
     }
     
     /* Ensure the longest footer link doesn't overflow */
     .footer-link:nth-child(2) {
         /* "Refund and Cancellation Policies" - longest text */
-        font-size: 0.4rem !important;
+        font-size: 0.6rem !important;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 100px;
-    }
-    
-    /* Alternative: Break the longest link into shorter words */
-    .footer-link:nth-child(2)::after {
-        content: "";
-        white-space: normal;
+        max-width: 120px;
     }
 
     /* Mobile Checkpoint Content Styles */
@@ -1905,7 +1971,8 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     /* SVG text elements for mobile */
     .hero-text-svg {
-        font-size: 36px !important;
+        font-size: 42px !important;
+        transform: translateY(-20px) !important;
     }
 
     .hero-subheading-svg {
@@ -2617,73 +2684,80 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .site-footer {
     position: fixed;
     bottom: 0px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     color: #ffffffaa;
     opacity: 0;
     pointer-events: none;
     z-index: 10;
-    width: auto;
+    width: 100vw;
 }
 .site-footer .footer-inner {
     display: flex;
-    gap: 12px;
+    justify-content: space-between;
     align-items: center;
-    background: rgba(0,0,0,0.25);
-    padding: 8px 14px;
-    border-radius: 999px;
-    backdrop-filter: blur(6px);
+    padding: 12px 20px;
     flex-wrap: nowrap;
     white-space: nowrap;
+    border-top: 1px solid rgba(255,255,255,0.2);
 }
 .footer-inner p{
     font-family: var(--description-font);
 }
 .site-footer p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 .footer-contact {
     font-family: var(--description-font);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     white-space: nowrap;
 }
 .footer-contact p {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 .phone-link {
-    color: #ffffffaa;
+    color: #ffffffcc;
     text-decoration: none;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
+    font-weight: 600;
 }
 .phone-link:hover {
     color: #ffffff;
     text-decoration: underline;
+    transform: translateY(-1px);
 }
 .footer-top-row {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
 }
 .footer-links {
     display: flex;
-    gap: 8px;
+    gap: 12px;
     align-items: center;
 }
 .footer-link {
     font-family: var(--description-font);
-    font-size: 0.85rem;
-    color: #ffffffaa;
+    font-size: 0.9rem;
+    color: #ffffffbb;
     text-decoration: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
     white-space: nowrap;
+    font-weight: 500;
+    border: 1px solid transparent;
 }
 .footer-link:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-1px);
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .social-icons {
     display: flex;

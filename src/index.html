@@ -134,9 +134,8 @@
                 </button>
                 <div class="video-carousel">
                     <div class="video-item active" data-video="1">
-                        <video class="tribe-video" loop muted preload="none"
-                            data-lazy-video="./assets/videos/story1.mp4">
-                            <source data-src="./assets/videos/story1.mp4" type="video/mp4">
+                        <video class="tribe-video" loop muted preload="metadata">
+                            <source src="./assets/videos/story1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <div class="video-play-button-overlay">
@@ -144,9 +143,8 @@
                         </div>
                     </div>
                     <div class="video-item" data-video="2">
-                        <video class="tribe-video" loop muted preload="none"
-                            data-lazy-video="./assets/videos/story2.mp4">
-                            <source data-src="./assets/videos/story2.mp4" type="video/mp4">
+                        <video class="tribe-video" loop muted preload="metadata">
+                            <source src="./assets/videos/story2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <div class="video-play-button-overlay">
@@ -154,10 +152,10 @@
                         </div>
                     </div>
                     <div class="video-item" data-video="3">
-                        <img src="./assets/videos/story3.png" alt="Story 3" class="tribe-story-image">
+                        <img class="tribe-story-image" src="./assets/videos/testimonial1.jpg" alt="Testimonial 1">
                     </div>
                     <div class="video-item" data-video="4">
-                        <img src="./assets/videos/story4.png" alt="Story 4" class="tribe-story-image">
+                        <img class="tribe-story-image" src="./assets/videos/testimonial2.jpg" alt="Testimonial 2">
                     </div>
                 </div>
                 <button class="video-nav-btn video-nav-right" onclick="nextVideo()">
@@ -532,9 +530,6 @@
         <div class="footer-inner">
             <div class="footer-top-row">
                 <p>&copy;2025 Tiri Tara</p>
-                <div class="footer-contact">
-                    <p>Phone: <a href="tel:+919876543210" class="phone-link">+91 81431 20853</a></p>
-                </div>
             </div>
             <div class="footer-links">
                 <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of
@@ -667,7 +662,7 @@
 
                             <label class="form-field fullwidth">
                                 <span class="label-title">Additional Notes / Vision <small>(optional)</small></span>
-                                <textarea name="notes" rows="2"
+                                <textarea name="notes" rows="1"
                                     placeholder="Anything else you'd like us to know?"></textarea>
                             </label>
                         </div>
