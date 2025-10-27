@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Journey Details - Tiri Tara</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Journey Details Page Specific Styles */
+        .journey-details-page {
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding-top: 100px;
+        }
+
+        .journey-details-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .journey-card {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            width: 90%;
+            margin: 5rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .journey-card h1 {
+            font-family: var(--description-font);
+            color: #e67e22;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 0.75rem;
+            grid-column: 1 / -1;
+        }
+
+        .journey-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+            align-items: start;
+        }
+
+        .journey-info {
+            margin-bottom: 1rem;
+        }
+
+        .journey-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.5rem 0;
+        }
+
+        .journey-info-label {
+            font-family: var(--description-font);
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 130px;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .journey-info-value {
+            font-family: var(--description-font);
+            color: #2c3e50;
+            text-align: right;
+            flex: 1;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .price-highlight {
+            color: #000000;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .horizontal-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e67e22, transparent);
+            margin: 1.5rem 0;
+            border: none;
+            grid-column: 1 / -1;
+        }
+
+        .what-to-expect {
+            margin-top: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .what-to-expect h2 {
+            font-family: var(--description-font);
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .what-to-expect p {
+            font-family: var(--description-font);
+            color: #2c3e50;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            font-weight: 400;
+            text-align: left;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .what-to-expect p:last-child {
+            margin-bottom: 0;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 120px;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            color: #e67e22;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-now-section {
+            text-align: center;
+            margin-top: 0.75rem;
+            padding-top: 0;
+            grid-column: 1 / -1;
+        }
+
+        .book-now-btn {
+            font-family: var(--description-font);
+            background: linear-gradient(135deg, #e67e22 100%, #d35400 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+
+        /* Floating navbar - use default styles from style.css */
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .journey-card {
+                margin: 1rem;
+                padding: 1.5rem;
+                max-width: none;
+                width: calc(100% - 2rem);
+            }
+
+            .journey-card h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .journey-content-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .journey-info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem 0;
+            }
+
+            .journey-info-label {
+                margin-bottom: 0.25rem;
+                min-width: auto;
+                font-size: 0.85rem;
+            }
+
+            .journey-info-value {
+                text-align: left;
+                margin-left: 0;
+                font-size: 0.85rem;
+            }
+
+            .back-button {
+                position: static;
+                margin: 1rem;
+                display: inline-block;
+            }
+
+            .what-to-expect p {
+                text-align: left;
+                font-size: 0.9rem;
+            }
+
+            .what-to-expect h2 {
+                font-size: 1.2rem;
+            }
+
+            .book-now-btn {
+                padding: 0.75rem 2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Coming Soon Styles */
+        .coming-soon {
+            text-align: center;
+            color: #2c3e50;
+            font-family: var(--description-font);
+            padding: 1rem 0;
+        }
+
+        .coming-soon h2 {
+            color: #e67e22;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .coming-soon p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .coming-soon .tribe-join-btn {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .coming-soon .tribe-join-btn:hover {
+            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+        }
+
+        .coming-soon .book-now-btn {
+            background: linear-gradient(135deg, #e67e22 100%, #d35400 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2.5rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+            font-family: var(--description-font);
+        }
+
+    </style>
+</head>
+
+<body class="journey-details-page" id="journey-page-body">
+    <!-- Floating Navigation -->
+    <nav class="floating-navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <!-- Logo moved to extreme left -->
+                <div class="navbar-brand">
+                    <a href="index.html">
+                        <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="navbar-right">
+                <!-- Navigation links and icons grouped together -->
+                <div class="navbar-text-links">
+                    <a href="all-trips.html" class="nav-text-link" title="All Trips" aria-label="All Trips">Trips</a>
+                    <a href="about-us.html" class="nav-text-link" title="About Us" aria-label="About Us">About</a>
+                    <a href="contact-us.html" class="nav-text-link" title="Contact Us"
+                        aria-label="Contact Us">Contact</a>
+                </div>
+                <div class="navbar-social-icons">
+                    <a href="https://www.instagram.com/withtiritara?igsh=NGg5YXF3NDNuNHNm&utm_source=qr"
+                        class="nav-icon-link" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+                        <img src="./assets/social/instagram.svg" alt="Instagram" class="nav-icon">
+                    </a>
+                    <a href="https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc" class="nav-icon-link"
+                        target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+                        <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="nav-icon">
+                    </a>
+                </div>
+                <a onclick="openJoinForm(event, true)" class="navbar-link join-tribe" id="nav-join-tribe">Join the
+                    Tribe</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Journey Card -->
+    <div class="journey-card" id="journey-card">
+        <!-- Content will be populated by JavaScript -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer" aria-label="Site footer"
+        style="position: relative; z-index: 2; background: rgba(45, 90, 45, 0.95); backdrop-filter: blur(10px);">
+        <div class="footer-inner">
+            <div class="footer-top-row">
+                <p>&copy;2025 Tiri Tara</p>
+                <div class="footer-contact">
+                    <p>Phone: <a href="tel:+919876543210" class="phone-link">+91 81431 20853</a></p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of
+                    Service</a>
+                <a href="refund-cancellation-policy.html" target="_blank" rel="noopener noreferrer"
+                    class="footer-link">Refund and Cancellation Policies</a>
+                <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Privacy
+                    Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Join Form Popup Modal -->
+    <div id="joinFormPopup" class="form-popup-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="form-popup-container">
+            <div class="form-popup-header">
+                <h2 class="form-popup-title">Join the Tiri Tribe</h2>
+                <div class="form-header-actions">
+                    <button class="form-close-btn" onclick="closeJoinForm()">&times;</button>
+                </div>
+            </div>
+            <div class="form-popup-content">
+                <iframe
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSe5HxGSO54PIwLqk9pgOAM8XMpo86Pgz4HiHf0i17p-lFXX9w/viewform?embedded=true"
+                    class="google-form-iframe" title="Join the Tiri Tribe - Signup Form" width="100%" height="100%"
+                    frameborder="0" marginheight="0" marginwidth="0" aria-label="Join the Tiri Tribe form">
+                    Loading…
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Journey data configuration
+        const journeyData = {
+            hampi: {
+                title: "Hampi Weekend Getaway",
+                backgroundImage: "./journeys/Hampi.png",
+                dates: "7th – 10th November 2025",
+                start: "7th November, Friday, 8:00 PM (from Hyderabad)",
+                return: "10th November, Monday, 7:00 AM (to Hyderabad)",
+                price: "Dorm (8-share): ₹7,499 Room (2-share): ₹7,899",
+                maxSpots: "15 only",
+                lastDate: "1st November",
+                includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
+                description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
+                status: "active"
+            },
+            panchgani: {
+                title: "Panchgani",
+                backgroundImage: "./journeys/Panchgani.png",
+                description: "Get ready for an amazing hill station experience in Panchgani. Details coming soon!",
+                status: "To be Revealed Soon!"
+            },
+            araku: {
+                title: "Araku",
+                backgroundImage: "./journeys/araku.png",
+                description: "Discover the beautiful Araku Valley with us. More details will be revealed soon!",
+                status: "To be Revealed Soon!"
+            }
+        };
+
+        // Initialize page based on URL parameter
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const destination = urlParams.get('destination');
+
+            if (destination && journeyData[destination.toLowerCase()]) {
+                loadJourneyDetails(destination.toLowerCase());
+            } else {
+                // If no valid destination, redirect to main page
+                window.location.href = 'index.html#journeys';
+            }
+        });
+
+        function loadJourneyDetails(destination) {
+            const data = journeyData[destination];
+            if (!data) return;
+
+            // Update page title
+            document.getElementById('page-title').textContent = `${data.title} - Tiri Tara`;
+            document.title = `${data.title} - Tiri Tara`;
+
+            // Set background image
+            const body = document.getElementById('journey-page-body');
+            body.style.backgroundImage = `url('${data.backgroundImage}')`;
+
+            // Generate content based on status
+            const cardElement = document.getElementById('journey-card');
+
+            if (data.status === 'active') {
+                cardElement.innerHTML = generateActiveJourneyCard(data);
+            } else {
+                cardElement.innerHTML = generateComingSoonCard(data);
+            }
+
+            // Setup back button
+            setupBackButton();
+        }
+
+        function generateActiveJourneyCard(data) {
+            return `
+                <h1>${data.title}</h1>
+                
+                <div class="journey-content-grid">
+                    <div class="journey-info">
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Dates:</span>
+                            <span class="journey-info-value">${data.dates}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Start:</span>
+                            <span class="journey-info-value">${data.start}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Return:</span>
+                            <span class="journey-info-value">${data.return}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Price:</span>
+                            <span class="journey-info-value price-highlight">${data.price}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Max Spots:</span>
+                            <span class="journey-info-value">${data.maxSpots}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Last day to request an invite:</span>
+                            <span class="journey-info-value">${data.lastDate}</span>
+                        </div>
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">Includes:</span>
+                            <span class="journey-info-value">${data.includes}</span>
+                        </div>
+                    </div>
+
+                    <div class="what-to-expect">
+                        <h2>What to Expect:</h2>
+                        ${data.description.split('\n\n').map(para => `<p>${para.trim()}</p>`).join('')}
+                    </div>
+                </div>
+
+                <div class="book-now-section">
+                    <button class="book-now-btn" onclick="requestInvite('${data.title}')">
+                        Request Invite
+                    </button>
+                </div>
+            `;
+        }
+
+        function generateComingSoonCard(data) {
+            return `
+                <h1>${data.title}</h1>
+                
+                <div class="coming-soon">
+                    <h2>To be Revealed Soon!</h2>
+                    <p>${data.description}</p>
+                    <button class="book-now-btn" onclick="requestInvite('${data.title}')">
+                        Request Invite
+                    </button>
+                </div>
+            `;
+        }
+
+        function setupBackButton() {
+            const backButton = document.getElementById('back-button');
+            backButton.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Check if we came from the main page
+                if (document.referrer.includes(window.location.origin)) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'index.html#journeys';
+                }
+            });
+        }
+
+        function requestInvite(destination) {
+            // Create WhatsApp URL with phone number and pre-filled message
+            const phoneNumber = '918143120853'; // +91 81431 20853
+            const message = `Hi, Don't go to ${destination} without me!`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            // Track booking request
+            if (typeof window.va !== 'undefined') {
+                window.va('track', 'Booking Requested', { destination: destination });
+            }
+
+            // Open in new tab/window
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Join form functionality
+        function openJoinForm(event, updateURL = false) {
+            if (event) event.preventDefault();
+
+            const popup = document.getElementById('joinFormPopup');
+            if (popup) {
+                popup.style.display = 'flex';
+                popup.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+
+                popup.addEventListener('click', function (e) {
+                    if (e.target === popup) {
+                        closeJoinForm();
+                    }
+                });
+
+                const closeBtn = popup.querySelector('.form-close-btn');
+                if (closeBtn) {
+                    closeBtn.focus();
+                }
+            }
+        }
+
+        function closeJoinForm() {
+            const popup = document.getElementById('joinFormPopup');
+            if (popup) {
+                popup.style.display = 'none';
+                popup.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+
+</html>

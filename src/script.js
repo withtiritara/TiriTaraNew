@@ -139,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let speed = 100;
 let height = document.querySelector("svg").getBBox().height;
-//let svgCord = screenToSVG(document.querySelector("svg"), window.innerWidth / 2, window.innerHeight / 2);
 
 gsap.set("#h2-1", { opacity: 0 });
 gsap.set("#bg_grad", { attr: { cy: "-50" } });
@@ -225,15 +224,11 @@ ScrollTrigger.create({
     start: "1% top",
     end: "2150 100%",
     scrub: 2
-    //markers: true,
-    //preventOverlaps: true, //if true, it will affect all preceding ScrollTriggers (you can use for example 'scrollTrigger1')
-    //fastScrollEnd: true,   //(default 2500px/s)
 });
 
 //sun motion
 sun.fromTo("#bg_grad", { attr: { cy: "-50" } }, { attr: { cy: "330" } }, 0);
 //bg change
-//sun.to("#sun", { attr: { offset: "0.15" } }, 0);
 sun.to("#bg_grad stop:nth-child(2)", { attr: { offset: "0.15" } }, 0);
 sun.to("#bg_grad stop:nth-child(3)", { attr: { offset: "0.18" } }, 0);
 sun.to("#bg_grad stop:nth-child(4)", { attr: { offset: "0.25" } }, 0);
@@ -266,7 +261,6 @@ gsap.fromTo(
         y: 20,
         x: 100,
         scale: 0.8,
-        //transformOrigin: "50% 50%",
         ease: "power3.out",
         scrollTrigger: {
             trigger: ".scrollElement",
@@ -287,7 +281,6 @@ gsap.fromTo(
                 gsap.set("#bats", { opacity: 1 });
             },
             onLeave: function () {
-                //gsap.to("#bats", { opacity: 0, delay: 2 });
             }
         }
     }
@@ -424,7 +417,6 @@ window.onbeforeunload = function () {
     if (!scrollElement) return;
 
     // percentages of the scrollElement's scrollable range we want checkpoints at
-    // const percents = [0, 0.15, 0.4, 0.6, 1];
     const percents = [0, 0.15, 0.4, 0.6, 0.8, 1]; 
     let maxScroll = Math.max(0, scrollElement.offsetHeight - window.innerHeight);
     let checkpoints = percents.map(p => Math.round(p * maxScroll));
@@ -628,14 +620,6 @@ window.onbeforeunload = function () {
     window.addEventListener('wheel', wheelHandler, { passive: false });
 })();
 
-// function screenToSVG(svg, x, y) {
-//     var pt = svg.createSVGPoint();
-//     pt.x = x;
-//     pt.y = y;
-//     var cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
-//     return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
-// }
-
 // Enhanced checkpoint interaction safety
 // Add safeguards to ensure only active checkpoint interactions work
 function isCheckpointActive(element) {
@@ -715,11 +699,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('escape-modal');
     const backdrop = document.getElementById('escape-modal-backdrop');
     const closeBtn = document.getElementById('escape-modal-close');
-    const modalImage = document.getElementById('escape-modal-image');
     const modalTitle = document.getElementById('escape-modal-title');
-    const modalDesc = document.getElementById('escape-modal-desc');
-    const modalJourney = document.getElementById('escape-modal-journey');
-    const modalPrice = document.getElementById('escape-modal-price');
+    const modalUnifiedContent = document.getElementById('escape-modal-unified-content');
     const modalBookBtn = document.getElementById('escape-modal-book');
 
     // Keep reference to the last clicked card so we can use per-card book links if provided
@@ -733,99 +714,42 @@ document.addEventListener('DOMContentLoaded', function () {
             window.va('track', 'Escape Card Viewed', { destination: data.title || 'Unknown' });
         }
         
-        // Basic modal data
-        modalImage.src = data.imgSrc || '';
-        modalImage.alt = data.imgAlt || '';
+        // Set the title
         modalTitle.textContent = data.title || '';
-        modalPrice.textContent = data.price || 'To be revealed soon';
         
-        // Get all the new modal elements
-        const datesSection = document.getElementById('escape-modal-dates-section');
-        const scheduleSection = document.getElementById('escape-modal-schedule-section');
-        const accommodationSection = document.getElementById('escape-modal-accommodation-section');
-        const includesSection = document.getElementById('escape-modal-includes-section');
-        const availabilitySection = document.getElementById('escape-modal-availability-section');
-        const expectationSection = document.getElementById('escape-modal-expectation-section');
-        const simpleJourneySection = document.getElementById('escape-modal-simple-journey');
+        // Create unified content based on the destination
+        let content = '';
         
-        const datesEl = document.getElementById('escape-modal-dates');
-        const startEl = document.getElementById('escape-modal-start');
-        const returnEl = document.getElementById('escape-modal-return');
-        const accommodationEl = document.getElementById('escape-modal-accommodation');
-        const includesEl = document.getElementById('escape-modal-includes');
-        const maxSpotsEl = document.getElementById('escape-modal-max-spots');
-        const lastDateEl = document.getElementById('escape-modal-last-date');
-        
-        // Check if we have detailed data (for Hampi)
-        const hasDetailedData = data.dates || data.start || data.return || data.accommodation;
-        
-        if (hasDetailedData) {
-            // Hide simple journey section and show detailed sections
-            if (simpleJourneySection) simpleJourneySection.style.display = 'none';
-            
-            // Show and populate detailed sections
-            if (data.dates && datesSection && datesEl) {
-                datesSection.style.display = 'block';
-                datesEl.textContent = data.dates;
-            } else if (datesSection) {
-                datesSection.style.display = 'none';
-            }
-            
-            if ((data.start || data.return) && scheduleSection && startEl && returnEl) {
-                scheduleSection.style.display = 'block';
-                startEl.textContent = data.start || 'TBD';
-                returnEl.textContent = data.return || 'TBD';
-            } else if (scheduleSection) {
-                scheduleSection.style.display = 'none';
-            }
-            
-            if (data.accommodation && accommodationSection && accommodationEl) {
-                accommodationSection.style.display = 'block';
-                accommodationEl.textContent = data.accommodation;
-            } else if (accommodationSection) {
-                accommodationSection.style.display = 'none';
-            }
-            
-            if (data.includes && includesSection && includesEl) {
-                includesSection.style.display = 'block';
-                includesEl.textContent = data.includes;
-            } else if (includesSection) {
-                includesSection.style.display = 'none';
-            }
-            
-            if ((data.maxSpots || data.lastDate) && availabilitySection && maxSpotsEl && lastDateEl) {
-                availabilitySection.style.display = 'block';
-                maxSpotsEl.textContent = data.maxSpots || 'TBD';
-                lastDateEl.textContent = data.lastDate || 'TBD';
-            } else if (availabilitySection) {
-                availabilitySection.style.display = 'none';
-            }
-            
-            if (data.journey && expectationSection) {
-                expectationSection.style.display = 'block';
-                modalDesc.textContent = data.journey;
-            } else if (expectationSection) {
-                expectationSection.style.display = 'none';
-                modalDesc.textContent = '';
-            }
+        if (data.title === 'Hampi') {
+            content = `Hampi Weekend Getaway
+
+Dates: 7th – 10th November 2025
+Start: 7th November, Friday, 8:00 PM (from Hyderabad)
+Return: 10th November, Monday, 7:00 AM (to Hyderabad)
+Price: ₹7,899 per person
+Max Spots: 16 only
+Last day to request an invite: 1st November
+Includes: Travel, Stay, Food (₹300/day meal cap), Tickets and Activities
+
+What to Expect:
+Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.
+You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.
+When the last sunset fades, all you'll want is one more evening in Hampi.`;
         } else {
-            // Show simple journey section and hide detailed sections
-            if (simpleJourneySection) simpleJourneySection.style.display = 'block';
-            if (datesSection) datesSection.style.display = 'none';
-            if (scheduleSection) scheduleSection.style.display = 'none';
-            if (accommodationSection) accommodationSection.style.display = 'none';
-            if (includesSection) includesSection.style.display = 'none';
-            if (availabilitySection) availabilitySection.style.display = 'none';
-            if (expectationSection) {
-                expectationSection.style.display = 'block';
-                modalDesc.textContent = data.description || '';
-            }
-            
-            // Use fallback data for simple display  
-            modalJourney.textContent = data.journey || 'To be revealed soon';
+            // Default content for other destinations
+            content = `${data.title || 'Journey Details'}
+
+Coming Soon
+Details about this destination will be revealed soon.
+Stay tuned for an amazing experience!`;
         }
         
-        // store card reference if available
+        // Set the unified content
+        if (modalUnifiedContent) {
+            modalUnifiedContent.textContent = content;
+        }
+        
+        // Store card reference if available
         lastClickedCard = data._card || null;
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -871,7 +795,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Click on card to open modal
+    // Click on card to navigate to journey details page
     document.querySelectorAll('.escape-card').forEach(card => {
         card.addEventListener('click', function (e) {
             // Check if join form is open - prevent escape card clicks
@@ -891,36 +815,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
-            // Collect basic data from card
-            const img = card.querySelector('.card-image img');
+            // Get the destination name from the card title
             const title = card.querySelector('.card-title')?.textContent || '';
-            const desc = card.querySelector('.card-description')?.textContent || '';
-
-            // Collect all detailed data attributes
-            const cardData = {
-                imgSrc: img?.src,
-                imgAlt: img?.alt,
-                title: title,
-                description: desc,
-                journey: card.getAttribute('data-journey'),
-                price: card.getAttribute('data-price'),
-                dates: card.getAttribute('data-dates'),
-                start: card.getAttribute('data-start'),
-                return: card.getAttribute('data-return'),
-                accommodation: card.getAttribute('data-accommodation'),
-                includes: card.getAttribute('data-includes'),
-                maxSpots: card.getAttribute('data-max-spots'),
-                lastDate: card.getAttribute('data-last-date'),
-                _card: card
-            };
-
-            // Fallback to simple data if no detailed attributes exist
-            if (!cardData.journey && !cardData.price) {
-                cardData.journey = 'To be revealed soon';
-                cardData.price = 'To be revealed soon';
+            
+            if (title) {
+                // Track journey page navigation with Vercel Analytics
+                if (typeof window.va !== 'undefined') {
+                    window.va('track', 'Journey Page Opened', { destination: title });
+                }
+                
+                // Navigate to journey details page in a new tab
+                const destination = title.toLowerCase().replace(/\s+/g, '');
+                window.open(`journey-details.html?destination=${destination}`, '_blank');
             }
-
-            openModal(cardData, true);
         });
     });
 
@@ -939,7 +846,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Create WhatsApp URL with phone number and pre-filled message
         const phoneNumber = '918143120853'; // +91 81431 20853
-        const message = `Hi, Take me along to ${tripPlace} with you!`;
+        const message = `Hi, Don't go to ${tripPlace} without me!`;
         const encodedMessage = encodeURIComponent(message);
         const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
@@ -1168,74 +1075,44 @@ function updateURLForPopup(formType) {
     window.history.pushState({ form: formType }, '', newURL);
 }
 
-// Function to update URL for journey modal
+// Function to update URL for journey page
 function updateURLForJourney(destination) {
-    const baseURL = window.location.origin + window.location.pathname;
-    const newURL = `${baseURL}?journey=${encodeURIComponent(destination)}`;
+    const baseURL = window.location.origin + window.location.pathname.replace('index.html', '');
+    const newURL = `${baseURL}journey-details.html?destination=${encodeURIComponent(destination)}`;
     window.history.pushState({ journey: destination }, '', newURL);
 }
 
 // Function to get shareable URL for journey
 function getJourneyURL(destination) {
-    const baseURL = window.location.origin + window.location.pathname;
-    return `${baseURL}?journey=${encodeURIComponent(destination)}`;
+    const baseURL = window.location.origin + window.location.pathname.replace('index.html', '');
+    return `${baseURL}journey-details.html?destination=${encodeURIComponent(destination)}`;
 }
 
-// Function to open journey modal from URL parameter
+// Function to open journey page from URL parameter
 function openJourneyFromURL(journeyParam) {
-    // Decode the journey parameter and find matching card
+    // Decode the journey parameter and redirect to journey details page
     const decodedJourney = decodeURIComponent(journeyParam).toLowerCase();
     
-    // Find the matching escape card
-    const cards = document.querySelectorAll('.escape-card');
-    let matchingCard = null;
+    // Map URL parameters to destination names
+    const destinationMap = {
+        'hampi': 'hampi',
+        'panchgani': 'panchgani', 
+        'araku': 'araku'
+    };
     
-    cards.forEach(card => {
-        const title = card.querySelector('.card-title')?.textContent || '';
-        const normalizedTitle = title.toLowerCase().replace(/\s+/g, '-');
-        
-        if (normalizedTitle === decodedJourney) {
-            matchingCard = card;
-        }
-    });
+    const destination = destinationMap[decodedJourney];
     
-    if (matchingCard) {
-        // Collect all data from the matching card using same structure as click handler
-        const img = matchingCard.querySelector('.card-image img');
-        const title = matchingCard.querySelector('.card-title')?.textContent || '';
-        const desc = matchingCard.querySelector('.card-description')?.textContent || '';
-
-        // Collect all detailed data attributes
-        const cardData = {
-            imgSrc: img?.src,
-            imgAlt: img?.alt,
-            title: title,
-            description: desc,
-            journey: matchingCard.getAttribute('data-journey'),
-            price: matchingCard.getAttribute('data-price'),
-            dates: matchingCard.getAttribute('data-dates'),
-            start: matchingCard.getAttribute('data-start'),
-            return: matchingCard.getAttribute('data-return'),
-            accommodation: matchingCard.getAttribute('data-accommodation'),
-            includes: matchingCard.getAttribute('data-includes'),
-            maxSpots: matchingCard.getAttribute('data-max-spots'),
-            lastDate: matchingCard.getAttribute('data-last-date'),
-            _card: matchingCard
-        };
-
-        // Fallback to simple data if no detailed attributes exist
-        if (!cardData.journey && !cardData.price) {
-            cardData.journey = 'To be revealed soon';
-            cardData.price = 'To be revealed soon';
-        }
-        
-        // Track modal opening from URL
+    if (destination) {
+        // Track journey opening from URL
         if (typeof window.va !== 'undefined') {
-            window.va('track', 'Journey Opened From URL', { destination: title });
+            window.va('track', 'Journey Opened From URL', { destination: destination });
         }
         
-        // Use the same openModal function to handle all the detailed data
-        openModal(cardData, false); // false to avoid URL update loop
+        // Redirect to journey details page in a new tab
+        window.open(`journey-details.html?destination=${destination}`, '_blank');
+    } else {
+        // If invalid destination, redirect to journeys section
+        window.location.href = 'index.html#journeys';
     }
 }
 
@@ -1342,7 +1219,7 @@ function handlePopupNavigation(event) {
             openB2BForm();
         }
     } else if (event.state && event.state.journey) {
-        // User navigated to a journey modal state
+        // User navigated to a journey state - redirect to journey page
         openJourneyFromURL(event.state.journey);
     } else {
         // User navigated away from popup - close any open popups
@@ -1357,7 +1234,7 @@ function handlePopupNavigation(event) {
             closeB2BForm();
         }
         if (journeyModal && journeyModal.getAttribute('aria-hidden') === 'false') {
-            // Close the journey modal
+            // Close the journey modal (if it still exists for other purposes)
             journeyModal.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
         }
@@ -1487,6 +1364,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Scroll Down Arrow functionality
 document.addEventListener('DOMContentLoaded', function() {
     const scrollArrow = document.getElementById('scrollDownArrow');
+    const scrollUpArrow = document.getElementById('scrollUpArrow');
     
     if (!scrollArrow) return;
     
@@ -1502,7 +1380,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Track scroll position to determine current checkpoint and hide arrow appropriately
+    // Click handler for up arrow to navigate to previous section
+    if (scrollUpArrow) {
+        scrollUpArrow.addEventListener('click', function() {
+            if (window.checkpointGoTo) {
+                // Navigate to previous checkpoint (min 0)
+                const prevCheckpoint = Math.max(currentCheckpoint - 1, 0);
+                window.checkpointGoTo(prevCheckpoint);
+                currentCheckpoint = prevCheckpoint;
+            }
+        });
+    }
+    
+    // Track scroll position to determine current checkpoint and hide/show arrows appropriately
     window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
@@ -1525,11 +1415,20 @@ document.addEventListener('DOMContentLoaded', function() {
             currentCheckpoint = 5;
         }
         
-        // Hide arrow when we're at the last checkpoint or near the bottom
+        // Hide down arrow when we're at the last checkpoint or near the bottom
         if (currentCheckpoint >= 5 || scrollPercent > 0.9) {
             scrollArrow.classList.add('hidden');
         } else {
             scrollArrow.classList.remove('hidden');
+        }
+        
+        // Show up arrow when we're not at the first checkpoint
+        if (scrollUpArrow) {
+            if (currentCheckpoint <= 0 || scrollPercent < 0.1) {
+                scrollUpArrow.classList.remove('visible');
+            } else {
+                scrollUpArrow.classList.add('visible');
+            }
         }
     });
 });

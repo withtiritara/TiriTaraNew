@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Trips - Tiri Tara</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* All Trips Page Specific Styles */
+        .all-trips-page {
+            min-height: 100vh;
+            background-image: url('./assets/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        .all-trips-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 1;
+        }
+
+        .trips-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .trips-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .trips-header h1 {
+            font-family: var(--primary-font);
+            color: #fff;
+            font-size: 5rem;
+            font-weight: 500;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .trips-header p {
+            font-family: var(--description-font);
+            color: #fff;
+            font-size: 1.2rem;
+            opacity: 0.95;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .trip-card {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: blur(22px) !important;
+            -webkit-backdrop-filter: blur(22px) !important;
+        }
+
+        .trip-card-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .trip-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .trip-card:hover .trip-card-image img {
+            transform: scale(1.05);
+        }
+
+        .trip-card-content {
+            padding: 1.5rem;
+        }
+
+        .trip-card-title {
+            font-family: var(--description-font);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .trip-card-status {
+            font-family: var(--description-font);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.95;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .trip-card-description {
+            font-family: var(--description-font);
+            color: #fff;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+            font-weight: 300;
+        }
+
+        .trip-card-button {
+            font-family: var(--description-font);
+            background: linear-gradient(90deg, #ffcc33 0%, #ffcc33 50%, #ffcc33 100%);
+            color: #1b0f00;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 24px rgba(255, 180, 50, 0.12);
+            width: 100%;
+            text-align: center;
+        }
+
+        .trip-card-button:hover {
+            background: linear-gradient(90deg, #ffd84d 0%, #ffd84d 50%, #ffd84d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 180, 50, 0.2);
+        }
+
+        .trip-card-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .trip-card-button:disabled:hover {
+            transform: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .trips-header h1 {
+                font-size: 2rem;
+            }
+
+            .trips-header p {
+                font-size: 1rem;
+            }
+
+            .trips-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .all-trips-page {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body class="all-trips-page">
+    <!-- Floating Navigation -->
+    <nav class="floating-navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <!-- Logo moved to extreme left -->
+                <div class="navbar-brand">
+                    <a href="index.html">
+                        <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="navbar-right">
+                <!-- Navigation links and icons grouped together -->
+                <div class="navbar-text-links">
+                    <a href="about-us.html" class="nav-text-link" title="About Us" aria-label="About Us">About</a>
+                    <a href="contact-us.html" class="nav-text-link" title="Contact Us"
+                        aria-label="Contact Us">Contact</a>
+                </div>
+                <div class="navbar-social-icons">
+                    <a href="https://www.instagram.com/withtiritara?igsh=NGg5YXF3NDNuNHNm&utm_source=qr"
+                        class="nav-icon-link" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+                        <img src="./assets/social/instagram.svg" alt="Instagram" class="nav-icon">
+                    </a>
+                    <a href="https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc" class="nav-icon-link"
+                        target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+                        <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="nav-icon">
+                    </a>
+                </div>
+                <a onclick="openJoinForm(event, true)" class="navbar-link join-tribe" id="nav-join-tribe">Join the
+                    Tribe</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Trips Container -->
+    <div class="trips-container">
+        <div class="trips-header">
+            <h1>All Trips</h1>
+            <p>Discover our curated journeys</p>
+        </div>
+
+        <div class="trips-grid" id="trips-grid">
+            <!-- Trips will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer" aria-label="Site footer"
+        style="position: relative; z-index: 2; background: rgba(45, 90, 45, 0.95); backdrop-filter: blur(10px);">
+        <div class="footer-inner">
+            <div class="footer-top-row">
+                <p>&copy;2025 Tiri Tara</p>
+                <div class="footer-contact">
+                    <p>Phone: <a href="tel:+919876543210" class="phone-link">+91 81431 20853</a></p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of
+                    Service</a>
+                <a href="refund-cancellation-policy.html" target="_blank" rel="noopener noreferrer"
+                    class="footer-link">Refund and Cancellation Policies</a>
+                <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Privacy
+                    Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Join Form Popup Modal -->
+    <div id="joinFormPopup" class="form-popup-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="form-popup-container">
+            <div class="form-popup-header">
+                <h2 class="form-popup-title">Join the Tiri Tribe</h2>
+                <div class="form-header-actions">
+                    <button class="form-close-btn" onclick="closeJoinForm()">&times;</button>
+                </div>
+            </div>
+            <div class="form-popup-content">
+                <iframe
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSe5HxGSO54PIwLqk9pgOAM8XMpo86Pgz4HiHf0i17p-lFXX9w/viewform?embedded=true"
+                    class="google-form-iframe" title="Join the Tiri Tribe - Signup Form" width="100%" height="100%"
+                    frameborder="0" marginheight="0" marginwidth="0" aria-label="Join the Tiri Tribe form">
+                    Loading…
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Journey data
+        const journeys = [
+            {
+                id: 'hampi',
+                title: 'Hampi Weekend Getaway',
+                image: './journeys/Hampi.png',
+                status: 'Available Now',
+                description: 'Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you\'ll want is one more evening in Hampi.',
+                active: true
+            },
+            {
+                id: 'panchgani',
+                title: 'Panchgani',
+                image: './journeys/Panchgani.png',
+                status: 'Coming Soon',
+                description: 'Get ready for an amazing hill station experience in Panchgani. Details coming soon!',
+                active: false
+            },
+            {
+                id: 'araku',
+                title: 'Araku',
+                image: './journeys/araku.png',
+                status: 'Coming Soon',
+                description: 'Discover the beautiful Araku Valley with us. More details will be revealed soon!',
+                active: false
+            }
+        ];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTrips();
+        });
+
+        function loadTrips() {
+            const tripsGrid = document.getElementById('trips-grid');
+
+            journeys.forEach(journey => {
+                const tripCard = createTripCard(journey);
+                tripsGrid.appendChild(tripCard);
+            });
+        }
+
+        function createTripCard(journey) {
+            const card = document.createElement('div');
+            card.className = 'trip-card';
+
+            const buttonText = journey.active ? 'View Details' : 'Coming Soon';
+            const buttonClass = journey.active ? 'trip-card-button' : 'trip-card-button';
+
+            card.innerHTML = `
+                <div class="trip-card-image">
+                    <img src="${journey.image}" alt="${journey.title}" />
+                </div>
+                <div class="trip-card-content">
+                    <h3 class="trip-card-title">${journey.title}</h3>
+                    <p class="trip-card-status">${journey.status}</p>
+                    <p class="trip-card-description">${journey.description}</p>
+                    <a href="${journey.active ? `journey-details.html?destination=${journey.id}` : '#'}" 
+                       class="${buttonClass}" 
+                       ${journey.active ? '' : 'onclick="return false;" style="opacity: 0.6; cursor: not-allowed;"'}>
+                        ${buttonText}
+                    </a>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Join form functionality
+        function openJoinForm(event, updateURL = false) {
+            if (event) event.preventDefault();
+
+            const popup = document.getElementById('joinFormPopup');
+            if (popup) {
+                popup.style.display = 'flex';
+                popup.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+
+                popup.addEventListener('click', function (e) {
+                    if (e.target === popup) {
+                        closeJoinForm();
+                    }
+                });
+
+                const closeBtn = popup.querySelector('.form-close-btn');
+                if (closeBtn) {
+                    closeBtn.focus();
+                }
+            }
+        }
+
+        function closeJoinForm() {
+            const popup = document.getElementById('joinFormPopup');
+            if (popup) {
+                popup.style.display = 'none';
+                popup.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -64,12 +64,6 @@ body::-webkit-scrollbar,
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* .floating-navbar:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    transform: translateX(-50%) translateY(-2px);
-} */
-
 .navbar-container {
     display: flex;
     align-items: center;
@@ -129,6 +123,20 @@ body::-webkit-scrollbar,
     gap: 8px;
 }
 
+/* Navigation text links container - for About/Contact text links */
+.navbar-text-links {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Reduced gap for closer spacing between About and Contact */
+}
+
+/* Social icons container - for Instagram/WhatsApp icons */
+.navbar-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .nav-icon-link {
     display: inline-flex;
     align-items: center;
@@ -140,11 +148,6 @@ body::-webkit-scrollbar,
     text-decoration: none;
 }
 
-.nav-icon-link:hover {
-    background: rgba(0,0,0,0.08);
-    transform: translateY(-2px) scale(1.05);
-}
-
 .nav-icon {
     width: 20px;
     height: 20px;
@@ -154,7 +157,21 @@ body::-webkit-scrollbar,
 }
 
 .nav-icon-link:hover .nav-icon {
-    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    filter: brightness(0) saturate(50%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(150deg) brightness(104%) contrast(97%);
+}
+
+/* Text navigation links */
+.nav-text-link {
+    font-family: var(--description-font);
+    color: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    cursor: pointer;
 }
 
 .navbar-link {
@@ -199,15 +216,15 @@ body::-webkit-scrollbar,
 @media (max-width: 768px) {
     .floating-navbar {
         width: 90%;
-        padding: 10px 18px;
+        padding: 14px 22px;
     }
     
     .navbar-brand .brand-text {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
     
     .navbar-brand .brand-logo {
-        height: 28px;
+        height: 32px;
     }
     
     .main-logo {
@@ -254,6 +271,14 @@ body::-webkit-scrollbar,
 
     /* Icon navigation for tablets */
     .navbar-icons {
+        gap: 8px;
+    }
+    
+    .navbar-text-links {
+        gap: 3px; /* Even tighter spacing on mobile */
+    }
+    
+    .navbar-social-icons {
         gap: 8px;
     }
     
@@ -339,7 +364,9 @@ body::-webkit-scrollbar,
         width: calc(33.333% - 0.6rem) !important;
         min-width: 100px !important;
         max-width: 120px !important;
-        height: 140px !important;
+        height: calc(33.333vw - 0.6rem) !important; /* Make mobile cards square too */
+        min-height: 100px !important;
+        max-height: 120px !important;
     }
 
     .card-title {
@@ -352,6 +379,16 @@ body::-webkit-scrollbar,
 
     .card-overlay {
         padding: 0.8rem !important;
+        height: 20% !important; /* Exactly 20% to complement 80% image area */
+    }
+
+    .card-image {
+        height: 80% !important; /* Reduced to ensure no overlap with text area */
+    }
+
+    .card-image img {
+        object-fit: cover !important;
+        object-position: center 20% !important; /* Shift image much further up on mobile */
     }
 
     /* Center content vertically on mobile */
@@ -461,8 +498,6 @@ svg {
     letter-spacing: 0.05em;
     /* ensure checkpoint headers use the same case/appearance as the hero SVG */
     text-transform: uppercase;
-    /* subtle glow similar to the SVG drop-shadow filter */
-    /* filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4)); */
 }
 
 .hero-title {
@@ -509,6 +544,19 @@ svg {
     transition: opacity 0.8s ease-in-out;
 }
 
+/* SVG Hero Subheading - Welcome message */
+.hero-subheading-svg {
+    font-family: var(--description-font);
+    font-size: 28px;
+    font-weight: 300;
+    fill: #696969;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
 /* Desktop versions - show by default */
 .hero-text-desktop,
 .story-description-desktop,
@@ -525,12 +573,14 @@ svg {
 }
 
 /* Show SVG text when in first checkpoint */
-body:has(#checkpoint-0.active) .hero-text-svg {
+body:has(#checkpoint-0.active) .hero-text-svg,
+body:has(#checkpoint-0.active) .hero-subheading-svg {
     opacity: 1;
 }
 
 /* Alternative approach for better browser support */
-.checkpoint-0-active .hero-text-svg {
+.checkpoint-0-active .hero-text-svg,
+.checkpoint-0-active .hero-subheading-svg {
     opacity: 1;
 }
 
@@ -636,11 +686,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     /* transform-origin: center; */
 }
 
-/* .navbar-link.join-tribe:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 40px rgba(255, 180, 50, 0.16);
-} */
-
 /* Make sure the navbar-link default styles don't conflict */
 .navbar-menu .navbar-link.join-tribe {
     text-decoration: none;
@@ -661,6 +706,14 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     line-height: 1.6;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     opacity: 0.95;
+}
+
+/* Title font styling for "Our Journeys" text */
+.title-font-text {
+    font-family: var(--primary-font);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 /* B2B form styles */
@@ -829,7 +882,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 
 #checkpoint-4 .checkpoint-header {
     position: relative;
-    /* top: 20vh !important; */
 }
 
 #checkpoint-4 .checkpoint-header,
@@ -848,6 +900,18 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     font-weight: 600;
     width: 80vw;
     font-size: 22px;
+}
+
+#checkpoint-1 .checkpoint-text {
+    text-align: justify;
+}
+
+#checkpoint-2 .checkpoint-text {
+    text-align: justify;
+}
+
+#checkpoint-2 .checkpoint-text-center {
+    text-align: center;
 }
 
 #checkpoint-3 .checkpoint-text{
@@ -1134,7 +1198,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 @media (min-width: 491px) and (max-width: 768px) {
     .escape-cards {
         gap: 1rem;
-        margin-top: 2.5rem;
+        margin-top: 2rem;
         flex-direction: row;
         justify-content: center;
         flex-wrap: nowrap;
@@ -1228,7 +1292,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     display: flex;
     justify-content: center;
     gap: 2rem;
-    margin-top: 3rem;
+    margin-top: 0.5rem;
     flex-wrap: wrap;
     opacity: 0;
     transform: translateY(30px);
@@ -1244,7 +1308,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .escape-card {
     position: relative;
     width: 300px;
-    height: 280px;
+    height: 300px; /* Made square */
     border-radius: 20px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.05) !important;
@@ -1269,12 +1333,20 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+.escape-card:hover .card-overlay {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-top-color: rgba(255, 255, 255, 0.35);
+    transition: all 0.3s ease;
+}
+
 .card-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 69%; /* Reduced to ensure no overlap with text area */
     z-index: 1;
 }
 
@@ -1282,6 +1354,7 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 20%; /* Shift image much further up to show top portion */
     opacity: 1 !important;
     transition: all 0.3s ease;
 }
@@ -1301,27 +1374,42 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 2rem;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    height: 20%; /* Exactly 20% to complement the 80% image area */
+    padding: 1rem;
+    /* Glassmorphism effect for text area */
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 0 0 20px 20px;
     z-index: 2;
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Smooth shadow for better text readability */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .card-title {
     font-family: var(--description-font);
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    margin: 0 0 0 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 0.1rem 0;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    line-height: 1.1;
 }
 
 .card-description {
     font-family: var(--description-font);
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 300;
     margin: 0;
-    opacity: 0.9;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.95;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+    color: #fff;
+    line-height: 1.2;
 }
 
 /* Modal / dynamic description text */
@@ -1567,47 +1655,55 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     .floating-navbar {
         width: 92%;
-        padding: 4px 8px;
+        padding: 8px 12px;
         top: 10px;
     }
     
     .navbar-container {
-        gap: 6px;
+        gap: 8px;
         align-items: center;
     }
     
     .navbar-left {
-        gap: 3px;
+        gap: 6px;
         flex-shrink: 0;
     }
     
     .navbar-right {
-        gap: 4px;
+        gap: 6px;
         flex-shrink: 1;
         overflow: hidden;
     }
     
     .navbar-brand .brand-logo {
-        height: 18px;
+        height: 24px;
     }
     
     /* Icon navigation for small screens */
     .navbar-icons {
-        gap: 3px;
+        gap: 6px;
+    }
+    
+    .navbar-text-links {
+        gap: 2px; /* Very tight spacing on small mobile screens */
+    }
+    
+    .navbar-social-icons {
+        gap: 6px;
     }
     
     .nav-icon-link {
-        padding: 3px;
+        padding: 4px;
     }
     
     .nav-icon {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
     }
     
     /* Join tribe button smaller */
     .navbar-link.join-tribe {
-        font-size: 0.5rem !important;
+        font-size: 0.6rem !important;
         padding: 3px 6px !important;
         border-radius: 10px !important;
     }
@@ -1788,7 +1884,12 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     /* SVG text elements for mobile */
     .hero-text-svg {
-        font-size: 24px !important;
+        font-size: 36px !important;
+    }
+
+    .hero-subheading-svg {
+        font-size: 16px !important;
+        letter-spacing: 0.15em !important;
     }
 
     .story-text-svg {
@@ -1850,7 +1951,9 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
         width: calc(33.333% - 0.5rem);
         min-width: 100px;
         max-width: 120px;
-        height: 140px;
+        height: calc(33.333vw - 0.5rem); /* Make mobile cards square */
+        min-height: 100px;
+        max-height: 120px;
         flex-shrink: 0;
     }
 
@@ -1864,6 +1967,16 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     .card-overlay {
         padding: 0.8rem !important;
+        height: 20% !important; /* Exactly 20% to complement 80% image area */
+    }
+
+    .card-image {
+        height: 80% !important; /* Reduced to ensure no overlap with text area */
+    }
+
+    .card-image img {
+        object-fit: cover !important;
+        object-position: center 20% !important; /* Shift image much further up on mobile */
     }
 
     /* Button text for mobile */
@@ -2061,23 +2174,24 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 20000; /* backdrop below modal content but above page */
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
     position: relative;
-    background: linear-gradient(135deg, #1a1d23 0%, #0e0f12 100%);
-    color: #fff;
+    background: #ffffff;
+    color: #333;
     border-radius: 20px;
     max-width: 1000px;
     width: 100%;
     max-height: 90vh;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 2px #ffd700;
     z-index: 20002; /* above the backdrop */
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 2px solid #ffd700;
     font-family: var(--description-font);
     display: flex;
     flex-direction: column;
@@ -2087,9 +2201,9 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     position: absolute;
     right: 20px;
     top: 20px;
-    background: rgba(255,255,255,0.1);
+    background: #ffd700;
     border: none;
-    color: #fff;
+    color: #333;
     font-size: 24px;
     line-height: 1;
     cursor: pointer;
@@ -2101,11 +2215,10 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    backdrop-filter: blur(10px);
 }
 
 .modal-close:hover {
-    background: rgba(255,255,255,0.2);
+    background: #ff8c00;
     transform: scale(1.1);
 }
 
@@ -2136,33 +2249,12 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Top section with small image and intro side by side */
+/* Top section with intro content */
 .modal-top-section {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
     align-items: stretch;
-}
-
-.modal-media-small {
-    flex: 0 0 200px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    display: flex;
-    align-self: stretch;
-}
-
-.modal-media-small img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.modal-media-small:hover img {
-    transform: scale(1.05);
 }
 
 .modal-intro {
@@ -2199,7 +2291,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .included-section h4,
 .booking-section h4 {
     font-family: var(--description-font);
-    color: #fff;
+    color: #333;
     margin: 0 0 0.3rem 0;
     font-size: 1.1rem;
 }
@@ -2211,7 +2303,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .booking-section p,
 .schedule-item span {
     font-family: var(--description-font);
-    color: #b8b8b8;
+    color: #666;
     line-height: 1.4;
     margin: 0;
 }
@@ -2232,7 +2324,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
 .schedule-item strong,
 .availability-item strong {
-    color: #4ff3d6;
+    color: #ff8c00;
     font-weight: 600;
 }
 
@@ -2263,31 +2355,28 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     font-size: 1.8rem;
     font-weight: 700;
     line-height: 1.2;
-    background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #333;
     font-family: var(--description-font);
 }
 
 .journey-price {
     font-size: 1.2rem;
     font-weight: 800;
-    color: #00e676;
+    color: #ff8c00;
     margin: 0 0 0.3rem 0;
     font-family: var(--description-font);
 }
 
 .journey-dates {
     font-size: 1.1rem;
-    color: #a8b3cf;
+    color: #666;
     margin-bottom: 1rem;
     font-family: var(--description-font);
 }
 
 .modal-description {
     margin: 0;
-    color: #b8b8b8;
+    color: #555;
     font-size: 1rem;
     line-height: 1.5;
     flex-grow: 1;
@@ -2321,6 +2410,30 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     font-size: 1rem;
     color: #dcdcdc;
     font-weight: 500;
+}
+
+/* Unified Modal Content Styles */
+.modal-content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.modal-unified-content {
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-family: var(--description-font);
+    white-space: pre-line;
 }
 
 .modal-actions {
@@ -2414,9 +2527,9 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .expectation-section {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: rgba(255,255,255,0.03);
+    background: #fffbf0;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid #ffd700;
 }
 
 .trip-dates h4,
@@ -2428,7 +2541,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     margin: 0 0 0.75rem 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #00e676;
+    color: #ff8c00;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-family: var(--description-font);
@@ -2439,7 +2552,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .includes-section p,
 .expectation-section p {
     margin: 0;
-    color: #dcdcdc;
+    color: #555;
     font-size: 1rem;
     line-height: 1.5;
     font-family: var(--description-font);
@@ -2622,10 +2735,10 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 .scroll-down-arrow {
     position: fixed;
     bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
+    right: 30px;
+    transform: none;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2633,11 +2746,24 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     z-index: 1000;
     transition: all 0.3s ease;
     animation: bounce 2s infinite;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .scroll-down-arrow:hover {
-    transform: translateX(-50%) scale(1.2);
-    opacity: 0.8;
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.scroll-down-arrow:active {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.35);
 }
 
 .scroll-down-arrow img {
@@ -2649,16 +2775,79 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     transform: translateY(2px);
 }
 
+/* Scroll Up Arrow Button */
+.scroll-up-arrow {
+    position: fixed;
+    bottom: 100px; /* Position above the down arrow with more spacing */
+    right: 30px;
+    transform: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.scroll-up-arrow:hover {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.scroll-up-arrow:active {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.scroll-up-arrow img {
+    transition: transform 0.3s ease;
+    filter: brightness(0) invert(1); /* Makes the icon white */
+}
+
+.scroll-up-arrow:hover img {
+    transform: translateY(-2px);
+}
+
+.scroll-up-arrow.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 /* Bounce animation for the scroll arrow */
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
-        transform: translateX(-50%) translateY(0);
+        transform: translateY(0);
     }
     40% {
-        transform: translateX(-50%) translateY(-8px);
+        transform: translateY(-8px);
     }
     60% {
-        transform: translateX(-50%) translateY(-4px);
+        transform: translateY(-4px);
+    }
+}
+
+/* Bounce animation for the up arrow */
+@keyframes bounceUp {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(8px);
+    }
+    60% {
+        transform: translateY(4px);
     }
 }
 
@@ -2680,8 +2869,16 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 @media (max-width: 768px) {
     .scroll-down-arrow {
         bottom: 20px;
-        width: 45px;
-        height: 45px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
+    
+    .scroll-up-arrow {
+        bottom: 90px; /* Increased spacing for mobile */
+        right: 20px;
+        width: 55px;
+        height: 55px;
     }
     
     /* Modal responsive adjustments */
@@ -2714,12 +2911,6 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
         flex-direction: column;
         gap: 0.6rem;
         margin-bottom: 0.6rem;
-    }
-    
-    .modal-media-small {
-        flex: none;
-        width: 100%;
-        height: 150px;
     }
     
     .modal-intro {
@@ -2850,10 +3041,6 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     .book-now-btn-small {
         font-size: 0.75rem;
         padding: 0.3rem 0.6rem;
-    }
-    
-    .modal-media-small {
-        height: 120px;
     }
     
     .modal-close {
