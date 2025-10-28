@@ -313,6 +313,12 @@ body::-webkit-scrollbar,
     color: #000;
 }
 
+.mobile-menu-link.active {
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.12);
+    color: #000;
+}
+
 /* Responsive Design - Tablets and below */
 @media (max-width: 768px) {
     .floating-navbar {
