@@ -9,12 +9,49 @@ document.addEventListener('DOMContentLoaded', function () {
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
     const navbarLinks = document.querySelectorAll('.navbar-link');
+    
+    // Hamburger menu functionality
+    const hamburger = document.getElementById('navbar-hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            
+            // Toggle menu
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navbar.contains(e.target)) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Close menu when clicking a menu link
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
 
     // Mobile menu toggle
-    navbarToggle.addEventListener('click', function () {
-        navbarToggle.classList.toggle('active');
-        if (navbarMenu) navbarMenu.classList.toggle('active');
-    });
+    if (navbarToggle) {
+        navbarToggle.addEventListener('click', function () {
+            navbarToggle.classList.toggle('active');
+            if (navbarMenu) navbarMenu.classList.toggle('active');
+        });
+    }
 
     // Close mobile menu when clicking on a link
     navbarLinks.forEach(link => {

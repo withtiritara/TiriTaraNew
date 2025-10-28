@@ -214,6 +214,102 @@ body::-webkit-scrollbar,
     border-radius: 2px;
 }
 
+/* Hamburger Menu Button - Mobile Only */
+.navbar-hamburger {
+    display: none; /* Hidden on desktop */
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px; /* Reduced from 28px */
+    height: 18px; /* Reduced from 22px */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 8px;
+    z-index: 2001;
+    transition: all 0.3s ease;
+    order: 4; /* Place after join-tribe button */
+    flex-shrink: 0;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 2px; /* Reduced from 3px */
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Hamburger animation when menu is open */
+.navbar-hamburger.active .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg); /* Adjusted for new size */
+}
+
+.navbar-hamburger.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-hamburger.active .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg); /* Adjusted for new size */
+}
+
+/* Mobile Menu Dropdown */
+.mobile-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    /* Match navbar background exactly */
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: none; /* Remove top border to blend with navbar */
+    border-radius: 0 0 20px 20px;
+    margin-top: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    z-index: 2000;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mobile-menu.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu-link {
+    font-family: var(--description-font);
+    color: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem; /* Reduced from 0.95rem */
+    padding: 12px 16px; /* Reduced padding */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.mobile-menu-link:last-child {
+    border-bottom: none;
+}
+
+.mobile-menu-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
 /* Responsive Design - Tablets and below */
 @media (max-width: 768px) {
     .floating-navbar {
@@ -237,6 +333,7 @@ body::-webkit-scrollbar,
     .navbar-container {
         gap: 8px;
         align-items: center;
+        position: relative; /* For mobile menu positioning */
     }
 
     .navbar-left {
@@ -247,23 +344,27 @@ body::-webkit-scrollbar,
     .navbar-right {
         gap: 6px;
         flex-shrink: 1;
-        overflow: hidden;
+        overflow: visible; /* Changed from hidden to show hamburger */
         justify-content: flex-end;
     }
 
-    /* Organize navbar elements better for mobile */
+    /* Hide desktop navigation links on mobile */
     .navbar-text-links {
-        gap: 2px;
-        order: 1;
+        display: none;
+    }
+    
+    /* Show hamburger menu button on mobile */
+    .navbar-hamburger {
+        display: flex;
     }
     
     .navbar-social-icons {
         gap: 6px;
-        order: 2;
+        order: 1;
     }
     
     .navbar-link.join-tribe {
-        order: 3;
+        order: 2;
         font-size: 0.8rem !important;
         padding: 8px 12px !important;
         border-radius: 12px !important;
@@ -271,12 +372,16 @@ body::-webkit-scrollbar,
         flex-shrink: 0;
     }
     
+    .navbar-hamburger {
+        order: 3; /* Ensure hamburger is after join-tribe button */
+    }
+    
     .nav-text-link {
         font-size: 0.8rem;
         padding: 6px 8px;
     }
     
-    /* Hide Contact link on mobile */
+    /* Hide Contact link on mobile - redundant now since text links are hidden */
     .nav-text-link[href="contact-us.html"] {
         display: none;
     }
@@ -1678,27 +1783,41 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     
     .navbar-container {
         gap: 7px;
+        position: relative;
     }
     
     .navbar-right {
         gap: 5px;
+        overflow: visible;
     }
     
     .navbar-brand .brand-logo {
         height: 26px;
     }
     
+    /* Hide desktop navigation on medium mobile */
     .navbar-text-links {
-        gap: 2px;
+        display: none;
+    }
+    
+    /* Show hamburger on medium mobile */
+    .navbar-hamburger {
+        display: flex;
     }
     
     .navbar-social-icons {
         gap: 5px;
+        order: 1;
     }
     
     .navbar-link.join-tribe {
         font-size: 0.75rem !important;
         padding: 7px 11px !important;
+        order: 2;
+    }
+    
+    .navbar-hamburger {
+        order: 3;
     }
     
     .nav-text-link {
@@ -1764,6 +1883,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     .navbar-container {
         gap: 6px;
         align-items: center;
+        position: relative;
     }
     
     .navbar-left {
@@ -1774,7 +1894,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     .navbar-right {
         gap: 4px;
         flex-shrink: 1;
-        overflow: hidden;
+        overflow: visible;
         justify-content: flex-end;
     }
     
@@ -1782,24 +1902,48 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
         height: 24px;
     }
     
-    /* Better organization for small screens */
+    /* Hide desktop navigation on small mobile */
     .navbar-text-links {
-        gap: 1px;
-        order: 1;
+        display: none;
+    }
+    
+    /* Show hamburger on small mobile */
+    .navbar-hamburger {
+        display: flex;
+        width: 18px; /* Even smaller for small screens */
+        height: 14px;
+        margin-left: 6px;
+    }
+    
+    .hamburger-line {
+        height: 2px;
+    }
+    
+    /* Adjust animation for smaller hamburger */
+    .navbar-hamburger.active .hamburger-line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    
+    .navbar-hamburger.active .hamburger-line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
     }
     
     .navbar-social-icons {
         gap: 4px;
-        order: 2;
+        order: 1;
     }
     
     .navbar-link.join-tribe {
-        order: 3;
+        order: 2;
         font-size: 0.7rem !important;
         padding: 6px 10px !important;
         border-radius: 10px !important;
         white-space: nowrap;
         flex-shrink: 0;
+    }
+    
+    .navbar-hamburger {
+        order: 3;
     }
     
     .nav-text-link {
