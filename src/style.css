@@ -264,14 +264,10 @@ body::-webkit-scrollbar,
     right: 0;
     /* Match navbar background exactly */
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
     border-top: none; /* Remove top border to blend with navbar */
     border-radius: 0 0 20px 20px;
     margin-top: 8px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     z-index: 2000;
     animation: slideDown 0.3s ease;
     /* Prevent any potential rendering issues on iOS */
