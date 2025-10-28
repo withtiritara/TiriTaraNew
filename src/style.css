@@ -951,8 +951,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .video-carousel {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    height: 320px;
+    /* Portrait-first: narrower width, taller height to fit portrait images */
+    max-width: 280px;
+    height: 400px;
+    aspect-ratio: 3 / 5; /* width : height = 3:5 (portrait) */
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -984,10 +986,21 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .tribe-story-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    /* Show the full image with no cropping or zoom */
+    object-fit: fill;
     object-position: center;
+    /* Disable any transitions or transforms so image appears unchanged */
+    transform: none !important;
+    transition: none !important;
     border-radius: 12px;
     background: #000000;
+}
+
+/* Ensure hovering or parent transitions do not scale or crop images */
+.video-item:hover .tribe-story-image,
+.video-item .tribe-story-image {
+    transform: none !important;
+    transition: none !important;
 }
 
 /* Video Play/Pause Button Overlay */
@@ -1063,6 +1076,17 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 .video-item.playing .video-play-button-overlay {
     opacity: 0;
     pointer-events: none;
+}
+
+/* Since this carousel will be used for static portrait images only,
+   hide video-specific UI elements so they don't appear over images. */
+.video-play-button-overlay,
+.video-play-button,
+.video-loading,
+.video-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 .video-item.playing:hover .video-play-button-overlay {
@@ -1936,8 +1960,10 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     }
 
     .video-carousel {
-        height: 220px;
-        max-width: 280px;
+        /* Mobile: keep portrait orientation but scale to fit small screens */
+        height: 320px;
+        max-width: 320px;
+        aspect-ratio: 3 / 5;
     }
 
     .video-overlay {

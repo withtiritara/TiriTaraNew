@@ -1444,7 +1444,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Video Carousel Functionality
 let currentVideoIndex = 1;
-const totalVideos = 4;
+// Make total videos dynamic based on DOM so removing/adding items updates behavior
+let totalVideos = 0;
 
 // Helper function to load and play lazy videos
 function loadAndPlayVideo(videoEl) {
@@ -1612,6 +1613,12 @@ function toggleVideoPlayback(videoEl) {
 function nextVideo() {
     console.log('Next item clicked, current index:', currentVideoIndex);
 
+    // If there are no videos, nothing to do
+    if (totalVideos <= 0) {
+        console.warn('nextVideo called but no video items found');
+        return;
+    }
+
     // Track navigation with Vercel Analytics
     if (typeof window.va !== 'undefined') {
         window.va('track', 'Testimonial Navigation', { action: 'next', from: currentVideoIndex });
@@ -1659,6 +1666,12 @@ function nextVideo() {
 function previousVideo() {
     console.log('Previous item clicked, current index:', currentVideoIndex);
 
+    // If there are no videos, nothing to do
+    if (totalVideos <= 0) {
+        console.warn('previousVideo called but no video items found');
+        return;
+    }
+
     // Track navigation with Vercel Analytics
     if (typeof window.va !== 'undefined') {
         window.va('track', 'Testimonial Navigation', { action: 'previous', from: currentVideoIndex });
@@ -1704,6 +1717,7 @@ function previousVideo() {
 }
 
 function goToVideo(index) {
+    if (totalVideos <= 0) return;
     if (index === currentVideoIndex) return;
 
     // Remove active class from current video and pause it
@@ -1745,6 +1759,22 @@ function goToVideo(index) {
 // Initialize video carousel
 document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM loaded, initializing video carousel...');
+
+    // Count video items dynamically so the carousel matches the markup
+    totalVideos = document.querySelectorAll('.video-item').length;
+    if (totalVideos === 0) {
+        console.warn('No .video-item elements found in the carousel. Skipping initialization.');
+        return;
+    }
+
+    // Ensure currentVideoIndex is within valid bounds
+    if (currentVideoIndex < 1 || currentVideoIndex > totalVideos) currentVideoIndex = 1;
+
+    // If no item is active by default, mark the first one active
+    if (!document.querySelector('.video-item.active')) {
+        const first = document.querySelector('.video-item[data-video="1"]');
+        if (first) first.classList.add('active');
+    }
 
     // Test all videos to make sure they exist and can load
     const allVideos = document.querySelectorAll('.tribe-video');
