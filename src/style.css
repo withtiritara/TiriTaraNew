@@ -1960,9 +1960,9 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     }
 
     .video-carousel {
-        /* Mobile: keep portrait orientation but scale to fit small screens */
-        height: 320px;
-        max-width: 320px;
+        /* Mobile: maintain same scale ratio as desktop (3:5 aspect ratio) */
+        max-width: 230px;
+        height: 333px;
         aspect-ratio: 3 / 5;
     }
 
