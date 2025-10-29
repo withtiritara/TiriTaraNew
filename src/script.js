@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             hamburger.setAttribute('aria-expanded', !isExpanded);
+            
+            // Toggle body class for content adjustment
+            document.body.classList.toggle('mobile-menu-open');
         });
         
         // Close menu when clicking outside
@@ -31,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 hamburger.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('mobile-menu-open');
             }
         });
         
@@ -41,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 hamburger.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('mobile-menu-open');
             });
         });
     }

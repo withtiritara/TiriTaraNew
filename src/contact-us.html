@@ -10,7 +10,7 @@
     <style>
         /* Contact Us specific styles */
         .contact-us-page {
-            height: 100vh;
+            min-height: 100vh;
             background: url('./assets/bg.png') center center/cover no-repeat;
             background-attachment: fixed;
             position: relative;
@@ -18,7 +18,7 @@
             align-items: center;
             justify-content: center;
             padding: 120px 20px 60px;
-            overflow: hidden;
+            overflow-y: auto;
             box-sizing: border-box;
         }
 
@@ -36,7 +36,7 @@
             text-align: center;
             animation: fadeInUp 1s ease-out;
             margin: auto;
-            overflow: hidden;
+            overflow-y: auto;
             box-sizing: border-box;
         }
 
@@ -116,9 +116,9 @@
                 padding: 80px 10px 40px;
                 background-attachment: scroll;
                 /* Better performance on mobile */
-                height: 100vh;
+                min-height: 100vh;
                 align-items: flex-start;
-                overflow: hidden;
+                overflow-y: auto;
             }
 
             .contact-us-content {
@@ -126,8 +126,8 @@
                 border-radius: 12px;
                 margin: 15px 5px;
                 width: calc(100% - 10px);
-                max-height: calc(100vh - 140px);
-                overflow: hidden;
+                max-height: none;
+                overflow-y: visible;
             }
 
             .contact-us-title {

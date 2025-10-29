@@ -1774,83 +1774,8 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
 
 
-
-
-
-
-/* Medium mobile devices - 426px to 490px */
-@media (min-width: 426px) and (max-width: 490px) {
-    /* SVG text elements for medium mobile */
-    .hero-text-svg {
-        font-size: 50px !important;
-        transform: translateY(-18px) !important;
-    }
-    .floating-navbar {
-        width: 94%;
-        padding: 10px 14px;
-    }
-    
-    .navbar-container {
-        gap: 7px;
-        position: relative;
-    }
-    
-    .navbar-right {
-        gap: 5px;
-        overflow: visible;
-    }
-    
-    .navbar-brand .brand-logo {
-        height: 26px;
-    }
-    
-    /* Hide desktop navigation on medium mobile */
-    .navbar-text-links {
-        display: none;
-    }
-    
-    /* Show hamburger on medium mobile */
-    .navbar-hamburger {
-        display: flex;
-    }
-    
-    .navbar-social-icons {
-        gap: 5px;
-        order: 1;
-    }
-    
-    .navbar-link.join-tribe {
-        font-size: 0.75rem !important;
-        padding: 7px 11px !important;
-        order: 2;
-    }
-    
-    .navbar-hamburger {
-        order: 3;
-    }
-    
-    .nav-text-link {
-        font-size: 0.75rem;
-        padding: 5px 7px;
-    }
-    
-    /* Hide Contact link on medium mobile */
-    .nav-text-link[href="contact-us.html"] {
-        display: none;
-    }
-    
-    .nav-icon-link {
-        padding: 4px;
-    }
-    
-    .nav-icon {
-        width: 17px;
-        height: 17px;
-    }
-}
-
 /* Small devices starting from 425px and smaller - Priority fixes */
-@media (max-width: 425px) {
+@media (max-width: 490px) {
     /* Fix join form popup on mobile */
     .form-popup-overlay {
         z-index: 30000; /* Even higher on mobile to prevent conflicts */
