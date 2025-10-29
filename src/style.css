@@ -238,19 +238,21 @@ body::-webkit-scrollbar,
     background-color: rgba(0, 0, 0, 0.85);
     border-radius: 2px;
     transition: all 0.3s ease;
+    transform-origin: center; /* Ensure rotation from center */
 }
 
 /* Hamburger animation when menu is open */
 .navbar-hamburger.active .hamburger-line:nth-child(1) {
-    transform: translateY(8px) rotate(45deg); /* Adjusted for new size */
+    transform: translateY(8px) rotate(45deg);
 }
 
 .navbar-hamburger.active .hamburger-line:nth-child(2) {
     opacity: 0;
+    transform: scale(0); /* Smooth fade out */
 }
 
 .navbar-hamburger.active .hamburger-line:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg); /* Adjusted for new size */
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Mobile Menu Dropdown */
@@ -262,16 +264,16 @@ body::-webkit-scrollbar,
     right: 0;
     /* Match navbar background exactly */
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
     border-top: none; /* Remove top border to blend with navbar */
     border-radius: 0 0 20px 20px;
     margin-top: 8px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     z-index: 2000;
     animation: slideDown 0.3s ease;
+    /* Prevent any potential rendering issues on iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform, opacity;
 }
 
 @keyframes slideDown {
@@ -297,8 +299,9 @@ body::-webkit-scrollbar,
     font-weight: 500;
     font-size: 0.8rem; /* Reduced from 0.95rem */
     padding: 12px 16px; /* Reduced padding */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Changed to white with low opacity */
     transition: all 0.2s ease;
+    background: transparent; /* Ensure transparent background */
 }
 
 .mobile-menu-link:last-child {
@@ -306,7 +309,13 @@ body::-webkit-scrollbar,
 }
 
 .mobile-menu-link:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.08); /* Match navbar transparency */
+    color: #000;
+}
+
+.mobile-menu-link.active {
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.12);
     color: #000;
 }
 
@@ -1917,11 +1926,17 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     
     .hamburger-line {
         height: 2px;
+        transform-origin: center;
     }
     
     /* Adjust animation for smaller hamburger */
     .navbar-hamburger.active .hamburger-line:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
+    }
+    
+    .navbar-hamburger.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+        transform: scale(0);
     }
     
     .navbar-hamburger.active .hamburger-line:nth-child(3) {
