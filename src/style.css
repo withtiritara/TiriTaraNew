@@ -2009,7 +2009,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     #checkpoint-3 .checkpoint-text,
     #checkpoint-4 .checkpoint-text,
     #checkpoint-5 .checkpoint-text {
-        font-size: 0.6rem !important;
+        font-size: 0.8rem !important;
     }
 
     #checkpoint-4 .checkpoint-header {
