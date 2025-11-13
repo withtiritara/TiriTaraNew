@@ -73,6 +73,35 @@
             line-height: 1.6;
         }
 
+        .trips-filter-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            opacity: 1 !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            margin-top: 0 !important;
+        }
+
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .escape-card {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .escape-card.hidden {
+            display: none;
+        }
+
         .trips-section {
             width: 100%;
             max-width: 1200px;
@@ -140,6 +169,16 @@
                 padding: 0;
             }
 
+            .trips-filter-buttons {
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .filter-btn {
+                font-size: 0.9rem !important;
+                padding: 0.8rem 1.5rem !important;
+            }
+
             .trips-section {
                 padding: 0 1.5rem;
                 max-width: 100%;
@@ -189,6 +228,16 @@
             .all-trips-subtitle {
                 font-size: 0.9rem;
                 padding: 0;
+            }
+
+            .trips-filter-buttons {
+                gap: 0.6rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .filter-btn {
+                font-size: 0.8rem !important;
+                padding: 0.7rem 1.2rem !important;
             }
 
             .trips-section {
@@ -273,10 +322,16 @@
             <p class="all-trips-subtitle">Discover our curated collection of soulful journeys</p>
         </div>
 
+        <!-- Filter Buttons -->
+        <div class="trips-filter-buttons">
+            <button class="tribe-join-btn filter-btn active" data-filter="completed">Completed</button>
+            <button class="tribe-join-btn filter-btn" data-filter="upcoming">Upcoming</button>
+        </div>
+
         <div class="trips-section">
             <!-- Escape Cards -->
             <div class="escape-cards">
-                <div class="escape-card"
+                <div class="escape-card" data-status="completed"
                     data-journey="Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi."
                     data-price="7499/-" data-dates="7th – 10th November 2025"
                     data-start="7th November, Friday, 8:00 PM (from Hyderabad)"
@@ -285,14 +340,14 @@
                     data-includes="travel, stay, food, activities & tickets (₹300/day meal cap)"
                     data-max-spots="15 only" data-last-date="1st November">
                     <div class="card-image">
-                        <img src="./journeys/Hampi.webp" alt="Hampi Journey" />
+                        <img src="./assets/completed-hampi.webp" alt="Hampi Journey" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Hampi</h3>
                         <p class="card-description">Completed</p>
                     </div>
                 </div>
-                <div class="escape-card">
+                <div class="escape-card" data-status="upcoming">
                     <div class="card-image">
                         <img src="./journeys/Panchgani.webp" alt="Panchgani Journey" />
                     </div>
@@ -301,13 +356,13 @@
                         <p class="card-description">28th Nov - 1st Dec</p>
                     </div>
                 </div>
-                <div class="escape-card">
+                <div class="escape-card" data-status="upcoming">
                     <div class="card-image">
                         <img src="./journeys/araku.webp" alt="Araku Journey" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Araku</h3>
-                        <p class="card-description">19th Dec - 22nd Dec</p>
+                        <p class="card-description">Upcoming</p>
                     </div>
                 </div>
                 <!-- <div class="escape-card">
@@ -636,6 +691,39 @@
     <script>
         // Handle escape card clicks for all-trips page
         document.addEventListener('DOMContentLoaded', function () {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const escapeCards = document.querySelectorAll('.escape-card');
+
+            function filterTrips(filterType) {
+                escapeCards.forEach(card => {
+                    const status = card.getAttribute('data-status');
+                    // Only filter cards that have a data-status attribute
+                    if (status) {
+                        if (status === filterType) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+
+            // Set initial filter to show completed trips
+            filterTrips('completed');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Filter trips
+                    const filterType = this.getAttribute('data-filter');
+                    filterTrips(filterType);
+                });
+            });
+
             // Scroll to top when hamburger menu is clicked on all-trips page
             const hamburger = document.getElementById('navbar-hamburger');
             if (hamburger) {

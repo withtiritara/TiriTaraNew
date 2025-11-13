@@ -59,7 +59,7 @@
     <div class="wrapper">
         <div class="scrollElement"></div>
 
-        <div id="checkpoint-1" class="checkpoint-content" style="top: 25vh;">
+        <div id="checkpoint-1" class="checkpoint-content">
             <h1 class="checkpoint-header">What is Tiri Tara</h1>
             <p class="checkpoint-text" style="text-align: center;">We're Tiri Tara and we're Travel Curators.</p><br>
             <p class="checkpoint-text">We're an exclusive travel community where you're invited on soulful experiences
@@ -69,7 +69,7 @@
             <p class="checkpoint-text" style="text-align: center;">We aspire to be a Tara in the Tiri of your life.</p>
         </div>
 
-        <div id="checkpoint-2" class="checkpoint-content" style="top: 20vh;">
+        <div id="checkpoint-2" class="checkpoint-content">
             <h1 class="checkpoint-header">How to join</h1>
             <p class="checkpoint-text">We plan just enough to keep you safe, and leave the rest open to discovery, thats
                 why we only reveal 40% of the journey with you because the best stories are the ones that you dont know
@@ -81,8 +81,8 @@
             <button class="tribe-join-btn" onclick="openJoinForm(event, true)">Join Now</button>
         </div>
 
-        <div id="checkpoint-3" class="checkpoint-content" style="top: 20vh;">
-            <h1 class="checkpoint-header">Journeys</h1>
+        <div id="checkpoint-3" class="checkpoint-content">
+            <h1 class="checkpoint-header">Upcoming Journey</h1>
             <p class="checkpoint-text">You'll get to explore every place like a traveller but not a tourist. We plan our
                 journeys for experiences that help you connect to the world, its people, and to yourself.<br /><br />
             <p class="checkpoint-text" id="journeys-mobile">You'll get to explore every place like a traveller but not a
@@ -91,23 +91,7 @@
 
                 <!-- Escape Cards -->
             <div class="escape-cards">
-                <div class="escape-card"
-                    data-journey="Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi."
-                    data-price="7499/-" data-dates="7th – 10th November 2025"
-                    data-start="7th November, Friday, 8:00 PM (from Hyderabad)"
-                    data-return="10th November, Monday, 7:00 AM (to Hyderabad)"
-                    data-accommodation="Dorm (8-share): ₹7,499 <br/> Room (2-share): ₹7,899"
-                    data-includes="travel, stay, food, activities & tickets (₹300/day meal cap)"
-                    data-max-spots="15 only" data-last-date="1st November">
-                    <div class="card-image">
-                        <img src="./journeys/Hampi.webp" alt="Mountain Escape" />
-                    </div>
-                    <div class="card-overlay">
-                        <h3 class="card-title">Hampi</h3>
-                        <p class="card-description">Completed</p>
-                    </div>
-                </div>
-                <div class="escape-card">
+                <div class="escape-card escape-card-landscape">
                     <div class="card-image">
                         <img src="./journeys/Panchgani.webp" alt="Cultural Discovery" />
                     </div>
@@ -116,19 +100,12 @@
                         <p class="card-description">28th Nov - 1st Dec</p>
                     </div>
                 </div>
-                <div class="escape-card">
-                    <div class="card-image">
-                        <img src="./journeys/araku.webp" alt="Ocean Journey" />
-                    </div>
-                    <div class="card-overlay">
-                        <h3 class="card-title">Araku</h3>
-                        <p class="card-description">19th - 22nd Dec</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Explore All Trips Button -->
             <div class="explore-trips-cta">
+                <button class="tribe-join-btn request-invite-btn" onclick="requestInvite('Panchgani')">Request Invite
+                    for Panchgani</button>
                 <button class="tribe-join-btn explore-trips-btn" onclick="trackAndOpenAllTrips()">Explore All
                     Trips</button>
             </div>
@@ -158,7 +135,7 @@
             </div>
         </div>
 
-        <div id="checkpoint-5" class="checkpoint-content" style="top: 15vh;">
+        <div id="checkpoint-5" class="checkpoint-content">
             <h1 class="checkpoint-header">Reach Out</h1>
             <p class="checkpoint-text">Want us to host an entire trip for you, the Tiri way?</p>
             <p class="checkpoint-text">Submit your details, and we'll get in touch with you</p>

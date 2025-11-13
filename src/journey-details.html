@@ -275,7 +275,7 @@
                 padding: 1rem;
                 width: calc(100% - 1rem);
             }
-            
+
             .what-to-expect p {
                 text-align: left;
                 font-size: 0.7rem;
@@ -470,7 +470,7 @@
                 lastDate: "",
                 includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
                 description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
-                status: "active"
+                status: "completed"
             },
             panchgani: {
                 title: "Panchgani",
@@ -676,7 +676,7 @@
             // Generate content based on status
             const cardElement = document.getElementById('journey-card');
 
-            if (data.status === 'active') {
+            if (data.status === 'active' || data.status === 'completed') {
                 cardElement.innerHTML = generateActiveJourneyCard(data);
             } else {
                 cardElement.innerHTML = generateComingSoonCard(data);
@@ -719,8 +719,8 @@
                 </div>
 
                 <div class="book-now-section">
-                    <button class="book-now-btn" onclick="requestInvite('${data.title}')">
-                        Request Invite
+                    <button class="book-now-btn" onclick="requestInvite('${data.title}', '${data.status}')">
+                        ${data.status === 'completed' ? "Let's go again" : "Request Invite"}
                     </button>
                 </div>
             `;
@@ -754,16 +754,19 @@
             });
         }
 
-        function requestInvite(destination) {
+        function requestInvite(destination, status) {
             // Create WhatsApp URL with phone number and pre-filled message
             const phoneNumber = '918143120853'; // +91 81431 20853
-            const message = `Hi, Don't go to ${destination} without me!`;
+            // Different message for completed trips
+            const message = status === 'completed'
+                ? `Hi, Let's go to ${destination} again!`
+                : `Hi, Don't go to ${destination} without me!`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
             // Track booking request
             if (typeof window.va !== 'undefined') {
-                window.va('track', 'Booking Requested', { destination: destination });
+                window.va('track', 'Booking Requested', { destination: destination, status: status || 'upcoming' });
             }
 
             // Open in new tab/window

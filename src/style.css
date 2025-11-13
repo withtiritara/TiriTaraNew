@@ -18,6 +18,15 @@
     --body-font: 'Greenth', 'Cormorant Garamond', serif;
     /* Descriptions should use Poppins for better readability */
     --description-font: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Viewport helpers for consistent mobile Safari spacing */
+    --vh: 1vh;
+    --safe-top: env(safe-area-inset-top, 0px);
+}
+
+@supports (top: constant(safe-area-inset-top)) {
+    :root {
+        --safe-top: constant(safe-area-inset-top);
+    }
 }
 
 body {
@@ -473,6 +482,16 @@ body::-webkit-scrollbar,
         max-height: 120px !important;
     }
 
+    /* Landscape card on mobile - override square styles */
+    .escape-card-landscape {
+        width: 90vw !important;
+        max-width: 500px !important;
+        height: calc(90vw * 9 / 16) !important;
+        max-height: 280px !important;
+        min-width: unset !important;
+        min-height: unset !important;
+    }
+
     .card-title {
         font-size: 0.9rem !important;
     }
@@ -489,6 +508,18 @@ body::-webkit-scrollbar,
         text-align: center !important; /* Center text alignment */
     }
 
+    /* Landscape card overlay on mobile */
+    .escape-card-landscape .card-overlay {
+        height: 20% !important;
+        padding: 0.8rem !important;
+    }
+
+    /* Button container on mobile */
+    .explore-trips-cta {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
     .card-image {
         height: 100% !important; /* Cover entire card including glassmorphic area */
     }
@@ -500,8 +531,8 @@ body::-webkit-scrollbar,
 
     /* Center content vertically on mobile */
     .checkpoint-content {
-        top: 50% !important;
-        transform: translateX(-50%) translateY(-50%) !important;
+        --checkpoint-offset: 50 !important;
+        transform: translate3d(-50%, -50%, 0) !important;
     }
 }
 
@@ -569,6 +600,7 @@ svg {
 /* Checkpoint Content Styling */
 .checkpoint-content {
     position: fixed;
+    top: calc(var(--safe-top) + var(--vh) * var(--checkpoint-offset, 20));
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -583,12 +615,37 @@ svg {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    will-change: transform, opacity;
 }
 
 .checkpoint-content.active {
     opacity: 1;
     /* allow interaction with content only when the checkpoint is active */
     pointer-events: auto;
+}
+
+#checkpoint-0 {
+    --checkpoint-offset: 12;
+}
+
+#checkpoint-1 {
+    --checkpoint-offset: 25;
+}
+
+#checkpoint-2 {
+    --checkpoint-offset: 20;
+}
+
+#checkpoint-3 {
+    --checkpoint-offset: 20;
+}
+
+#checkpoint-4 {
+    --checkpoint-offset: 15;
+}
+
+#checkpoint-5 {
+    --checkpoint-offset: 15;
 }
 
 .checkpoint-header {
@@ -963,7 +1020,6 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 /* Special positioning for checkpoint-4 to accommodate video carousel */
 #checkpoint-4.checkpoint-content {
     position: fixed;
-    top: 15vh !important;
     left: 50%;
     transform: translateX(-50%);
     width: 95%;
@@ -974,6 +1030,8 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     align-items: center;
     justify-content: flex-start;
     gap: 40px;
+    padding-top: clamp(1.5rem, 3vh, 3rem);
+    padding-bottom: clamp(1.5rem, 3vh, 3rem);
 }
 
 #checkpoint-1 .checkpoint-header,
@@ -1353,6 +1411,25 @@ body:has(#checkpoint-0.active) .hero-description-svg {
         flex-shrink: 0;
     }
 
+    /* Landscape card on tablet */
+    .escape-card-landscape {
+        width: 550px !important;
+        max-width: 85vw !important;
+        height: 310px !important;
+        min-width: unset !important;
+    }
+
+    /* Landscape card overlay on tablet */
+    .escape-card-landscape .card-overlay {
+        height: 20% !important;
+        padding: 1rem !important;
+    }
+
+    /* Button container on tablet */
+    .explore-trips-cta {
+        gap: 0.8rem;
+    }
+
     .card-title {
         font-size: 1rem;
     }
@@ -1461,6 +1538,14 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     cursor: pointer;
 }
 
+/* Landscape format for single card display */
+.escape-card-landscape {
+    width: 600px;
+    height: 350px;
+    max-width: 90vw;
+    aspect-ratio: 16 / 9;
+}
+
 /* Ensure cards maintain transparency when section is active */
 .checkpoint-content.active .escape-card {
     background: rgba(255, 255, 255, 0.05) !important;
@@ -1551,6 +1636,45 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     line-height: 1.2;
 }
 
+/* Request Invite button for journey cards */
+.card-invite-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    margin-top: 0.75rem;
+    background: linear-gradient(135deg, #00e676 0%, #00e676 50%, #00e676 100%);
+    color: #062018;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--description-font);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
+}
+
+.card-invite-btn:hover {
+    background: linear-gradient(135deg, #00c96a 0%, #00c96a 50%, #00c96a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 230, 118, 0.4);
+}
+
+.card-invite-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 230, 118, 0.3);
+}
+
+/* Landscape card overlay - standard height */
+.escape-card-landscape .card-overlay {
+    height: 20%;
+    padding: 1rem;
+}
+
 /* Modal / dynamic description text */
 #escape-modal-desc {
     font-family: var(--description-font);
@@ -1604,10 +1728,12 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     margin-top: 2rem;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.8s ease;
+    flex-wrap: wrap;
 }
 
 .checkpoint-content.active .explore-trips-cta {
@@ -1617,6 +1743,10 @@ body:has(#checkpoint-0.active) .hero-description-svg {
 }
 
 .explore-trips-btn {
+    margin-top: 0; /* Override default margin since container handles spacing */
+}
+
+.request-invite-btn {
     margin-top: 0; /* Override default margin since container handles spacing */
 }
 
@@ -1973,8 +2103,8 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
     /* Mobile Checkpoint Content Styles */
     .checkpoint-content {
         width: 100vw;
-        top: 50% !important;
-        transform: translateX(-50%) translateY(-50%) !important;
+        --checkpoint-offset: 50 !important;
+        transform: translate3d(-50%, -50%, 0) !important;
     }
 
     .checkpoint-header {
@@ -2019,7 +2149,7 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
 
     /* Checkpoint-4 mobile positioning */
     #checkpoint-4.checkpoint-content {
-        top: 50vh !important;
+        --checkpoint-offset: 52 !important;
         width: 98%;
         gap: 25px;
         display: flex;
@@ -2155,6 +2285,16 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
         flex-shrink: 0;
     }
 
+    /* Landscape card on small mobile - override square styles */
+    .escape-card-landscape {
+        width: 90vw !important;
+        max-width: 500px !important;
+        height: calc(90vw * 9 / 16) !important;
+        max-height: 280px !important;
+        min-width: unset !important;
+        min-height: unset !important;
+    }
+
     .card-title {
         font-size: 0.8rem !important;
     }
@@ -2169,6 +2309,18 @@ body:has(.form-popup-overlay[aria-hidden="false"]) .escape-card {
         z-index: 3 !important; /* Ensure overlay is above full image */
         align-items: center !important; /* Center text horizontally */
         text-align: center !important; /* Center text alignment */
+    }
+
+    /* Landscape card overlay on small mobile */
+    .escape-card-landscape .card-overlay {
+        height: 20% !important;
+        padding: 0.8rem !important;
+    }
+
+    /* Button container on small mobile */
+    .explore-trips-cta {
+        flex-direction: column;
+        gap: 0.8rem;
     }
 
     .card-image {

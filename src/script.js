@@ -3,33 +3,49 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Normalize viewport units for mobile Safari so VH-based spacing matches Chrome
+const setViewportUnit = () => {
+    const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    if (!viewportHeight) return;
+    const vh = viewportHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+setViewportUnit();
+window.addEventListener('resize', setViewportUnit);
+window.addEventListener('orientationchange', setViewportUnit);
+window.addEventListener('load', setViewportUnit);
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setViewportUnit);
+}
+
 // Floating Navbar functionality
 document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.querySelector('.floating-navbar');
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
     const navbarLinks = document.querySelectorAll('.navbar-link');
-    
+
     // Hamburger menu functionality
     const hamburger = document.getElementById('navbar-hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', function(e) {
+        hamburger.addEventListener('click', function (e) {
             e.stopPropagation();
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            
+
             // Toggle menu
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             hamburger.setAttribute('aria-expanded', !isExpanded);
-            
+
             // Toggle body class for content adjustment
             document.body.classList.toggle('mobile-menu-open');
         });
-        
+
         // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!navbar.contains(e.target)) {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
@@ -37,11 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.classList.remove('mobile-menu-open');
             }
         });
-        
+
         // Close menu when clicking a menu link
         const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
         mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 hamburger.setAttribute('aria-expanded', 'false');
@@ -759,6 +775,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Set the title
         modalTitle.textContent = data.title || '';
 
+        // Update button text for completed trips
+        if (modalBookBtn) {
+            const isCompleted = data.title === 'Hampi' || data.status === 'completed';
+            modalBookBtn.textContent = isCompleted ? "Let's go again" : "Request Invite";
+            modalBookBtn.setAttribute('data-status', isCompleted ? 'completed' : 'upcoming');
+        }
+
         // Create unified content based on the destination
         let content = '';
 
@@ -877,23 +900,13 @@ Stay tuned for an amazing experience!`;
     if (backdrop) backdrop.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (modalBookBtn) modalBookBtn.addEventListener('click', function () {
-        // Track booking button click with Vercel Analytics
-        if (typeof window.va !== 'undefined') {
-            const destination = modalTitle ? modalTitle.textContent : 'Unknown';
-            window.va('track', 'Booking Requested', { destination: destination });
-        }
-
         // Get the trip name from the modal title
         const tripPlace = modalTitle ? modalTitle.textContent.trim() : 'this amazing destination';
+        // Get status from button data attribute
+        const status = this.getAttribute('data-status') || 'upcoming';
 
-        // Create WhatsApp URL with phone number and pre-filled message
-        const phoneNumber = '918143120853'; // +91 81431 20853
-        const message = `Hi, Don't go to ${tripPlace} without me!`;
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-        // open in new tab/window
-        window.open(whatsappURL, '_blank');
+        // Use the requestInvite function which handles completed trips
+        requestInvite(tripPlace, status);
     });
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
@@ -1970,3 +1983,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }, 100); // Small delay to ensure DOM is fully ready
 });
+
+// Request Invite function for journey cards
+function requestInvite(destination, status) {
+    // Create WhatsApp URL with phone number and pre-filled message
+    const phoneNumber = '918143120853'; // +91 81431 20853
+    // Different message for completed trips
+    const message = status === 'completed'
+        ? `Hi, Let's go to ${destination} again!`
+        : `Hi, Don't go to ${destination} without me!`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    // Track booking request with Vercel Analytics
+    if (typeof window.va !== 'undefined') {
+        window.va('track', 'Booking Requested', { destination: destination, status: status || 'upcoming' });
+    }
+
+    // Open in new tab/window
+    window.open(whatsappURL, '_blank');
+}
