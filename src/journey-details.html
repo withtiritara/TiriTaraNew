@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Journey Details - Tiri Tara</title>
-    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.webp">
     <link rel="stylesheet" href="style.css">
     <style>
         /* Global overflow fix */
@@ -382,7 +382,7 @@
                 <!-- Logo moved to extreme left -->
                 <div class="navbar-brand">
                     <a href="index.html">
-                        <img src="./assets/logo.svg" alt="Tiri Tara" class="brand-logo">
+                        <img src="./assets/logo.webp" alt="Tiri Tara" class="brand-logo">
                     </a>
                 </div>
             </div>
@@ -461,26 +461,26 @@
         const journeyData = {
             hampi: {
                 title: "Hampi Weekend Getaway",
-                backgroundImage: "./journeys/Hampi.png",
-                dates: "7th – 10th November 2025",
-                start: "7th November, Friday, 8:00 PM (from Hyderabad)",
-                return: "10th November, Monday, 7:00 AM (to Hyderabad)",
+                backgroundImage: "./journeys/Hampi.webp",
+                dates: "",
+                start: "",
+                return: "",
                 price: "Dorm (8-share): ₹7,499 <br/> Room (2-share): ₹7,899",
                 maxSpots: "15 only",
-                lastDate: "3rd November",
+                lastDate: "",
                 includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
                 description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
                 status: "active"
             },
             panchgani: {
                 title: "Panchgani",
-                backgroundImage: "./journeys/Panchgani.png",
+                backgroundImage: "./journeys/Panchgani.webp",
                 description: "Get ready for an amazing hill station experience in Panchgani. Details coming soon!",
                 status: "To be Revealed Soon!"
             },
             araku: {
                 title: "Araku",
-                backgroundImage: "./journeys/araku.png",
+                backgroundImage: "./journeys/araku.webp",
                 description: "Discover the beautiful Araku Valley with us. More details will be revealed soon!",
                 status: "To be Revealed Soon!"
             },
@@ -687,39 +687,29 @@
         }
 
         function generateActiveJourneyCard(data) {
+            // Helper function to generate info item only if value exists
+            const generateInfoItem = (label, value, cssClass = '') => {
+                if (!value || value.trim() === '') return '';
+                const valueClass = cssClass ? ` class="${cssClass}"` : '';
+                return `
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">${label}:</span>
+                            <span class="journey-info-value${valueClass}">${value}</span>
+                        </div>`;
+            };
+
             return `
                 <h1>${data.title}</h1>
                 
                 <div class="journey-content-grid">
                     <div class="journey-info">
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Dates:</span>
-                            <span class="journey-info-value">${data.dates}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Start:</span>
-                            <span class="journey-info-value">${data.start}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Return:</span>
-                            <span class="journey-info-value">${data.return}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Price:</span>
-                            <span class="journey-info-value price-highlight">${data.price}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Max Spots:</span>
-                            <span class="journey-info-value">${data.maxSpots}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Last day to request an invite:</span>
-                            <span class="journey-info-value">${data.lastDate}</span>
-                        </div>
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">Includes:</span>
-                            <span class="journey-info-value">${data.includes}</span>
-                        </div>
+                        ${generateInfoItem('Dates', data.dates)}
+                        ${generateInfoItem('Start', data.start)}
+                        ${generateInfoItem('Return', data.return)}
+                        ${generateInfoItem('Price', data.price, 'price-highlight')}
+                        ${generateInfoItem('Max Spots', data.maxSpots)}
+                        ${generateInfoItem('Last day to request an invite', data.lastDate)}
+                        ${generateInfoItem('Includes', data.includes)}
                     </div>
 
                     <div class="what-to-expect">
