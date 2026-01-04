@@ -7,13 +7,13 @@
     <title>All Trips - Tiri Tara</title>
     <link rel="icon" type="image/svg+xml" href="./assets/logo.webp">
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- Microsoft Clarity -->
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "u6zfyrv7r7");
     </script>
     <style>
@@ -153,11 +153,12 @@
 
         /* Mobile responsive styles for all trips page */
         @media (max-width: 768px) {
+
             /* Adjust mobile menu padding for tablets */
             body.mobile-menu-open .all-trips-container {
                 padding-top: 220px;
             }
-            
+
             .all-trips-container {
                 padding-top: 80px;
                 padding-left: 0;
@@ -215,11 +216,12 @@
         }
 
         @media (max-width: 425px) {
+
             /* Adjust mobile menu padding for small phones */
             body.mobile-menu-open .all-trips-container {
                 padding-top: 200px;
             }
-            
+
             .all-trips-container {
                 padding-left: 0;
                 padding-right: 0;
@@ -307,8 +309,8 @@
                         target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
                         <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="nav-icon">
                     </a>
-                    <a href="https://www.linkedin.com/company/tiritara/" class="nav-icon-link"
-                        target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/company/tiritara/" class="nav-icon-link" target="_blank"
+                        rel="noopener" title="LinkedIn" aria-label="LinkedIn">
                         <img src="./assets/social/linkedin.svg" alt="LinkedIn" class="nav-icon">
                     </a>
                 </div>
@@ -343,7 +345,7 @@
         <div class="trips-section">
             <!-- Escape Cards -->
             <div class="escape-cards">
-                <div class="escape-card" data-status="completed"
+                <div class="escape-card" data-status="completed" data-start-date="2025-11-07"
                     data-journey="Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own. You might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves. When the last sunset fades, all you'll want is one more evening in Hampi."
                     data-price="7499/-" data-dates="7th – 10th November 2025"
                     data-start="7th November, Friday, 8:00 PM (from Hyderabad)"
@@ -359,7 +361,7 @@
                         <p class="card-description">Completed</p>
                     </div>
                 </div>
-                <div class="escape-card" data-status="completed">
+                <div class="escape-card" data-status="completed" data-start-date="2025-10-01">
                     <div class="card-image">
                         <img src="./assets/completed-panchgani.webp" alt="Panchgani Journey" />
                     </div>
@@ -368,13 +370,34 @@
                         <p class="card-description">Completed</p>
                     </div>
                 </div>
-                <div class="escape-card" data-status="upcoming">
+                <div class="escape-card" data-status="upcoming" data-journey-key="hampi2026"
+                    data-start-date="2026-01-09">
+                    <div class="card-image">
+                        <img src="./journeys/Hampi.png" alt="Hampi Journey" />
+                    </div>
+                    <div class="card-overlay">
+                        <h3 class="card-title">Hampi</h3>
+                        <p class="card-description">Upcoming</p>
+                    </div>
+                </div>
+                <div class="escape-card" data-status="completed" data-start-date="2025-12-24">
+                    <div class="trip-sticker christmas">Christmas Special</div>
+                    <div class="card-image">
+                        <img src="./journeys/dandeli.webp" alt="Dandeli Journey" />
+                    </div>
+                    <div class="card-overlay">
+                        <h3 class="card-title">Dandeli × Gokarna</h3>
+                        <p class="card-description">Completed</p>
+                    </div>
+                </div>
+                <div class="escape-card" data-status="upcoming" data-start-date="2026-01-23">
+                    <div class="trip-sticker republic-day">Republic Day Special</div>
                     <div class="card-image">
                         <img src="./journeys/araku.webp" alt="Araku Journey" />
                     </div>
                     <div class="card-overlay">
                         <h3 class="card-title">Araku</h3>
-                        <p class="card-description">Upcoming</p>
+                        <p class="card-description">23rd Jan - 27th Jan</p>
                     </div>
                 </div>
                 <!-- <div class="escape-card">
@@ -437,7 +460,7 @@
                         <img src="./journeys/Dandeli.png" alt="Dandeli Journey" />
                     </div>
                     <div class="card-overlay">
-                        <h3 class="card-title">Dandeli</h3>
+                        <h3 class="card-title">Dandeli × Gokarna</h3>
                         <p class="card-description">Request Invite</p>
                     </div>
                 </div>
@@ -705,7 +728,56 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Filter functionality
             const filterButtons = document.querySelectorAll('.filter-btn');
-            const escapeCards = document.querySelectorAll('.escape-card');
+            const escapeCardsContainer = document.querySelector('.escape-cards');
+            let escapeCards = Array.from(document.querySelectorAll('.escape-card'));
+
+            // Function to sort trips by start date
+            function sortTripsByDate() {
+                if (!escapeCardsContainer) return;
+
+                // Separate cards by status
+                const completedCards = escapeCards.filter(card => card.getAttribute('data-status') === 'completed');
+                const upcomingCards = escapeCards.filter(card => card.getAttribute('data-status') === 'upcoming');
+                const otherCards = escapeCards.filter(card => {
+                    const status = card.getAttribute('data-status');
+                    return status !== 'completed' && status !== 'upcoming';
+                });
+
+                // Sort completed trips by date (descending - most recent first)
+                completedCards.sort((a, b) => {
+                    const dateA = a.getAttribute('data-start-date');
+                    const dateB = b.getAttribute('data-start-date');
+                    if (dateA && dateB) {
+                        return dateB.localeCompare(dateA); // Descending order
+                    }
+                    if (dateA && !dateB) return -1;
+                    if (!dateA && dateB) return 1;
+                    return 0;
+                });
+
+                // Sort upcoming trips by date (ascending - earliest first)
+                upcomingCards.sort((a, b) => {
+                    const dateA = a.getAttribute('data-start-date');
+                    const dateB = b.getAttribute('data-start-date');
+                    if (dateA && dateB) {
+                        return dateA.localeCompare(dateB); // Ascending order
+                    }
+                    if (dateA && !dateB) return -1;
+                    if (!dateA && dateB) return 1;
+                    return 0;
+                });
+
+                // Combine: completed first, then upcoming, then others
+                escapeCards = [...completedCards, ...upcomingCards, ...otherCards];
+
+                // Re-append sorted cards to container
+                escapeCards.forEach(card => {
+                    escapeCardsContainer.appendChild(card);
+                });
+            }
+
+            // Sort trips on page load
+            sortTripsByDate();
 
             function filterTrips(filterType) {
                 escapeCards.forEach(card => {
@@ -725,7 +797,7 @@
             filterTrips('completed');
 
             filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     // Remove active class from all buttons
                     filterButtons.forEach(btn => btn.classList.remove('active'));
                     // Add active class to clicked button
@@ -733,13 +805,15 @@
                     // Filter trips
                     const filterType = this.getAttribute('data-filter');
                     filterTrips(filterType);
+                    // Re-sort trips after filtering
+                    sortTripsByDate();
                 });
             });
 
             // Scroll to top when hamburger menu is clicked on all-trips page
             const hamburger = document.getElementById('navbar-hamburger');
             if (hamburger) {
-                hamburger.addEventListener('click', function(e) {
+                hamburger.addEventListener('click', function (e) {
                     // Scroll to top smoothly
                     window.scrollTo({
                         top: 0,
@@ -747,7 +821,7 @@
                     });
                 });
             }
-            
+
             // Click on card to navigate to journey details page
             document.querySelectorAll('.escape-card').forEach(card => {
                 card.addEventListener('click', function (e) {
@@ -762,6 +836,8 @@
 
                     // Get the destination name from the card title
                     const title = card.querySelector('.card-title')?.textContent || '';
+                    // Check if card has a specific journey key attribute
+                    const journeyKey = card.getAttribute('data-journey-key');
 
                     if (title) {
                         // Track journey page navigation with Vercel Analytics
@@ -781,6 +857,7 @@
                             'Bhor': 'bhor',
                             'Coorg': 'coorg',
                             'Dandeli': 'dandeli',
+                            'Dandeli × Gokarna': 'dandeli',
                             'Devkund Waterfalls': 'devkundwaterfalls',
                             'Ekole Valley View': 'ekolevalleyview',
                             'Gandikota': 'gandikota',
@@ -803,7 +880,7 @@
                             'Wayanad': 'wayanad'
                         };
 
-                        const destination = destinationMap[title] || title.toLowerCase().replace(/\s+/g, '');
+                        const destination = journeyKey || destinationMap[title] || title.toLowerCase().replace(/\s+/g, '');
                         window.open(`journey-details.html?destination=${destination}`, '_blank');
                     }
                 });

@@ -1636,6 +1636,33 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     line-height: 1.2;
 }
 
+/* Special event sticker for trip cards */
+.trip-sticker {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-family: var(--description-font);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.trip-sticker.christmas {
+    background: linear-gradient(135deg, #d32f2f 0%, #c62828 50%, #b71c1c 100%);
+    border: 2px solid #ffeb3b;
+}
+
+.trip-sticker.republic-day {
+    background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 50%, #ffa000 100%);
+    border: 2px solid #fff;
+}
+
 /* Request Invite button for journey cards */
 .card-invite-btn {
     display: flex;

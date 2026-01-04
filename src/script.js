@@ -889,8 +889,22 @@ Stay tuned for an amazing experience!`;
                     window.va('track', 'Journey Page Opened', { destination: title });
                 }
 
+                // Map title to destination key
+                // Handle special cases for titles that don't match destination keys
+                let destination = title.toLowerCase().replace(/\s+/g, '').replace(/×/g, '').replace(/x/g, '');
+                
+                // Special mapping for specific trips
+                if (title.includes('Dandeli') && title.includes('Gokarna')) {
+                    destination = 'dandeli';
+                } else if (title.toLowerCase().includes('hampi')) {
+                    destination = 'hampi2026'; // Use the active Hampi trip
+                } else if (title.toLowerCase().includes('panchgani')) {
+                    destination = 'panchgani';
+                } else if (title.toLowerCase().includes('araku')) {
+                    destination = 'araku';
+                }
+                
                 // Navigate to journey details page in a new tab
-                const destination = title.toLowerCase().replace(/\s+/g, '');
                 window.open(`journey-details.html?destination=${destination}`, '_blank');
             }
         });
