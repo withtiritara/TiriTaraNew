@@ -133,8 +133,6 @@
 
         .what-to-expect {
             margin-top: 0;
-            max-height: 300px;
-            overflow-y: auto;
         }
 
         .what-to-expect h2 {
@@ -159,6 +157,233 @@
 
         .what-to-expect p:last-child {
             margin-bottom: 0;
+        }
+
+        /* Price breakdown table styling */
+        .price-breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.75rem;
+        }
+
+        .price-breakdown-table thead {
+            background: rgba(0, 0, 0, 0.05);
+            color: #2c3e50;
+        }
+
+        .price-breakdown-table th {
+            padding: 0.5rem 0.6rem;
+            text-align: left;
+            font-family: var(--description-font);
+            font-weight: 600;
+            font-size: 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .price-breakdown-table th:first-child {
+            text-align: left;
+        }
+
+        .price-breakdown-table th:not(:first-child) {
+            text-align: center;
+        }
+
+        .price-breakdown-table td {
+            padding: 0.5rem 0.6rem;
+            font-family: var(--description-font);
+            font-size: 0.7rem;
+            color: #2c3e50;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .price-breakdown-table td:first-child {
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .price-breakdown-table td:not(:first-child) {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .price-breakdown-table tbody tr:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .price-breakdown-table tfoot {
+            background: rgba(0, 0, 0, 0.05);
+            font-weight: 700;
+        }
+
+        .price-breakdown-table tfoot td {
+            padding: 0.6rem;
+            font-size: 0.8rem;
+            color: #2c3e50;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: none;
+        }
+
+        .section-divider {
+            margin: 1.25rem 0 1rem 0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-family: var(--description-font);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .accommodation-option {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            border-left: 3px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .accommodation-option h3 {
+            font-family: var(--description-font);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 0.4rem;
+        }
+
+        .accommodation-option p {
+            margin: 0.4rem 0;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .accommodation-option .ideal-for {
+            font-style: italic;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .important-notes {
+            background: rgba(0, 0, 0, 0.03);
+            border-left: 3px solid rgba(0, 0, 0, 0.2);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .important-notes ul {
+            margin: 0.4rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .important-notes li {
+            margin: 0.4rem 0;
+            color: #2c3e50;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .price-breakdown-table {
+                font-size: 0.65rem;
+                margin: 0.75rem 0;
+            }
+
+            .price-breakdown-table th {
+                padding: 0.4rem 0.4rem;
+                font-size: 0.65rem;
+            }
+
+            .price-breakdown-table td {
+                padding: 0.4rem 0.4rem;
+                font-size: 0.6rem;
+            }
+
+            .price-breakdown-table tfoot td {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.7rem;
+            }
+
+            .section-title {
+                font-size: 0.75rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .accommodation-option {
+                padding: 0.6rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .accommodation-option h3 {
+                font-size: 0.7rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .accommodation-option p {
+                font-size: 0.65rem;
+                line-height: 1.3;
+            }
+
+            .important-notes {
+                padding: 0.6rem;
+            }
+
+            .important-notes li {
+                font-size: 0.65rem;
+            }
+
+            .section-divider {
+                margin: 1rem 0 0.75rem 0;
+                padding-top: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .price-breakdown-table {
+                font-size: 0.6rem;
+            }
+
+            .price-breakdown-table th {
+                padding: 0.35rem 0.3rem;
+                font-size: 0.6rem;
+            }
+
+            .price-breakdown-table td {
+                padding: 0.35rem 0.3rem;
+                font-size: 0.55rem;
+            }
+
+            .price-breakdown-table tfoot td {
+                padding: 0.4rem 0.3rem;
+                font-size: 0.65rem;
+            }
+
+            .section-title {
+                font-size: 0.7rem;
+            }
+
+            .accommodation-option h3 {
+                font-size: 0.65rem;
+            }
+
+            .accommodation-option p {
+                font-size: 0.6rem;
+            }
+
+            .important-notes li {
+                font-size: 0.6rem;
+            }
         }
 
         .back-button {
@@ -541,6 +766,99 @@ Then comes the climb — Jindhagada.
 A night above the clouds, under open skies, where conversations soften, stars feel closer, and the world below fades into stillness. A moment of perspective. A reset that stays with you long after the journey ends.
 
 A Republic Day long weekend in the Eastern Ghats — unhurried, warm, and exactly what the start of the year asks for.`,
+                status: "active"
+            },
+            mulkiholi: {
+                title: "Mulki Holi Surf Workation",
+                backgroundImage: "./journeys/Mulki-Holi.webp",
+                dates: "Hyderabad × Mulki",
+                start: "6:00 PM, Tuesday, 3rd March, 2026, from Hyderabad",
+                return: "around 10:00 AM, Monday, 8th March, 2026, to Hyderabad",
+                price: "The Loft (9-sharing): ₹19,999<br/>The Courtyard Room (3-sharing): ₹20,999",
+                maxSpots: "11 only",
+                lastDate: "",
+                includes: "Round-trip travel from Hyderabad, All internal travel, 4 days & 6 nights of slow travel, Stay at heritage retreat in Chitrapu, Daily beginner-friendly surf classes (3 mornings), Holi celebration by the beach, Ice bath recovery session, Workation-friendly stay with Wi-Fi, Food included (₹300 cap per meal for 4 days), Evening explorations across Mulki & Udupi, Cultural immersion: Yakshagana, Bhootakola, Kambala",
+                description: `A Holi trip designed in two gentle rhythms — movement and stillness.
+
+We leave Hyderabad on Tuesday, March 3rd at 5 PM, arriving in Mulki the next morning. Holi unfolds slowly — colours by the beach, salt in the air, no rush to be anywhere else.
+
+For three mornings, the ocean sets the tone. Surf lessons begin early, designed for absolute beginners. The rest of the day is yours — work quietly from the retreat, take calls under mango trees, or simply let time pass without guilt.
+
+Evenings begin after 5 PM, when we step out to explore — coastal towns, village life, and living traditions that are still deeply rooted in this region. An ice bath grounds the body; folklore, rituals, and open skies ground the mind.
+
+This is not a packed itinerary. It's a workation that breathes, a Holi that doesn't shout, and a journey meant to slow you down just enough to feel present again.
+
+<div class="section-divider">
+<h3 class="section-title">🏡 Accommodation Options</h3>
+</div>
+
+<div class="accommodation-option">
+<h3>Option 1: The Loft — ₹19,999 (9-Sharing)</h3>
+<p>A warm, open communal space under a traditional tiled roof. Sunrise views, shared courtyards, riverside corners, and an easy, social rhythm.</p>
+<p class="ideal-for">Ideal for: Solo travellers, friends, and surf-led explorers who enjoy shared living.</p>
+</div>
+
+<div class="accommodation-option">
+<h3>Option 2: The Courtyard Room — ₹20,999 (3-Sharing)</h3>
+<p>A quieter, more intimate room opening into the central courtyard. Earthy interiors, a personal seating nook, and slightly easier access to the washroom.</p>
+<p class="ideal-for">Best for: Those who want a bit more comfort while staying connected to the group.</p>
+</div>
+
+<div class="section-divider">
+<h3 class="section-title">💰 Price Breakdown (Per Person)</h3>
+</div>
+
+<table class="price-breakdown-table">
+<thead>
+<tr>
+<th>Component</th>
+<th>The Loft</th>
+<th>Courtyard Room</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>External & Internal Travel</td>
+<td>₹5,900</td>
+<td>₹5,900</td>
+</tr>
+<tr>
+<td>Stay (Heritage Retreat)</td>
+<td>₹4,300</td>
+<td>₹6,499</td>
+</tr>
+<tr>
+<td>Surf Classes (3 mornings)</td>
+<td>₹4,200</td>
+<td>₹4,000</td>
+</tr>
+<tr>
+<td>Food (₹300/meal cap, 4 days)</td>
+<td>₹3,600</td>
+<td>₹3,600</td>
+</tr>
+<tr>
+<td>Activities & Misc</td>
+<td>₹1,000</td>
+<td>₹1,000</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td>FINAL PACKAGE PRICE</td>
+<td>₹19,999</td>
+<td>₹20,999</td>
+</tr>
+</tfoot>
+</table>
+
+<div class="important-notes">
+<h3 class="section-title">⚠️ Important Notes</h3>
+<ul>
+<li><strong>Trip Confirmation:</strong> This journey will be confirmed once a minimum of 9 participants sign up.</li>
+<li><strong>Payment Processing:</strong> Credit card payments will incur an additional 2.5% processing fee.</li>
+</ul>
+</div>`,
                 status: "active"
             },
             aurangabad: {

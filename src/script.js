@@ -902,6 +902,8 @@ Stay tuned for an amazing experience!`;
                     destination = 'panchgani';
                 } else if (title.toLowerCase().includes('araku')) {
                     destination = 'araku';
+                } else if (title.toLowerCase().includes('mulki') && title.toLowerCase().includes('holi')) {
+                    destination = 'mulkiholi';
                 }
                 
                 // Navigate to journey details page in a new tab
