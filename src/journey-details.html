@@ -823,7 +823,7 @@ A Republic Day long weekend in the Eastern Ghats — unhurried, warm, and exactl
                 price: "The Loft (9-sharing): ₹19,999<br/>The Courtyard Room (3-sharing): ₹20,999",
                 maxSpots: "11 only",
                 lastDate: "",
-                includes: "Round-trip travel from Hyderabad, All internal travel - 4 days & 6 nights of slow travel, Stay at heritage retreat in Chitrapu, Daily beginner-friendly surf classes (3 mornings), Holi celebration by the beach, Ice bath recovery session, Workation-friendly stay with Wi-Fi, Food included (₹300 cap per meal for 4 days), Evening explorations across Mulki & Udupi, Cultural immersion: Yakshagana - Bhootakola - Kambala",
+                includes: "Round-trip travel from Hyderabad to Hyderabad in our own mini AC luxury van for 4 days & 5 nights ## Holi celebration by the beach ## Stay at a heritage retreat  (workation-friendly with Wi-Fi) ## 3 Morning x Beginner-friendly surf classes (no swimming experience needed) ## Ice bath recovery session ## All meals for 4 days (₹300 per meal cap) ## Evening explorations around Mulki & Udupi ## Cultural immersion experiences: Yakshagana, Bhootakola & Kambala",
                 description: `A Holi trip designed in two gentle rhythms — movement and stillness.
 
 We leave Hyderabad on Tuesday, March 3rd at 5 PM, arriving in Mulki the next morning. Holi unfolds slowly — colours by the beach, salt in the air, no rush to be anywhere else.
@@ -983,7 +983,7 @@ A Christmas escape that starts in the wild and ends in stillness — steady, gro
                 price: "₹6,899 — Mini Luxury Van Experience",
                 maxSpots: "16 only",
                 lastDate: "Feb 18th, 2026",
-                includes: "Round-trip travel from Hyderabad → Gandikota → Hyderabad, Travel in our own mini AC luxury van (comfortable-spacious-no switching vehicles), 2 days & 3 nights (including overnight journeys), Stay at campsites near Gandikota View Point, 2-sharing tents, Common washrooms available (yes- they have hot water too), Sunset experience at Gandikota (Grand Canyon of India), Bonfire evening with unhurried conversations, Sunrise experience overlooking the canyon, Boating in the Pennar river through the dramatic canyon lanes, Exploration of Bellum Caves, Food included for 2 days — 3 meals per day, Breakfasts at the campsite, Lunch & dinner with a ₹300 per-meal cap outside the campsite, All entry tickets - boating charges - and permits, All internal travel during the trip, Evenings for slow walks, quiet views, and shared time, A grounded, community-first travel experience (not a rushed tour)",
+                includes: "Round-trip travel from Hyderabad ⇄ Gandikota in our own mini AC luxury van for 2 days & 3 nights ## Campsite stay near Gandikota View Point (2-sharing tents, common washrooms with hot water) ## Sunset & sunrise experiences at the Gandikota canyon ## Bonfire evening with unhurried conversations ## Boating through the Pennar River canyon ## Exploration of Bellum Caves ## All meals for 2 days (3 meals/day/₹300 per meal cap) ## All entry tickets, boating charges & permits",
                 description: `A slow journey from city noise to canyon silence.
 
 This trip isn't about ticking places off a list. We start late from Hyderabad, letting the road slowly quiet the mind. Days begin with soft light over ancient rock formations and unfold gently — boating between canyon walls, walking through deep cave chambers, and returning to camp as the sky changes colour.
@@ -1206,7 +1206,7 @@ Evenings are simple and warm: a bonfire, stories that arrive naturally, and long
                 
                 // Special handling for Includes field - make it a bulleted list
                 if (label === 'Includes') {
-                    const items = value.split(', ').map(item => `<li>${item.trim()}</li>`).join('');
+                    const items = value.split('##').map(item => `<li>${item.trim()}</li>`).join('');
                     return `
                         <div class="journey-info-item">
                             <span class="journey-info-label">${label}:</span>
