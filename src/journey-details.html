@@ -117,6 +117,29 @@
             overflow-wrap: break-word;
         }
 
+        .journey-info-list {
+            font-family: var(--description-font);
+            color: #2c3e50;
+            text-align: left;
+            flex: 1;
+            margin-left: 1rem;
+            font-size: 0.85rem;
+            font-weight: 400;
+            padding-left: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 0;
+            list-style-type: disc;
+        }
+
+        .journey-info-list li {
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+
+        .journey-info-list li:last-child {
+            margin-bottom: 0;
+        }
+
         .price-highlight {
             color: #000000;
             font-weight: 700;
@@ -289,8 +312,10 @@
         .important-notes li {
             margin: 0.4rem 0;
             color: #2c3e50;
-            font-size: 0.75rem;
-            line-height: 1.4;
+            font-family: var(--description-font);
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.6;
         }
 
         /* Mobile optimizations */
@@ -340,7 +365,7 @@
             }
 
             .important-notes li {
-                font-size: 0.65rem;
+                font-size: 0.9rem;
             }
 
             .section-divider {
@@ -382,7 +407,7 @@
             }
 
             .important-notes li {
-                font-size: 0.6rem;
+                font-size: 0.7rem;
             }
         }
 
@@ -481,6 +506,18 @@
                 width: 100%;
             }
 
+            .journey-info-list {
+                text-align: left;
+                margin-left: 0;
+                font-size: 0.8rem;
+                padding-left: 1rem;
+                width: 100%;
+            }
+
+            .journey-info-list li {
+                margin-bottom: 0.3rem;
+            }
+
             .back-button {
                 position: static;
                 margin: 1rem;
@@ -539,6 +576,15 @@
 
             .journey-info-value {
                 font-size: 0.7rem;
+            }
+
+            .journey-info-list {
+                font-size: 0.65rem;
+                padding-left: 0.875rem;
+            }
+
+            .journey-info-list li {
+                margin-bottom: 0.25rem;
             }
         }
 
@@ -929,10 +975,86 @@ A Christmas escape that starts in the wild and ends in stillness — steady, gro
                 status: "Request Invite"
             },
             gandikota: {
-                title: "Gandikota",
+                title: "Gandikota Canyon Camp",
                 backgroundImage: "./journeys/Gandikota.png",
-                description: "Explore the Grand Canyon of India in Gandikota. Details will be revealed soon!",
-                status: "Request Invite"
+                dates: "Feb 20th – Feb 23rd, 2026",
+                start: "Feb 20th, Friday 8:00 PM",
+                return: "Feb 23rd, Monday 7:00 AM",
+                price: "₹6,899 — Mini Luxury Van Experience",
+                maxSpots: "16 only",
+                lastDate: "Feb 18th, 2026",
+                includes: "Round-trip travel from Hyderabad → Gandikota → Hyderabad, Travel in our own mini AC luxury van (comfortable, spacious, no switching vehicles), 2 days & 3 nights (including overnight journeys), Stay at campsites near Gandikota View Point, 2-sharing tents, Common washrooms available (yes, they have hot water too), Sunset experience at Gandikota (Grand Canyon of India), Bonfire evening with unhurried conversations, Sunrise experience overlooking the canyon, Boating in the Pennar river through the dramatic canyon lanes, Exploration of Bellum Caves, Food included for 2 days — 3 meals per day, Breakfasts at the campsite, Lunch & dinner with a ₹300 per-meal cap outside the campsite, All entry tickets, boating charges, and permits, All internal travel during the trip, Evenings for slow walks, quiet views, and shared time, A grounded, community-first travel experience (not a rushed tour)",
+                description: `A slow journey from city noise to canyon silence.
+
+This trip isn't about ticking places off a list. We start late from Hyderabad, letting the road slowly quiet the mind. Days begin with soft light over ancient rock formations and unfold gently — boating between canyon walls, walking through deep cave chambers, and returning to camp as the sky changes colour.
+
+Evenings are simple and warm: a bonfire, stories that arrive naturally, and long pauses that don't need filling. This is a trip for people who enjoy landscapes, silence, conversation, and the feeling of coming back lighter than they left.
+
+<div class="section-divider">
+<h3 class="section-title">🏕️ Stay Option</h3>
+</div>
+
+<div class="accommodation-option">
+<h3>Campsite Stay — ₹6,899 (2-Sharing)</h3>
+<p>Stay at campsites near Gandikota View Point in 2-sharing tents with common washrooms (hot water available).</p>
+</div>
+
+<div class="section-divider">
+<h3 class="section-title">💰 Price Breakdown</h3>
+</div>
+
+<table class="price-breakdown-table">
+<thead>
+<tr>
+<th>Component</th>
+<th>Amount (₹)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Travel (Hyd ↔ Gandikota ↔ Hyd)</td>
+<td>3,700</td>
+</tr>
+<tr>
+<td>Campsite Stay (2-sharing, common washroom)</td>
+<td>1,400</td>
+</tr>
+<tr>
+<td>Food (2 days × 3 meals)</td>
+<td>900</td>
+</tr>
+<tr>
+<td>Boating Experience</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Entry Tickets & Permits</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Operations and Buffer cost</td>
+<td>100</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td>Final Package Price</td>
+<td>₹6,899</td>
+</tr>
+</tfoot>
+</table>
+
+
+<div class="important-notes">
+<h3 class="section-title">⚠️ Disclaimer</h3>
+<ul>
+<li><strong>Trip Confirmation:</strong> This trip will be confirmed once a minimum of 8 participants sign up.</li>
+<li><strong>Payment Processing:</strong> Credit card payments may incur an additional processing fee of 2.5%.</li>
+<li><strong>Additional Costs:</strong> No additional costs involved apart from personal expenses or shopping.</li>
+<li><strong>Itinerary Changes:</strong> Minor changes may occur due to weather or road conditions, without affecting the experience.</li>
+</ul>
+</div>`,
+                status: "active"
             },
             gangaravambeach: {
                 title: "Gangaravam Beach",
@@ -1081,6 +1203,19 @@ A Christmas escape that starts in the wild and ends in stillness — steady, gro
             const generateInfoItem = (label, value, cssClass = '') => {
                 if (!value || value.trim() === '') return '';
                 const valueClass = cssClass ? ` class="${cssClass}"` : '';
+                
+                // Special handling for Includes field - make it a bulleted list
+                if (label === 'Includes') {
+                    const items = value.split(', ').map(item => `<li>${item.trim()}</li>`).join('');
+                    return `
+                        <div class="journey-info-item">
+                            <span class="journey-info-label">${label}:</span>
+                            <ul class="journey-info-list${valueClass}">
+                                ${items}
+                            </ul>
+                        </div>`;
+                }
+                
                 return `
                         <div class="journey-info-item">
                             <span class="journey-info-label">${label}:</span>

@@ -904,6 +904,8 @@ Stay tuned for an amazing experience!`;
                     destination = 'araku';
                 } else if (title.toLowerCase().includes('mulki') && title.toLowerCase().includes('holi')) {
                     destination = 'mulkiholi';
+                } else if (title.toLowerCase().includes('gandikota')) {
+                    destination = 'gandikota';
                 }
                 
                 // Navigate to journey details page in a new tab
