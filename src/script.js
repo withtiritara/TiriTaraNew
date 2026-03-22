@@ -906,6 +906,8 @@ Stay tuned for an amazing experience!`;
                     destination = 'mulkiholi';
                 } else if (title.toLowerCase().includes('gandikota')) {
                     destination = 'gandikota';
+                } else if (title.toLowerCase().includes('chikmagalur')) {
+                    destination = 'chikmagalurgoodfriday';
                 }
                 
                 // Navigate to journey details page in a new tab
@@ -1170,7 +1172,8 @@ function openJourneyFromURL(journeyParam) {
     const destinationMap = {
         'hampi': 'hampi',
         'panchgani': 'panchgani',
-        'araku': 'araku'
+        'araku': 'araku',
+        'chikmagalur': 'chikmagalurgoodfriday'
     };
 
     const destination = destinationMap[decodedJourney];

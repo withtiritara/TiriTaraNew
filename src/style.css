@@ -1668,6 +1668,11 @@ body:has(#checkpoint-0.active) .hero-description-svg {
     border: 2px solid #ffeb3b;
 }
 
+.trip-sticker.good-friday {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #33691e 100%);
+    border: 2px solid #dcedc8;
+}
+
 /* Request Invite button for journey cards */
 .card-invite-btn {
     display: flex;
