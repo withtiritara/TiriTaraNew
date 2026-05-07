@@ -15,183 +15,416 @@
         })(window, document, "clarity", "script", "u6zfyrv7r7");
     </script>
     <style>
-        .policy-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: var(--secondary-color);
-            color: var(--primary-color);
-            font-family: var(--description-font);
-            line-height: 1.7;
+        :root {
+            --terms-bg: #f6f5ef;
+            --terms-surface: #fffdf6;
+            --terms-text: #2f2a23;
+            --terms-muted: #5d5449;
+            --terms-accent: #1f6a5f;
+            --terms-accent-soft: #d9efe9;
+            --terms-border: #e6decf;
+            --terms-shadow: 0 12px 30px rgba(37, 31, 22, 0.08);
         }
-        
-        .policy-container h1 {
-            font-family: var(--font-highlight);
-            color: var(--accent-color);
-            text-align: center;
-            margin-bottom: 2rem;
+
+        * {
+            box-sizing: border-box;
         }
-        
-        .policy-container h2 {
-            font-family: var(--font-highlight);
-            color: var(--accent-color);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .policy-container h3 {
-            font-family: var(--font-highlight);
-            color: var(--primary-color);
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .policy-container ul {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-        }
-        
-        .policy-container li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .policy-container p {
-            margin-bottom: 1rem;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-family: var(--font-highlight);
-        }
-        
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        
+
         body {
-            min-height: 100vh;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
+            margin: 0;
+            background:
+                radial-gradient(circle at 8% 12%, rgba(31, 106, 95, 0.08), transparent 28%),
+                radial-gradient(circle at 92% 88%, rgba(185, 134, 59, 0.1), transparent 25%),
+                var(--terms-bg);
+            color: var(--terms-text);
+            font-family: var(--description-font);
+            line-height: 1.75;
+        }
+
+        .terms-wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 2.2rem 1.2rem 3rem;
+        }
+
+        .terms-hero {
+            background: linear-gradient(130deg, #1f6a5f 0%, #2f8a7a 48%, #b9863b 100%);
+            border-radius: 20px;
+            color: #fff;
+            padding: 1.6rem 1.3rem 1.8rem;
+            box-shadow: var(--terms-shadow);
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: #11413a;
+            background: #f4efe2;
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .terms-label {
+            margin: 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.88;
+        }
+
+        .terms-hero h1 {
+            margin: 0.5rem 0 0.4rem;
+            font-family: var(--primary-font);
+            font-size: clamp(2.1rem, 6vw, 3.1rem);
+            letter-spacing: 0.03em;
+            line-height: 1.05;
+        }
+
+        .terms-intro {
+            margin: 0.85rem 0 0;
+            max-width: 820px;
+            font-size: 1.02rem;
+        }
+
+        .terms-content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .terms-nav {
+            position: sticky;
+            top: 1rem;
+            align-self: start;
+            background: var(--terms-surface);
+            border: 1px solid var(--terms-border);
+            border-radius: 16px;
+            padding: 1rem 0.9rem;
+            box-shadow: var(--terms-shadow);
+        }
+
+        .terms-nav h2 {
+            margin: 0 0 0.55rem;
+            font-family: var(--primary-font);
+            font-size: 1.15rem;
+            color: var(--terms-accent);
+        }
+
+        .terms-nav a {
+            display: block;
+            color: var(--terms-text);
+            text-decoration: none;
+            padding: 0.46rem 0.55rem;
+            border-radius: 8px;
+            font-size: 0.93rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .terms-nav a:hover {
+            background: var(--terms-accent-soft);
+        }
+
+        .terms-main {
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .terms-section {
+            background: var(--terms-surface);
+            border: 1px solid var(--terms-border);
+            border-radius: 16px;
+            padding: 1.2rem;
+            box-shadow: var(--terms-shadow);
+            scroll-margin-top: 1rem;
+        }
+
+        .terms-section h2 {
+            margin: 0 0 0.5rem;
+            color: var(--terms-accent);
+            font-family: var(--primary-font);
+            font-size: clamp(1.35rem, 2.8vw, 1.65rem);
+            letter-spacing: 0.02em;
+        }
+
+        .terms-section p {
+            margin: 0.45rem 0;
+        }
+
+        .terms-section ul {
+            margin: 0.55rem 0 0;
+            padding-left: 1.2rem;
+        }
+
+        .terms-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .muted {
+            color: var(--terms-muted);
+        }
+
+        .contact-box {
+            border: 1px dashed #c2b29d;
+            background: #fcf8ed;
+            border-radius: 12px;
+            padding: 0.95rem;
+            margin-top: 0.65rem;
+        }
+
+        .terms-footer-note {
+            margin: 0.7rem 0 0;
+            font-size: 1.02rem;
+            font-weight: 600;
+            color: #204d46;
+        }
+
+        @media (max-width: 860px) {
+            .terms-content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .terms-nav {
+                position: static;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .terms-wrap {
+                padding: 1.1rem 0.7rem 2rem;
+            }
+
+            .terms-hero,
+            .terms-section,
+            .terms-nav {
+                border-radius: 14px;
+            }
+
+            .terms-hero {
+                padding: 1rem;
+            }
+
+            .terms-section {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="policy-container">
-        <a href="index.html" class="back-link">← Back to Home</a>
-        
-        <h1>Tiri Tara – Terms of Service</h1>
-        
-        <p>Welcome to <strong>Tiri Tara!</strong><br>
-        We're so happy that you're choosing to be a part of our journeys, experiences crafted with soul, curiosity, and connection.</p>
+    <div class="terms-wrap">
+        <header class="terms-hero">
+            <div class="hero-top">
+                <a href="index.html" class="back-button" aria-label="Go back to home">&larr; Back to Home</a>
+                <p class="terms-label">Tiri Tara</p>
+            </div>
+            <h1>Terms of Service</h1>
+            <p class="terms-intro">
+                Welcome to Tiri Tara, journeys crafted with soul, curiosity, and connection.
+                By registering, filling out a booking form, or confirming a trip with us, you acknowledge that you have read,
+                understood, and agreed to the following Terms of Service.
+            </p>
+            <p class="terms-intro muted">
+                These terms are here so every traveller clearly understands what to expect, what we stand by, and what we ask in return.
+            </p>
+        </header>
 
-        <p>By registering or filling out a booking form, you acknowledge that you've read, understood, and agreed to the following <strong>Terms of Service:</strong></p>
+        <div class="terms-content-grid">
+            <nav class="terms-nav" aria-label="Terms of Service Sections">
+                <h2>Quick Navigation</h2>
+                <a href="#booking">1. Booking and Payment</a>
+                <a href="#cancellation">2. Cancellation and Refund Policy</a>
+                <a href="#rescheduling">3. Rescheduling</a>
+                <a href="#trip-cancel">4. Trip Cancellation by Tiri Tara</a>
+                <a href="#itinerary">5. Itinerary, Spontaneity and Expectations</a>
+                <a href="#inclusions">6. Inclusions, Food and Accommodation</a>
+                <a href="#conduct">7. Community Standards and Conduct</a>
+                <a href="#substance">8. Substance Policy</a>
+                <a href="#health">9. Health, Fitness and Medical Responsibility</a>
+                <a href="#liability">10. Liability and Safety</a>
+                <a href="#media">11. Media and Photography Consent</a>
+                <a href="#privacy">12. Privacy and Communication</a>
+                <a href="#eligibility">13. Eligibility</a>
+                <a href="#law">14. Governing Law and Disputes</a>
+            </nav>
 
-        <hr>
+            <main class="terms-main">
+                <section class="terms-section" id="booking">
+                    <h2>1. Booking and Payment</h2>
+                    <ul>
+                        <li>A non-refundable token amount of ₹2,500 is required to confirm your slot on trips announced more than one month before departure. This amount is counted toward the total trip cost.</li>
+                        <li>The remaining balance must be paid in full at least two weeks (14 days) before the departure date, or earlier as communicated by our team.</li>
+                        <li>All bookings are considered confirmed only after successful payment and receipt of a written booking confirmation from Tiri Tara.</li>
+                        <li>Trip pricing is exclusive of 5% GST, which will be applied at the time of final payment.</li>
+                        <li>The cost breakdown shared on our trip details page is indicative and meant for transparency. If you skip a meal or opt out of an activity, that portion of the cost is not refundable.</li>
+                    </ul>
+                </section>
 
-        <h3>1. Booking & Payment</h3>
+                <section class="terms-section" id="cancellation">
+                    <h2>2. Cancellation and Refund Policy</h2>
+                    <p>Tiri Tara keeps groups to a maximum of 11 travellers per trip. Every slot matters for budget, group energy, and the overall experience.</p>
+                    <ul>
+                        <li>Cancellation more than 14 days before departure: 75% refund of the total trip cost paid (the ₹2,500 token is excluded and non-refundable in all cases).</li>
+                        <li>Cancellation between 7 to 14 days before departure: 50% refund of the total trip cost paid.</li>
+                        <li>Cancellation 3 days or fewer before departure: no refund. No exceptions.</li>
+                        <li>The ₹2,500 token amount is non-refundable under all circumstances.</li>
+                    </ul>
+                    <p>
+                        <strong>Replacement rule:</strong> If you cannot join and you find a suitable replacement traveller yourself,
+                        someone we believe fits the group,
+                        and inform us before the trip begins, we may at our sole discretion process a full refund as a one-time goodwill exception.
+                        This is not guaranteed and is reviewed case by case.
+                    </p>
+                </section>
 
-        <ul>
-            <li>A deposit or advance payment is required to confirm your slot for any Tiri Tara trip.</li>
-            <li>The remaining balance must be paid before the departure date as communicated by our team.</li>
-            <li>All bookings are considered confirmed only after successful payment and receipt of the booking confirmation from Tiri Tara.</li>
-            <li>Price is not inclusive of 5% GST</li>
-        </ul>
+                <section class="terms-section" id="rescheduling">
+                    <h2>3. Rescheduling</h2>
+                    <p>
+                        In unforeseen personal or external circumstances, you may request to transfer your booking
+                        to another available Tiri Tara trip within 60 days of your originally planned journey date.
+                    </p>
+                    <ul>
+                        <li>Rescheduling requests are subject to availability and are reviewed and approved at Tiri Tara's discretion.</li>
+                        <li>The rescheduled trip must be taken within 60 days of the original departure date. After this window, the booking will lapse and is no longer eligible for rescheduling or refund.</li>
+                        <li>We do not offer automatic rescheduling. All requests must be made in writing.</li>
+                    </ul>
+                </section>
 
-        <hr>
+                <section class="terms-section" id="trip-cancel">
+                    <h2>4. Trip Cancellation by Tiri Tara</h2>
+                    <ul>
+                        <li>Tiri Tara reserves the right to cancel any trip up to 3 days before departure if the minimum required number of participants is not met, or if internal business, safety, or logistical concerns arise.</li>
+                        <li>In such cases, all participants will receive a full refund of the amount paid to Tiri Tara.</li>
+                        <li>Tiri Tara is not liable for additional costs incurred by participants, including flights, personal accommodation, travel insurance, or leave taken in anticipation of the trip.</li>
+                    </ul>
+                </section>
 
-        <h3>2. Rescheduling Policy</h3>
+                <section class="terms-section" id="itinerary">
+                    <h2>5. Itinerary, Spontaneity and Expectations</h2>
+                    <p>Tiri Tara intentionally reveals only 40% of any trip in advance. This is part of the philosophy of how we travel.</p>
+                    <ul>
+                        <li>We share what we promise: destination, duration, vibe, type of accommodation, and nature of experiences. The rest is discovered together.</li>
+                        <li>Detailed itineraries are not released in advance. We reserve the right to withhold specific plans, routes, and activity details.</li>
+                        <li>The trip captain is in full charge during the journey and has the authority to modify the itinerary at any time due to weather, safety, local conditions, access, or a better opportunity.</li>
+                        <li>What is listed on the trip details page reflects our intent and honest best effort. Travel is unpredictable, and we do not guarantee every listed element will be delivered exactly as described.</li>
+                        <li>By booking with us, you embrace discovery over checklist travel.</li>
+                    </ul>
+                </section>
 
-        <p>In unforeseen personal or external circumstances, you may choose to transfer or postpone your trip to another date within <strong>60 days</strong> of your originally planned journey.<br>
-        Requests will be reviewed and approved at Tiri Tara's discretion.</p>
+                <section class="terms-section" id="inclusions">
+                    <h2>6. Inclusions, Food and Accommodation</h2>
+                    <ul>
+                        <li>Only what is explicitly listed under "What's Included" or "What to Expect" on the trip details page is covered by the package. Anything not listed is excluded.</li>
+                        <li>Food on travel days (transit meals) is included only if specifically stated in the trip details.</li>
+                        <li>Tiri Tara is not a luxury travel brand. We curate meaningful, accessible experiences that balance quality with affordability. Premium resort-level accommodation or service standards are not implied unless explicitly stated.</li>
+                        <li>If you wish to upgrade your room, add activities, or personalise your experience during the trip, these are at your own discretion and expense.</li>
+                    </ul>
+                </section>
 
-        <hr>
+                <section class="terms-section" id="conduct">
+                    <h2>7. Community Standards and Conduct</h2>
+                    <p>Tiri Tara is a community before it is a travel brand. When you join a trip, you are joining a tribe.</p>
+                    <ul>
+                        <li>Treat fellow travellers, locals, hosts, and Tiri Tara crew with respect and genuine kindness.</li>
+                        <li>Follow all instructions and guidelines shared by your trip captain or crew at all times.</li>
+                        <li>Any form of harassment, misbehaviour, aggression, or invasion of another traveller's privacy will not be tolerated.</li>
+                        <li>The trip captain has the right to remove any participant if behaviour disrupts the group's safety, wellbeing, or spirit. No refund will be issued in such cases.</li>
+                        <li>Tiri Tara reserves the right to refuse or cancel a booking at any time if a participant's conduct is not aligned with community values, before or during a trip.</li>
+                    </ul>
+                </section>
 
-        <h3>3. Community & Conduct</h3>
+                <section class="terms-section" id="substance">
+                    <h2>8. Substance Policy</h2>
+                    <p>To ensure a safe, inclusive, and mindful environment for everyone:</p>
+                    <ul>
+                        <li>Strictly no drugs or illegal substances on any Tiri Tara trip.</li>
+                        <li>No alcohol consumption during trip hours or group activities.</li>
+                        <li>No smoking or tobacco use during the trip unless in explicitly designated areas communicated by the captain.</li>
+                    </ul>
+                    <p class="muted">Violation of this policy may result in immediate removal from the trip without refund.</p>
+                </section>
 
-        <p>Tiri Tara is more than travel — it's a tribe.<br>
-        By joining a trip, you agree to:</p>
+                <section class="terms-section" id="health">
+                    <h2>9. Health, Fitness and Medical Responsibility</h2>
+                    <ul>
+                        <li>Participants are responsible for assessing their own physical fitness and health suitability for the trip.</li>
+                        <li>If you have any pre-existing medical conditions, allergies, or physical limitations, please inform us before booking. We will do our best to accommodate where possible, but cannot guarantee it.</li>
+                        <li>Tiri Tara does not provide medical assistance. Any medical costs or emergencies during the trip are the sole responsibility of the participant.</li>
+                        <li>We strongly recommend all participants carry travel insurance that covers medical emergencies, accidents, and trip cancellations.</li>
+                    </ul>
+                </section>
 
-        <ul>
-            <li>Treat all fellow travellers, locals, and staff with respect and kindness.</li>
-            <li>Follow all guidelines shared by the trip captain or crew.</li>
-            <li>Avoid any form of misbehaviour, harassment, or disruption to the group dynamic.</li>
-            <li>Understand that Tiri Tara reserves the right to reject or cancel a participant's booking at any time if their behaviour doesn't align with our community's spirit and safety.</li>
-        </ul>
+                <section class="terms-section" id="liability">
+                    <h2>10. Liability and Safety</h2>
+                    <ul>
+                        <li>Tiri Tara is not responsible for personal injuries, accidents, illnesses, or medical emergencies during the trip. All participants travel at their own risk.</li>
+                        <li>We are not liable for loss, theft, or damage to personal belongings at any point during the journey.</li>
+                        <li>Extreme weather, transport disruptions, strikes, infrastructure failures, and local restrictions may be beyond our control. We will seek the most thoughtful alternative available, but cannot be held liable for disruptions caused by such events.</li>
+                        <li>Tiri Tara is not responsible for any experience that does not meet personal expectations. Every trip is curated with the sole intent of bringing people together and giving them a meaningful break, but travel is subjective and individual experiences may differ.</li>
+                    </ul>
+                </section>
 
-        <hr>
+                <section class="terms-section" id="media">
+                    <h2>11. Media and Photography Consent</h2>
+                    <ul>
+                        <li>By joining a Tiri Tara trip, you consent to being photographed or filmed by our team. This content may be used on our website, social media, or in marketing materials.</li>
+                        <li>If you prefer not to appear in shared media, inform our team in writing before the trip begins. We will do our best to respect this preference.</li>
+                    </ul>
+                </section>
 
-        <h3>4. Substance Policy</h3>
+                <section class="terms-section" id="privacy">
+                    <h2>12. Privacy and Communication</h2>
+                    <ul>
+                        <li>By filling out any Tiri Tara form or sharing your details with us, you consent to receiving updates about your booking, upcoming trips, and new experiences.</li>
+                        <li>You may be added to our WhatsApp community (Tiri Tribe) for trip coordination and community updates.</li>
+                        <li>Tiri Tara may contact you via phone, WhatsApp, or email about future trips we believe are a good fit for you.</li>
+                        <li>You can opt out of non-essential communication at any time. We respect your privacy and will never share your data with any third party.</li>
+                    </ul>
+                </section>
 
-        <p>To ensure a safe, inclusive, and mindful environment:</p>
+                <section class="terms-section" id="eligibility">
+                    <h2>13. Eligibility</h2>
+                    <ul>
+                        <li>Tiri Tara trips are open to adults aged 18 and above.</li>
+                        <li>Participants under 18 may join only with explicit written consent and in the company of a parent or legal guardian, subject to prior approval by Tiri Tara.</li>
+                    </ul>
+                </section>
 
-        <ul>
-            <li>No drugs or illegal substances are permitted on any Tiri Tara trip.</li>
-            <li>No alcohol consumption during trip hours or group activities.</li>
-            <li>Strict no smoking policy throughout the journey unless explicitly allowed in designated areas.</li>
-        </ul>
-
-        <hr>
-
-        <h3>5. Liability</h3>
-
-        <ul>
-            <li>Tiri Tara is not responsible for any loss of belongings, damage to personal property, injuries, or accidents during the trip.</li>
-            <li>While we aim for smooth operations, certain conditions (like weather, strikes, or transport issues) may be beyond our control.</li>
-            <li>While we always aim to deliver the planned experience, Tiri Tara is not liable for delays or unforeseen changes due to external factors.</li>
-        </ul>
-
-        <hr>
-
-        <h3>6. Inclusions & Exclusions</h3>
-
-        <p>Only what's clearly listed under "What's Included" or "What to Expect" on the trip page is covered by the package.<br>
-        Any additional activities, personal expenses, or items not mentioned are not included.</p>
-
-        <hr>
-
-        <h3>7. Media & Photography Consent</h3>
-
-        <p>By joining a Tiri Tara trip, you consent to allow our team to capture photos and videos during the experience, which may be used for our website, social media, or marketing purposes.<br>
-        If you prefer not to appear in any media, please inform our team before the trip begins.</p>
-
-        <hr>
-
-        <h3>8. Privacy & Communication</h3>
-
-        <p>By filling out any form or sharing your details with us, you consent to:</p>
-
-        <ul>
-            <li>Receive updates about your booking, upcoming trips, or new experiences.</li>
-            <li>Be added to our WhatsApp community (Tiri Tribe) for coordination and trip updates.</li>
-            <li>Allow Tiri Tara to contact you via phone, WhatsApp, or email if we believe a future trip suits your interests.</li>
-        </ul>
-
-        <p>We respect your privacy and promise to never share your data with any third party.</p>
-
-        <hr>
-
-        <h3>9. Trip Philosophy</h3>
-
-        <p>At Tiri Tara, we keep a part of every journey unplanned — <strong>60% discovered</strong>.<br>
-        This means that detailed itineraries may not be revealed in advance.<br>
-        The essence of our experiences lies in spontaneity and curiosity, and by booking with us, you agree to embrace that spirit.</p>
-
-        <hr>
-
-        <h3>10. Our Promise</h3>
-
-        <p>We'll always do our best to ensure every trip runs as promised — with care, safety, and authenticity.<br>
-        However, certain operational aspects may fall outside our control.<br>
-        In such cases, we'll find the most thoughtful alternative, but Tiri Tara will not be held liable for events beyond reasonable management.</p>
-
-        <hr>
-
-        <p><strong>By booking a trip with Tiri Tara, you agree to these Terms of Service.</strong><br>
-        We're excited to have you join our growing community of travellers.<br>
-        See you on the road, where 40% is planned, and 60% is discovered. ✨</p>
+                <section class="terms-section" id="law">
+                    <h2>14. Governing Law and Disputes</h2>
+                    <p>
+                        These Terms of Service are governed by the laws of India.
+                        Any disputes arising in connection with these terms or Tiri Tara trips shall be subject to the jurisdiction of the courts in Hyderabad, Telangana.
+                    </p>
+                    <p>
+                        We always prefer to resolve concerns directly and amicably. Please write to us first at withtiritara@gmail.com before escalating.
+                    </p>
+                    <div class="contact-box">
+                        <p><strong>Email:</strong> withtiritara@gmail.com</p>
+                        <p><strong>Phone / WhatsApp:</strong> +91 81431 20853</p>
+                        <p><strong>Website:</strong> withtiritara.in</p>
+                    </div>
+                    <p class="terms-footer-note">By booking a trip with Tiri Tara, you agree to these Terms of Service.</p>
+                    <p class="terms-footer-note">40% planned. 60% discovered. 100% yours.</p>
+                </section>
+            </main>
+        </div>
     </div>
 </body>
 </html>
