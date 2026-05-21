@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Journey Details - Tiri Tara</title>
+    <title id="page-title">Trip Details - Tiri Tara</title>
     <link rel="icon" type="image/svg+xml" href="./assets/logo.webp">
     <link rel="stylesheet" href="style.css">
 
@@ -17,705 +17,282 @@
         })(window, document, "clarity", "script", "u6zfyrv7r7");
     </script>
     <style>
-        /* Global overflow fix */
         body {
-            overflow-x: hidden;
-        }
-
-        /* Journey Details Page Specific Styles */
-        .journey-details-page {
-            min-height: 100vh;
+            background-image: url('./assets/bg.webp');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            position: relative;
-            padding-top: 100px;
+            background-repeat: no-repeat;
             overflow-x: hidden;
         }
 
-        .journey-details-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 1;
+        .detail-page {
+            padding-top: 100px;
+            padding-bottom: 5rem;
+            min-height: 100vh;
         }
 
-        .journey-card {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            width: calc(100% - 2rem);
-            margin: 5rem auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-        }
-
-        .journey-card h1 {
-            font-family: var(--description-font);
-            color: #e67e22;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            border-bottom: 2px solid #e67e22;
-            padding-bottom: 0.75rem;
-            grid-column: 1 / -1;
-        }
-
-        .journey-content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 1rem;
-            align-items: start;
-            width: 100%;
+        .detail-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
             box-sizing: border-box;
         }
 
-        .journey-info {
-            margin-bottom: 1rem;
-        }
 
-        .journey-info-item {
+        /* Title + CTA row */
+        .detail-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
-            padding: 0.5rem 0;
-            width: 100%;
-            box-sizing: border-box;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .journey-info-label {
-            font-family: var(--description-font);
-            font-weight: 600;
-            color: #2c3e50;
-            min-width: 130px;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        .journey-info-value {
-            font-family: var(--description-font);
-            color: #2c3e50;
-            text-align: right;
-            flex: 1;
-            margin-left: 1rem;
-            font-size: 0.9rem;
+        /* Main heading */
+        .detail-title {
+            font-family: var(--primary-font);
+            font-size: 2.8rem;
             font-weight: 500;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+            color: #1a1a1a;
+            margin: 0;
+            line-height: 1.15;
+            letter-spacing: 0.06em;
         }
 
-        .journey-info-list {
-            font-family: var(--description-font);
-            color: #2c3e50;
-            text-align: left;
-            flex: 1;
-            margin-left: 1rem;
-            font-size: 0.85rem;
-            font-weight: 400;
-            padding-left: 1.25rem;
-            margin-top: 0;
-            margin-bottom: 0;
-            list-style-type: disc;
-        }
-
-        .journey-info-list li {
-            margin-bottom: 0.4rem;
-            line-height: 1.5;
-        }
-
-        .journey-info-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        .price-highlight {
-            color: #000000;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .horizontal-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #e67e22, transparent);
-            margin: 1.5rem 0;
-            border: none;
-            grid-column: 1 / -1;
-        }
-
-        .what-to-expect {
-            margin-top: 0;
-        }
-
-        .what-to-expect h2 {
-            font-family: var(--description-font);
-            color: #2c3e50;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-top: 0.3rem;
-            margin-bottom: 1rem;
-        }
-
-        .what-to-expect p {
-            font-family: var(--description-font);
-            color: #2c3e50;
-            line-height: 1.6;
-            font-size: 0.95rem;
-            font-weight: 400;
-            text-align: left;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-
-        .what-to-expect p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Price breakdown table styling */
-        .price-breakdown-table {
+        /* Fields table */
+        .detail-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 6px;
+            background: #fff;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            font-size: 0.75rem;
+            border: 1px solid #e8e4df;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
         }
 
-        .price-breakdown-table thead {
-            background: rgba(0, 0, 0, 0.05);
-            color: #2c3e50;
+        .detail-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            border-bottom: 1px solid #f0ede8;
         }
 
-        .price-breakdown-table th {
-            padding: 0.5rem 0.6rem;
-            text-align: left;
-            font-family: var(--description-font);
-            font-weight: 600;
-            font-size: 0.75rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .price-breakdown-table th:first-child {
-            text-align: left;
-        }
-
-        .price-breakdown-table th:not(:first-child) {
-            text-align: center;
-        }
-
-        .price-breakdown-table td {
-            padding: 0.5rem 0.6rem;
-            font-family: var(--description-font);
-            font-size: 0.7rem;
-            color: #2c3e50;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .price-breakdown-table td:first-child {
-            font-weight: 500;
-            text-align: left;
-        }
-
-        .price-breakdown-table td:not(:first-child) {
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .price-breakdown-table tbody tr:hover {
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        .price-breakdown-table tfoot {
-            background: rgba(0, 0, 0, 0.05);
-            font-weight: 700;
-        }
-
-        .price-breakdown-table tfoot td {
-            padding: 0.6rem;
-            font-size: 0.8rem;
-            color: #2c3e50;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        .detail-row:last-child {
             border-bottom: none;
         }
 
-        .section-divider {
-            margin: 1.25rem 0 1rem 0;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
+        .detail-label {
             font-family: var(--description-font);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            padding: 1rem 1.25rem;
+            background: #faf8f5;
+            border-right: 1px solid #f0ede8;
+            display: flex;
+            align-items: flex-start;
         }
 
-        .accommodation-option {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            border-left: 3px solid rgba(0, 0, 0, 0.2);
-        }
-
-        .accommodation-option h3 {
+        .detail-value {
             font-family: var(--description-font);
-            font-size: 0.8rem;
+            font-size: 0.88rem;
+            color: #444;
+            padding: 1rem 1.5rem;
+            line-height: 1.65;
+        }
+
+        .detail-value.price-value {
+            font-size: 1rem;
             font-weight: 700;
-            color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 0.4rem;
+            color: #1a1a1a;
         }
 
-        .accommodation-option p {
-            margin: 0.4rem 0;
-            font-size: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .accommodation-option .ideal-for {
+        .detail-value.tagline-value {
             font-style: italic;
-            color: #2c3e50;
-            font-weight: 500;
+            color: #555;
         }
 
-        .important-notes {
-            background: rgba(0, 0, 0, 0.03);
-            border-left: 3px solid rgba(0, 0, 0, 0.2);
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-top: 1rem;
+        /* CTA section */
+        .detail-cta {
+            flex-shrink: 0;
         }
 
-        .important-notes ul {
-            margin: 0.4rem 0;
-            padding-left: 1.25rem;
-        }
-
-        .important-notes li {
-            margin: 0.4rem 0;
-            color: #2c3e50;
+        .btn-invite-detail {
+            background: #1a1a1a;
+            color: #fff;
             font-family: var(--description-font);
-            font-size: 0.95rem;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .price-breakdown-table {
-                font-size: 0.65rem;
-                margin: 0.75rem 0;
-            }
-
-            .price-breakdown-table th {
-                padding: 0.4rem 0.4rem;
-                font-size: 0.65rem;
-            }
-
-            .price-breakdown-table td {
-                padding: 0.4rem 0.4rem;
-                font-size: 0.6rem;
-            }
-
-            .price-breakdown-table tfoot td {
-                padding: 0.5rem 0.4rem;
-                font-size: 0.7rem;
-            }
-
-            .section-title {
-                font-size: 0.75rem;
-                margin-bottom: 0.6rem;
-            }
-
-            .accommodation-option {
-                padding: 0.6rem;
-                margin-bottom: 0.75rem;
-            }
-
-            .accommodation-option h3 {
-                font-size: 0.7rem;
-                margin-bottom: 0.3rem;
-            }
-
-            .accommodation-option p {
-                font-size: 0.65rem;
-                line-height: 1.3;
-            }
-
-            .important-notes {
-                padding: 0.6rem;
-            }
-
-            .important-notes li {
-                font-size: 0.9rem;
-            }
-
-            .section-divider {
-                margin: 1rem 0 0.75rem 0;
-                padding-top: 0.75rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .price-breakdown-table {
-                font-size: 0.6rem;
-            }
-
-            .price-breakdown-table th {
-                padding: 0.35rem 0.3rem;
-                font-size: 0.6rem;
-            }
-
-            .price-breakdown-table td {
-                padding: 0.35rem 0.3rem;
-                font-size: 0.55rem;
-            }
-
-            .price-breakdown-table tfoot td {
-                padding: 0.4rem 0.3rem;
-                font-size: 0.65rem;
-            }
-
-            .section-title {
-                font-size: 0.7rem;
-            }
-
-            .accommodation-option h3 {
-                font-size: 0.65rem;
-            }
-
-            .accommodation-option p {
-                font-size: 0.6rem;
-            }
-
-            .important-notes li {
-                font-size: 0.7rem;
-            }
-        }
-
-        .back-button {
-            position: fixed;
-            top: 120px;
-            left: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            text-decoration: none;
-            color: #e67e22;
+            font-size: 0.9rem;
             font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-
-        .back-button:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .book-now-section {
-            text-align: center;
-            margin-top: 0.75rem;
-            padding-top: 0;
-            grid-column: 1 / -1;
-        }
-
-        .book-now-btn {
-            font-family: var(--description-font);
-            background: linear-gradient(135deg, #e67e22 100%, #d35400 100%);
-            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
             border: none;
-            padding: 0.875rem 2.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-invite-detail:hover {
+            background: #333;
         }
 
 
-        /* Floating navbar - use default styles from style.css */
+        /* Badge in detail */
+        .detail-badge {
+            display: inline-block;
+            font-family: var(--description-font);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            background: #e8f5f0;
+            color: #1a7a5e;
+            border: 1px solid #c3e6d8;
+        }
 
-        /* Mobile Responsive */
+        .detail-badge.founding { background: #fef3e2; color: #b8710a; border-color: #f5d9a0; }
+        .detail-badge.christmas { background: #fce8e8; color: #c0392b; border-color: #f5c6c6; }
+        .detail-badge.expedition { background: #e8eef8; color: #1a3a6b; border-color: #c3d0e8; }
+        .detail-badge.surprise { background: #f0e8f8; color: #6a2d8a; border-color: #d8c3e8; }
+
+
+        /* Tablet */
         @media (max-width: 768px) {
-            .journey-card {
-                margin: 1rem;
-                padding: 1.5rem;
-                max-width: none;
-                width: calc(100% - 2rem);
-                box-sizing: border-box;
+            .detail-container {
+                padding: 1.5rem 1.25rem;
             }
 
-            .journey-card h1 {
-                font-size: 1.75rem;
-                margin-bottom: 1rem;
+            .detail-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            /* iOS doesn't support background-attachment: fixed */
+            body {
+                background-attachment: scroll;
             }
 
-            .journey-content-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-                width: 100%;
-                box-sizing: border-box;
+            .detail-page {
+                padding-top: 75px;
+                padding-bottom: 3rem;
             }
 
-            .journey-info-item {
-                flex-direction: column;
+            .detail-container {
+                padding: 1.25rem 1rem;
+            }
+
+            .detail-header {
                 align-items: flex-start;
-                padding: 0.5rem 0;
+                flex-direction: column;
+                gap: 0.85rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .detail-title {
+                font-size: 1.8rem;
+                letter-spacing: 0.04em;
+            }
+
+            .detail-cta {
                 width: 100%;
+            }
+
+            .btn-invite-detail {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 0.85rem 1rem;
                 box-sizing: border-box;
             }
 
-            .journey-info-label {
-                margin-bottom: 0.25rem;
-                min-width: auto;
+            .detail-table {
+                border-radius: 10px;
+            }
+
+            .detail-row {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-label {
+                border-right: none;
+                border-bottom: 1px solid #f0ede8;
+                padding: 0.65rem 1rem 0.45rem;
+                font-size: 0.75rem;
+            }
+
+            .detail-value {
+                padding: 0.5rem 1rem 0.85rem;
                 font-size: 0.85rem;
             }
-
-            .journey-info-value {
-                text-align: left;
-                margin-left: 0;
-                font-size: 0.85rem;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-                width: 100%;
-            }
-
-            .journey-info-list {
-                text-align: left;
-                margin-left: 0;
-                font-size: 0.8rem;
-                padding-left: 1rem;
-                width: 100%;
-            }
-
-            .journey-info-list li {
-                margin-bottom: 0.3rem;
-            }
-
-            .back-button {
-                position: static;
-                margin: 1rem;
-                display: inline-block;
-            }
-
-            .what-to-expect p {
-                text-align: left;
-                font-size: 0.9rem;
-            }
-
-            .what-to-expect h2 {
-                font-size: 1.2rem;
-            }
-
-            .book-now-btn {
-                padding: 0.75rem 2rem;
-                font-size: 0.9rem;
-            }
         }
 
-        /* Extra small screens */
-        @media (max-width: 480px) {
-            .journey-card {
-                margin: 0.5rem;
-                padding: 1rem;
-                width: calc(100% - 1rem);
+        /* Small phones */
+        @media (max-width: 400px) {
+            .detail-title {
+                font-size: 1.55rem;
             }
 
-            .what-to-expect p {
-                text-align: left;
-                font-size: 0.7rem;
-                margin-bottom: 0;
+            .detail-container {
+                padding: 1rem 0.85rem;
             }
-
-            .what-to-expect h2 {
-                font-size: 1rem;
-                margin-bottom: 0;
-            }
-
-            .journey-content-grid {
-                gap: 0;
-            }
-
-            .journey-info-item {
-                padding: 0.2rem 0;
-            }
-
-            .journey-card h1 {
-                font-size: 1.2rem;
-            }
-
-            .journey-info-label {
-                font-size: 0.7rem;
-            }
-
-            .journey-info-value {
-                font-size: 0.7rem;
-            }
-
-            .journey-info-list {
-                font-size: 0.65rem;
-                padding-left: 0.875rem;
-            }
-
-            .journey-info-list li {
-                margin-bottom: 0.25rem;
-            }
-        }
-
-        /* Coming Soon Styles */
-        .coming-soon {
-            text-align: center;
-            color: #2c3e50;
-            font-family: var(--description-font);
-            padding: 1rem 0;
-        }
-
-        .coming-soon h2 {
-            color: #e67e22;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .coming-soon p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .coming-soon .tribe-join-btn {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            color: white;
-            border: none;
-            padding: 0.875rem 2rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
-        }
-
-        .coming-soon .tribe-join-btn:hover {
-            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
-        }
-
-        .coming-soon .book-now-btn {
-            background: linear-gradient(135deg, #e67e22 100%, #d35400 100%);
-            color: white;
-            border: none;
-            padding: 0.875rem 2.5rem;
-            margin-top: 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
-            font-family: var(--description-font);
         }
     </style>
 </head>
 
-<body class="journey-details-page" id="journey-page-body">
+<body class="detail-page">
     <!-- Floating Navigation -->
     <nav class="floating-navbar">
         <div class="navbar-container">
             <div class="navbar-left">
-                <!-- Logo moved to extreme left -->
                 <div class="navbar-brand">
                     <a href="index.html">
                         <img src="./assets/logo.webp" alt="Tiri Tara" class="brand-logo">
                     </a>
                 </div>
             </div>
-
             <div class="navbar-right">
-                <!-- Navigation links and icons grouped together -->
                 <div class="navbar-text-links">
                     <a href="all-trips.html" class="nav-text-link" title="All Trips" aria-label="All Trips">Trips</a>
                     <a href="about-us.html" class="nav-text-link" title="About Us" aria-label="About Us">About</a>
-                    <a href="contact-us.html" class="nav-text-link" title="Contact Us"
-                        aria-label="Contact Us">Contact</a>
+                    <a href="contact-us.html" class="nav-text-link" title="Contact Us" aria-label="Contact Us">Contact</a>
                 </div>
                 <div class="navbar-social-icons">
-                    <a href="https://www.instagram.com/withtiritara?igsh=NGg5YXF3NDNuNHNm&utm_source=qr"
-                        class="nav-icon-link" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+                    <a href="https://www.instagram.com/withtiritara?igsh=NGg5YXF3NDNuNHNm&utm_source=qr" class="nav-icon-link" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
                         <img src="./assets/social/instagram.svg" alt="Instagram" class="nav-icon">
                     </a>
-                    <a href="https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc" class="nav-icon-link"
-                        target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+                    <a href="https://chat.whatsapp.com/LeKbUgTuEYXGoNCn3P36pT?mode=wwc" class="nav-icon-link" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
                         <img src="./assets/social/whatsapp.svg" alt="WhatsApp" class="nav-icon">
                     </a>
-                    <a href="https://www.linkedin.com/company/tiritara/" class="nav-icon-link" target="_blank"
-                        rel="noopener" title="LinkedIn" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/company/tiritara/" class="nav-icon-link" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
                         <img src="./assets/social/linkedin.svg" alt="LinkedIn" class="nav-icon">
                     </a>
                 </div>
-                <a onclick="openJoinForm(event, true)" class="navbar-link join-tribe" id="nav-join-tribe">Join the
-                    Tribe</a>
+                <a onclick="openJoinForm(event, true)" class="navbar-link join-tribe" id="nav-join-tribe">Join the Tribe</a>
             </div>
         </div>
     </nav>
-    <!-- Journey Card -->
-    <div class="journey-card" id="journey-card">
-        <!-- Content will be populated by JavaScript -->
+
+    <div class="detail-container" id="detail-container">
+        <!-- Populated by JS -->
     </div>
 
     <!-- Footer -->
-    <footer class="site-footer" aria-label="Site footer"
-        style="position: relative; z-index: 2; background: rgba(45, 90, 45, 0.95); backdrop-filter: blur(10px);">
+    <footer class="site-footer" aria-label="Site footer">
         <div class="footer-inner">
             <div class="footer-top-row">
                 <p>&copy;2026 Tiri Tara</p>
                 <div class="footer-contact">
-                    <p>Phone: <a href="tel:+919876543210" class="phone-link">+91 81431 20853</a></p>
+                    <p>Phone: <a href="tel:+918143120853" class="phone-link">+91 81431 20853</a></p>
                 </div>
             </div>
             <div class="footer-links">
-                <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of
-                    Service</a>
-                <a href="refund-cancellation-policy.html" target="_blank" rel="noopener noreferrer"
-                    class="footer-link">Refund and Cancellation Policies</a>
-                <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Privacy
-                    Policy</a>
+                <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer" class="footer-link">Terms of Service</a>
+                <a href="refund-cancellation-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Refund and Cancellation Policies</a>
+                <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Privacy Policy</a>
             </div>
         </div>
     </footer>
@@ -733,8 +310,7 @@
                 <iframe
                     src="https://docs.google.com/forms/d/e/1FAIpQLSe5HxGSO54PIwLqk9pgOAM8XMpo86Pgz4HiHf0i17p-lFXX9w/viewform?embedded=true"
                     class="google-form-iframe" title="You're one step from the tribe - Signup Form" width="100%"
-                    height="100%" frameborder="0" marginheight="0" marginwidth="0"
-                    aria-label="You're one step from the tribe form">
+                    height="100%" frameborder="0" marginheight="0" marginwidth="0">
                     Loading…
                 </iframe>
             </div>
@@ -742,675 +318,366 @@
     </div>
 
     <script>
-        // Journey data configuration
+        // Ordered list of all trip keys (for prev/next navigation)
+        const TRIP_ORDER = [
+            'hampi', 'panchgani', 'dandeli',
+            'gandikota', 'mulkiholi',
+            'bhandardarafireflyfestival', 'lonavala',
+            'kashmir',
+            'matheran', 'kudremukhtrek',
+            'chikmagalursakleshpur', 'southgoa',
+            'pondicherry',
+            'honnavarudupi',
+            'badami', 'araku'
+        ];
+
         const journeyData = {
             hampi: {
-                title: "Hampi Weekend Getaway",
-                backgroundImage: "./journeys/Hampi.webp",
-                dates: "",
-                start: "",
-                return: "",
-                price: "Dorm (8-share): ₹7,499 <br/> Room (2-share): ₹7,899",
-                maxSpots: "15 only",
-                lastDate: "",
-                includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
-                description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
-                status: "completed"
-            },
-            hampi2026: {
-                title: "Hampi Weekend Getaway",
-                backgroundImage: "./journeys/Hampi.png",
-                dates: "",
-                start: "",
-                return: "",
-                price: "Dorm (8-share): ₹8,999 <br/> Room (2-share): ₹9,499",
-                maxSpots: "11 only",
-                lastDate: "",
-                includes: "Travel, Stay, Food (₹300/day meal cap), Tickets and Activities",
-                description: "Think sunrises on hilltops, sunsets over temples, and a river that holds a few surprises of its own.\n\nYou might chase reflections, paddle through stillness, or catch a quiet moment with a creature older than the stones themselves.\n\nWhen the last sunset fades, all you'll want is one more evening in Hampi.",
-                status: "active"
-            },
-            chikmagalurgoodfriday: {
-                title: "Chikmagalur: The Raw Green Sanctuary",
-                backgroundImage: "./journeys/chikmagalore.webp",
-                dates: "May 22–26, 2026 (4N/3D)",
-                start: "Hyderabad departure on May 22, 2026",
-                return: "Return to Hyderabad on May 26, 2026",
-                price: "₹14,999",
-                maxSpots: "11 only",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 2 nights in a coffee estate ## All meals, 3 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: `A short, slow escape into coffee country.
-
-We leave Hyderabad and arrive inside a working coffee estate where mornings are mist and evenings are woodfire. Days include gentle walks to waterfalls and peaks, with long pauses for coffee and quiet.
-
-This is a simple reset — good food, green surrounds, and small groups. Come for the coffee, stay for the slow afternoons and warm nights around the fire.`,
-                status: "active"
+                key: 'hampi',
+                title: 'Hampi',
+                badge: 'Founding Trip · Nov',
+                badgeClass: 'founding',
+                tagline: 'Sunrises on hilltops, sunsets over temples, and a river that remembers everything',
+                dates: 'November 2025',
+                groupSize: '≤15 people',
+                price: '₹7,499 · Dorm (8-share)\n₹7,899 · Room (2-share)',
+                whatMakesThisTrip: 'Hampi moves differently. The kind of place where time stretches — mornings on hilltops, evenings behind temple silhouettes.',
+                whatToExpect: 'Sunrises, long walks, quiet river moments, and a place that doesn\'t rush you. When the last sunset fades, you\'ll want one more evening here.',
+                covered: 'Travel · Stay · Meals · Activities',
+                whatMadeThisTrip: 'One of South India\'s most cinematic landscapes — and one of those places that earns a second trip before the first one ends. Hampi was Tiri Tara\'s very first trip: ruins, boulders, a river that doesn\'t rush, and a small group of people discovering what slow travel actually means together.',
+                whatWeDid: 'Boulder-hopping at dawn. The Virupaksha temple before the crowds. A coracle ride across the Tungabhadra. Ruins that nobody else was visiting. An evening where the light turned everything golden and nobody wanted to leave.',
+                status: 'completed',
+                whatsappMsg: "Hi, Let's go to Hampi again!"
             },
             panchgani: {
-                title: "Panchgani Weekend Getaway",
-                backgroundImage: "./journeys/Panchgani.webp",
-                dates: "",
-                start: "",
-                return: "",
-                price: " ₹8,999",
-                maxSpots: "15 only",
-                lastDate: "",
-                includes: "Travel, Stay, Food (₹300/day meal cap for two days), Organic Farm Tour, Kombucha Making, Yoga in the Wild, Awakening in the Forest, Waterfall Visit, Bonfire Night, Strawberry Field Visit, and two days of living quietly among animals and nature.",
-                description: `Think slow mornings wrapped in valley mist, a rustic villa older than most stories we know, and days that move at the pace of leaves swaying outside your window.
-
-You might wander through strawberry fields, sit by a bonfire with strangers who slowly become familiar, or share space with gentle animals that make the place feel like home.
-
-Some hours will feel playful, some deeply quiet — the kind where solitude feels like company.
-And somewhere between the waterfall wind and the wild yoga session, you’ll find a version of yourself you didn’t expect to meet.
-
-When the weekend ends, you’ll wish the valley had held you a little longer.`,
-                status: "completed"
-            },
-            araku: {
-                title: "Araku",
-                backgroundImage: "./journeys/araku.webp",
-                dates: "Oct 15–19, 2026 (4N/3D)",
-                start: "Hyderabad departure on Oct 15, 2026",
-                return: "Return to Hyderabad on Oct 19, 2026",
-                price: "₹16,499",
-                maxSpots: "15 only",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 2 nights ## Jindhgada Trek ## All meals, 3 days (₹300/meal cap) ## Trek support + local transfers ## Trip captain",
-                description: `A slow escape into Araku’s gentle valleys — coffee-scented mornings, tribal crafts, and a short, intentional trek. This autumn trip includes the Jindhgada trek, camping, and stargazing, wrapped with warm local food and small-group company.`,
-                status: "active"
-            },
-            mulkiholi: {
-                title: "Mulki x Holi x Surf Workation",
-                backgroundImage: "./journeys/Mulki-Holi.webp",
-                dates: "Hyderabad × Mulki",
-                start: "6:00 PM, Tuesday, 3rd March, 2026, from Hyderabad",
-                return: "around 10:00 AM, Sunday, 8th March, 2026, to Hyderabad",
-                price: "The Loft (9-sharing): ₹19,999<br/>The Courtyard Room (3-sharing): ₹20,999",
-                maxSpots: "11 only",
-                lastDate: "",
-                includes: "Round-trip travel from Hyderabad to Hyderabad in our own mini AC luxury van for 4 days & 5 nights ## Holi celebration by the beach ## Stay at a heritage retreat  (workation-friendly with Wi-Fi) ## 3 Morning x Beginner-friendly surf classes (no swimming experience needed) ## Ice bath recovery session ## All meals for 4 days (₹300 per meal cap) ## Evening explorations around Mulki & Udupi ## Cultural immersion experiences: Yakshagana, Bhootakola & Kambala",
-                description: `A Holi trip designed in two gentle rhythms — movement and stillness.
-
-We leave Hyderabad on Tuesday, March 3rd at 5 PM, arriving in Mulki the next morning. Holi unfolds slowly — colours by the beach, salt in the air, no rush to be anywhere else.
-
-For three mornings, the ocean sets the tone. Surf lessons begin early, designed for absolute beginners. The rest of the day is yours — work quietly from the retreat, take calls under mango trees, or simply let time pass without guilt.
-
-Evenings begin after 5 PM, when we step out to explore — coastal towns, village life, and living traditions that are still deeply rooted in this region. An ice bath grounds the body; folklore, rituals, and open skies ground the mind.
-
-This is not a packed itinerary. It's a workation that breathes, a Holi that doesn't shout, and a journey meant to slow you down just enough to feel present again.
-
-<div class="section-divider">
-<h3 class="section-title">🏡 Accommodation Options</h3>
-</div>
-
-<div class="accommodation-option">
-<h3>Option 1: The Loft — ₹19,999 (9-Sharing)</h3>
-<p>A warm, open communal space under a traditional tiled roof. Sunrise views, shared courtyards, riverside corners, and an easy, social rhythm.</p>
-<p class="ideal-for">Ideal for: Solo travellers, friends, and surf-led explorers who enjoy shared living.</p>
-</div>
-
-<div class="accommodation-option">
-<h3>Option 2: The Courtyard Room — ₹20,999 (3-Sharing)</h3>
-<p>A quieter, more intimate room opening into the central courtyard. Earthy interiors, a personal seating nook, and slightly easier access to the washroom.</p>
-<p class="ideal-for">Best for: Those who want a bit more comfort while staying connected to the group.</p>
-</div>
-
-<div class="section-divider">
-<h3 class="section-title">💰 Price Breakdown (Per Person)</h3>
-</div>
-
-<table class="price-breakdown-table">
-<thead>
-<tr>
-<th>Component</th>
-<th>The Loft</th>
-<th>Courtyard Room</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>External & Internal Travel</td>
-<td>₹6,100</td>
-<td>₹6,100</td>
-</tr>
-<tr>
-<td>Stay (Heritage Retreat)</td>
-<td>₹5,000</td>
-<td>₹6,000</td>
-</tr>
-<tr>
-<td>Surf Classes (3 mornings)</td>
-<td>₹4,300</td>
-<td>₹4,300</td>
-</tr>
-<tr>
-<td>Food (₹300/meal cap, 4 days)</td>
-<td>₹3,600</td>
-<td>₹3,600</td>
-</tr>
-<tr>
-<td>Activities & Misc</td>
-<td>₹1,000</td>
-<td>₹1,000</td>
-</tr>
-</tbody>
-<tfoot>
-<tr>
-<td>FINAL PACKAGE PRICE</td>
-<td>₹19,999</td>
-<td>₹20,999</td>
-</tr>
-</tfoot>
-</table>
-
-<div class="important-notes">
-<h3 class="section-title">⚠️ Important Notes</h3>
-<ul>
-<li><strong>Trip Confirmation:</strong> This journey will be confirmed once a minimum of 9 participants sign up.</li>
-<li><strong>Payment Processing:</strong> Credit card payments will incur an additional 2.5% processing fee.</li>
-</ul>
-</div>`,
-                status: "completed"
-            },
-            aurangabad: {
-                title: "Aurangabad",
-                backgroundImage: "./journeys/Aurangabad.png",
-                description: "Explore the historical city of Aurangabad with its magnificent caves and rich heritage. More details coming soon!",
-                status: "Request Invite"
-            },
-            badami: {
-                title: "Badami",
-                backgroundImage: "./journeys/Badami.png",
-                dates: "Surprise Weekend (3N/2D)",
-                start: "",
-                return: "",
-                price: "₹9,999",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 1 night ## All meals, 2 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "Discover the ancient rock-cut temples and stunning architecture of Badami in a short surprise-weekend format built for a quick reset.",
-                status: "active"
-            },
-            bairlutyjunglecamp: {
-                title: "Bairluty Jungle Camp",
-                backgroundImage: "./journeys/Bairluty (Jungle Camp).png",
-                description: "Experience the thrill of jungle camping in Bairluty. Get ready for an adventure in the wild!",
-                status: "Request Invite"
-            },
-            bhandardarafireflyfestival: {
-                title: "Bhandardara",
-                backgroundImage: "./journeys/Bhandardara (Firefly Festival).png",
-                dates: "Jun 12–15, 2026 (3N/2D)",
-                start: "Hyderabad departure on Jun 12, 2026",
-                return: "Return to Hyderabad on Jun 15, 2026",
-                price: "₹9,999",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 1 night camping ## All meals, 2 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "A short camping weekend to watch fireflies and slow down.",
-                status: "active"
-            },
-            bhor: {
-                title: "Bhor",
-                backgroundImage: "./journeys/Bhor.png",
-                description: "Explore the scenic beauty and cultural heritage of Bhor. More details coming soon!",
-                status: "Request Invite"
-            },
-            coorg: {
-                title: "Coorg",
-                backgroundImage: "./journeys/Coorg.png",
-                dates: "Sep 3–7, 2026 (4N/3D)",
-                start: "Hyderabad departure on Sep 3, 2026",
-                return: "Return to Hyderabad on Sep 7, 2026",
-                price: "₹17,499",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 2 nights ## All meals, 3 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "Rolling coffee hills, quiet mornings, and forested walks in Coorg.",
-                status: "active"
+                key: 'panchgani',
+                title: 'Panchgani',
+                badge: 'Founding Trip · Nov',
+                badgeClass: 'founding',
+                tagline: 'A weekend that moves at the pace of mist and morning light',
+                dates: 'November 2025',
+                groupSize: '≤15 people',
+                price: '₹8,999',
+                whatMakesThisTrip: 'A slower kind of weekend. A rustic home, quiet surroundings, and time that didn\'t need structuring.',
+                whatToExpect: 'Valley mist, strawberry fields, bonfire evenings, and the kind of quiet that stays with you.',
+                covered: 'Travel · Stay · Meals · Experiences',
+                whatMadeThisTrip: 'This trip was never really about Panchgani alone. It became about 15 people arriving for completely different reasons — some for air, some for silence, some because they needed to escape something they couldn\'t explain yet.\n\nWe stayed in a 40-year-old rustic home hosted by a 72-year-old woman who welcomed us like we already belonged there. Nothing about the weekend felt rushed. Breakfasts stretched longer than expected, bookshelves became hiding spots, and conversations arrived naturally instead of needing effort.\n\nSome people found their voice here. Some found stillness. Some realised they could take up space without apologising for it.\n\nBy the end of the trip, it stopped feeling like a group getaway and started feeling like a shared memory none of us were ready to leave behind.',
+                whatWeDid: 'Late-night van rides with ghost stories and UNO games. Stargazing in the middle of a quiet village. Plateau walks through mist and silence. Strawberry fields, bonfires, waterfalls, and long conversations without checking the time.\n\nThere was yoga in the wild, kombucha stories over breakfast, fireflies for the first time, hikes where strangers instinctively held out a hand for each other, and a home that slowly started feeling like ours.\n\nA 500-year-old temple. Maggi at the hilltop. Marshmallows from the previous night. Tiny moments that somehow became the biggest parts of the trip.\n\nWe arrived as strangers. We left carrying the same story.',
+                status: 'completed',
+                whatsappMsg: "Hi, Let's go to Panchgani again!"
             },
             dandeli: {
-                title: "Dandeli × Gokarna",
-                backgroundImage: "./journeys/dandeli.webp",
-                dates: "",
-                start: "",
-                return: "",
-                price: "₹18,499<br/>(includes food — ₹300 cap per meal for 3 days — travel, stay, and all listed activities)",
-                maxSpots: "11 only",
-                lastDate: "",
-                includes: "Travel (Hyderabad → Dandeli → Gokarna → Hyderabad), Stay at a Jungle Resort in Dandeli (with pool), Bonfire with light music, Morning Trek with Birdwatching, Cycling, Archery, Outdoor Water Activities, Boating, Kayaking, Zorbing, Zipline, Short Rafting, Two slow days in Gokarna with a beachfront hostel stay, Unhurried explorations of beaches, forts, and caves",
-                description: `A Christmas week held in two rhythms.
-
-Dandeli opens the trip — a day deep inside the jungle's calm, a resort wrapped in trees, water that wakes you up, trails that warm your breath, and nights softened by firelight and music drifting through the dark.
-
-Then comes Gokarna — the exhale. Two days without checklists, just barefoot walks, warm beaches, caves that echo, forts that look out over the sea, and the kind of silence that feels like a reset button.
-
-A Christmas escape that starts in the wild and ends in stillness — steady, grounding, and exactly the break the year deserves.`,
-                status: "completed"
-            },
-            devkundwaterfalls: {
-                title: "Devkund Waterfalls",
-                backgroundImage: "./journeys/Devkund Waterfalls.png",
-                description: "Discover the hidden gem of Devkund Waterfalls. A trekker's paradise awaits!",
-                status: "Request Invite"
-            },
-            ekolevalleyview: {
-                title: "Ekole Valley View",
-                backgroundImage: "./journeys/Ekole Valley View.png",
-                description: "Take in the breathtaking valley views from Ekole. More details coming soon!",
-                status: "Request Invite"
+                key: 'dandeli',
+                title: 'Gokarna/ Dandeli',
+                badge: 'Christmas Special · 2025',
+                badgeClass: 'christmas',
+                tagline: 'A journey that begins in the wild and ends in stillness',
+                dates: 'December 2025',
+                groupSize: '≤11 people',
+                price: '₹18,499',
+                whatMakesThisTrip: 'Two completely different rhythms in one trip — active and still.',
+                whatToExpect: 'Jungle mornings, water, trails — followed by slow beach days and quiet sunsets.',
+                covered: 'Travel · Stay · Activities · Meals',
+                whatMadeThisTrip: 'None of us knew when we started that this wouldn\'t just be a holiday. Somewhere between the roads to Dandeli and the beaches of Gokarna, the trip stopped being about destinations and became about the people beside us.\n\nIt began with games on the highway and laughter loud enough to make us forget the city we had left behind. Then came Dandeli — elephants at sunset, cricket under floodlights from a stranger\'s Thar, river rafting screams, bonfires, and the strange comfort of feeling cared for by people we had only just met.\n\nAnd then Gokarna changed the rhythm entirely. Nights became slower. Conversations stretched endlessly. People opened up without trying to. We danced at 3 AM, trekked at sunrise, watched sunsets at hidden beaches, and slowly realised no one wanted the trip to end.\n\nWhat stayed with us wasn\'t just the rafting or the beaches or the cafés. It was the way people showed up for each other — naturally, effortlessly, without needing history first.\n\nBy the end, the group didn\'t feel temporary anymore. It felt like something we had all been missing for a long time.',
+                whatWeDid: 'Jungle resort stay in Dandeli with poolside evenings and bonfires. Watching elephants play at sunset. Cricket matches under improvised floodlights. River rafting through chaos and laughter. Late-night conversations that stretched into sunrise.\n\nThen two slow days in Gokarna — beach walks, hidden sunsets, treks at dawn, cafés we stayed at too long, bracelet shopping negotiations, dancing on the sand at 3 AM, and conversations that felt more important than sleep.\n\nThere were beaches, caves, music, brownies fought over at midnight, tea stops in tiny villages, and one bus breakdown at the very end that somehow became one more memory to hold onto together.\n\nWe arrived looking for a trip. We left carrying a tribe.',
+                status: 'completed',
+                whatsappMsg: "Hi, Let's go to Gokarna × Dandeli again!"
             },
             gandikota: {
-                title: "Gandikota Canyon Camp",
-                backgroundImage: "./journeys/Gandikota.png",
-                dates: "",
-                start: "",
-                return: "",
-                price: "₹6,899 — Mini Luxury Van Experience",
-                maxSpots: "16 only",
-                lastDate: "",
-                includes: "Round-trip travel from Hyderabad ⇄ Gandikota in our own mini AC luxury van for 2 days & 3 nights ## Campsite stay near Gandikota View Point (2-sharing tents, common washrooms with hot water) ## Sunset & sunrise experiences at the Gandikota canyon ## Bonfire evening with unhurried conversations ## Boating through the Pennar River canyon ## Exploration of Bellum Caves ## All meals for 2 days (3 meals/day/₹300 per meal cap) ## All entry tickets, boating charges & permits",
-                description: `A slow journey from city noise to canyon silence.
-
-This trip isn't about ticking places off a list. We start late from Hyderabad, letting the road slowly quiet the mind. Days begin with soft light over ancient rock formations and unfold gently — boating between canyon walls, walking through deep cave chambers, and returning to camp as the sky changes colour.
-
-Evenings are simple and warm: a bonfire, stories that arrive naturally, and long pauses that don't need filling. This is a trip for people who enjoy landscapes, silence, conversation, and the feeling of coming back lighter than they left.
-
-<div class="section-divider">
-<h3 class="section-title">🏕️ Stay Option</h3>
-</div>
-
-<div class="accommodation-option">
-<h3>Campsite Stay — ₹6,899 (2-Sharing)</h3>
-<p>Stay at campsites near Gandikota View Point in 2-sharing tents with common washrooms (hot water available).</p>
-</div>
-
-<div class="section-divider">
-<h3 class="section-title">💰 Price Breakdown</h3>
-</div>
-
-<table class="price-breakdown-table">
-<thead>
-<tr>
-<th>Component</th>
-<th>Amount (₹)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Travel (Hyd ↔ Gandikota ↔ Hyd)</td>
-<td>3,700</td>
-</tr>
-<tr>
-<td>Campsite Stay (2-sharing, common washroom)</td>
-<td>1,400</td>
-</tr>
-<tr>
-<td>Food (2 days × 3 meals)</td>
-<td>900</td>
-</tr>
-<tr>
-<td>Boating Experience</td>
-<td>500</td>
-</tr>
-<tr>
-<td>Entry Tickets & Permits</td>
-<td>300</td>
-</tr>
-<tr>
-<td>Operations and Buffer cost</td>
-<td>100</td>
-</tr>
-</tbody>
-<tfoot>
-<tr>
-<td>Final Package Price</td>
-<td>₹6,899</td>
-</tr>
-</tfoot>
-</table>
-
-
-<div class="important-notes">
-<h3 class="section-title">⚠️ Disclaimer</h3>
-<ul>
-<li><strong>Trip Confirmation:</strong> This trip will be confirmed once a minimum of 8 participants sign up.</li>
-<li><strong>Payment Processing:</strong> Credit card payments may incur an additional processing fee of 2.5%.</li>
-<li><strong>Additional Costs:</strong> No additional costs involved apart from personal expenses or shopping.</li>
-<li><strong>Itinerary Changes:</strong> Minor changes may occur due to weather or road conditions, without affecting the experience.</li>
-</ul>
-</div>`,
-                status: "completed"
+                key: 'gandikota',
+                title: 'Gandikota',
+                badge: 'New Year Special',
+                tagline: 'From city noise to canyon silence',
+                dates: 'January 2026',
+                duration: '3N 2D',
+                groupSize: '≤16 people',
+                price: '₹7,499',
+                whatMakesThisTrip: 'A shift in pace — into stillness, into space, into something quieter.',
+                whatToExpect: 'Canyon views, caves, slow days, and evenings that don\'t need filling.',
+                covered: 'Travel · Stay · Meals · Activities',
+                whatMadeThisTrip: 'Gandikota was never the obvious choice. Too far, too hot, too remote — and maybe that\'s exactly why it became unforgettable.\n\nSomewhere on the road, games stopped being games and became a shortcut into honesty. People shared stories with strangers like they had known them longer than a few hours. And once we reached the canyon, something shifted quietly.\n\nThe hike was harsh. The heat didn\'t let up. But when one person stopped, everyone stopped. No one needed to say anything. Care arrived naturally.\n\nThe canyon stripped everything down — noise, distractions, urgency. With no signal and nowhere else to be, people slowly became fully present with each other.\n\nBy the second night, the group no longer felt temporary. It felt safe.',
+                whatWeDid: 'Roadtrip games, UNO wars, canyon hikes, and boating through the Pennar River between towering cliffs. Sunset viewpoints that looked unreal. Bonfire conversations that turned unexpectedly personal.\n\nWe explored Belum Caves, watched sunrise over the canyon, argued over Mafia games, adopted a random chai-stop dog for an hour, and spent nights on swings talking longer than we planned to.\n\nThere were moments of chaos too — a phone slipping at the viewpoint, collective panic, people screaming louder than the fall itself.\n\nAnd somewhere between the canyon silence and the late-night laughter, strangers disappeared. Gandikota didn\'t try to entertain us. It simply gave us space to feel human again.',
+                status: 'completed',
+                whatsappMsg: "Hi, Let's go to Gandikota again!"
             },
-            gangaravambeach: {
-                title: "Gangaravam Beach",
-                backgroundImage: "./journeys/Gangaravam Beach.png",
-                description: "Relax and unwind at the pristine Gangaravam Beach. More details coming soon!",
-                status: "Request Invite"
+            mulkiholi: {
+                key: 'mulkiholi',
+                title: 'Mulki',
+                badge: 'Holi Special',
+                tagline: 'A trip that moves between movement and stillness',
+                dates: 'March 2026',
+                groupSize: '≤11 people',
+                price: '₹19,999 · The Loft (9-share)\n₹20,999 · Courtyard Room (3-share)',
+                whatMakesThisTrip: 'A softer version of routine — work, surf, and slow living in one place.',
+                whatToExpect: 'Surf mornings, quiet work hours, and evenings exploring coastal life and traditions.',
+                covered: 'Travel · Stay · Surf · Meals · Experiences',
+                whatMadeThisTrip: 'Mulki moved in its own rhythm.\n\nNine strangers arrived looking for a break — from work, routine, noise, or maybe just themselves for a while. And somewhere between long highway conversations, endless UNO games, surf mornings, and quiet coastal nights, the distance between people disappeared naturally.\n\nThe trip never felt rushed. Days began with the ocean and ended wherever the night wanted to take us — beaches, villages, lighthouses, festivals, conversations, or just sitting together doing absolutely nothing.\n\nWhat made Mulki special wasn\'t only the surfing or the sea. It was the feeling of returning every evening with salt in your hair, tired shoulders, and people who no longer felt unfamiliar.\n\nBy the end, we weren\'t counting activities anymore. We were counting moments we didn\'t want to leave behind.',
+                whatWeDid: 'Three mornings of surf lessons at sunrise. Ice bath recovery sessions. Scooty rides through quiet coastal roads. Island hopping that somehow turned into our own little sunset party.\n\nWe explored Udupi and Mangalore, witnessed Holi celebrations at Krishna Matha, pulled the temple ratham, searched for toddy shops, watched cricket matches together, got lost on roads with almost no fuel left, and ended nights with conversations about everything and nothing.\n\nThere were seafood lunches, Naturals ice cream by the beach, lighthouse visits in complete darkness, naps after surfing, music on boats, and the kind of laughter that only happens when people stop trying to impress each other.\n\nThe waves were unforgettable. But the people became the reason we missed Mulki long after coming back.',
+                status: 'completed',
+                whatsappMsg: "Hi, Let's go to Mulki again!"
             },
-            gokarna: {
-                title: "Gokarna",
-                backgroundImage: "./journeys/Gokarna.png",
-                description: "Experience the spiritual and beach vibes of Gokarna. Details will be revealed soon!",
-                status: "Request Invite"
-            },
-            kalsubaipeak: {
-                title: "Kalsubai Peak",
-                backgroundImage: "./journeys/Kalsubai Peak.png",
-                description: "Conquer the highest peak in Maharashtra - Kalsubai Peak. More details coming soon!",
-                status: "Request Invite"
-            },
-            kaluwaterfalls: {
-                title: "Kalu Waterfalls",
-                backgroundImage: "./journeys/Kalu Waterfalls.png",
-                description: "Discover the beauty of Kalu Waterfalls. Details will be revealed soon!",
-                status: "Request Invite"
-            },
-            khandala: {
-                title: "Khandala",
-                backgroundImage: "./journeys/Khandala.png",
-                description: "Escape to the hill station of Khandala. More details coming soon!",
-                status: "Request Invite"
-            },
-            kolad: {
-                title: "Kolad",
-                backgroundImage: "./journeys/Kolad.png",
-                description: "Experience adventure sports and natural beauty in Kolad. Details will be revealed soon!",
-                status: "Request Invite"
-            },
-            kudremukhtrek: {
-                title: "Kudremukh Trek",
-                backgroundImage: "./journeys/Kudremukh Trek.png",
-                dates: "Aug 21–24, 2026 (3N/2D)",
-                start: "Hyderabad departure on Aug 21, 2026",
-                return: "Return to Hyderabad on Aug 24, 2026",
-                price: "₹10,499",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 1 night in campsites ## All meals, 2 days (₹300/meal cap) ## Trek permits + guide ## Local transfers ## Trip captain",
-                description: "A compact, scenic trek across Kudremukh with local guides and a campsite night.",
-                status: "active"
+            bhandardarafireflyfestival: {
+                key: 'bhandardarafireflyfestival',
+                title: 'Bhandardara',
+                badge: 'Weekend',
+                tagline: 'The forest lights itself up after midnight — firefly festival, once a year',
+                startDate: '5 Jun 2026 · Hyderabad to Hyderabad',
+                endDate: '8 Jun 2026 · 3N 2D',
+                groupSize: '≤15 people',
+                price: '₹9,999 per person, all-inclusive',
+                whatMakesThisTrip: 'We leave Friday night and return Monday morning before work. In between, we camp in the Bhandardara forest and in the middle of the night we walk into the jungle to witness the fireflies. Thousands of them. They light up the trees in pulses — synchronised, silent, completely unreal. It happens once a year. We stay in camps with all meals included for 2 days. This is one of those things you genuinely cannot describe to someone who hasn\'t seen it.',
+                itineraryHint: 'The fireflies are the plan. Everything else — the lake, the dam, the trails — is the context around one extraordinary night in the jungle.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 1 night camping · All meals, 2 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Bhandardara without me!"
             },
             lonavala: {
-                title: "Lonavala · Mulshi",
-                backgroundImage: "./journeys/Lonavala.png",
-                dates: "Jun 25–29, 2026 (4N/3D)",
-                start: "Hyderabad departure on Jun 25, 2026",
-                return: "Return to Hyderabad on Jun 29, 2026",
-                price: "₹15,499",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 2 nights ## All meals, 3 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "Monsoon hills, lakes, and slow walks around Lonavala and Mulshi.",
-                status: "active"
+                key: 'lonavala',
+                title: 'Lonavala/ Mulshi',
+                badge: 'Muharram Long Weekend',
+                tagline: 'First monsoon rains at Mulshi Lake — rain on the Western Ghats sounds different',
+                startDate: '25 Jun 2026 · Hyderabad to Hyderabad',
+                endDate: '29 Jun 2026 · 4N 3D',
+                groupSize: '≤15 people',
+                price: '₹15,499 per person',
+                whatMakesThisTrip: 'Mulshi in the monsoon is green in a way that feels almost theatrical. The lake fills up, the ghats are slippery and loud with water, and the air smells of wet mud and pine. We go at exactly the right time — the first proper rains of the season, the Muharram long weekend giving us four days without burning more than one leave. We explore Mulshi Lake and everything around it. Hyderabad to Hyderabad, food for 3 days included.',
+                itineraryHint: 'Lakeside mornings. A waterfall or two. The kind of driving that\'s the actual destination. And a meal somewhere with no Instagram presence whatsoever.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 2 nights · All meals, 3 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Lonavala · Mulshi without me!"
             },
             kashmir: {
-                title: "Kashmir — Kashmir Great Lakes",
-                backgroundImage: "./journeys/Kashmir.png",
-                dates: "10 Jul 2026 – 19 Jul 2026 (9N/10D)",
-                start: "10 Jul 2026 · Srinagar (flights on you)",
-                return: "19 Jul 2026 · Srinagar",
-                price: "₹26,499",
-                maxSpots: "≤20 people",
-                lastDate: "",
-                includes: "Kashmir Great Lakes trek (Srinagar to Srinagar, full circuit) ## 2 days in Srinagar ## Stay (camps during trek + hotel) ## All meals ## Trek guide, permits, local transfers ## Trip captain ## Flights not included",
-                description: `This is our first time going to the mountains. Not as tourists. Not as a checklist. But properly. The Kashmir Great Lakes trek is one of those routes people come back from different. Over 7 days, we walk through shifting landscapes - alpine lakes, high passes, long quiet stretches where there’s nothing to do except keep moving. Vishansar, Krishansar, Gadsar, Satsar, Gangabal. We go above 13,000 ft. We camp, walk, and slow down. Then we return to Srinagar, Kashmir, for two days in the valley - the lake, old city, gardens. Flights to Srinagar are on you. Everything from Srinagar is on us.
-
-Itinerary hint: Seven days in the mountains. Two days exploring Kashmir. Somewhere along the way, things that felt urgent back home stop feeling that way.
-
-Price: ₹26,499 per person · All-inclusive (Srinagar to Srinagar)`,
-                status: "active"
-            },
-            mahabaleshwar: {
-                title: "Mahabaleshwar",
-                backgroundImage: "./journeys/Mahabaleshwar.png",
-                description: "Explore the strawberry capital and hill station of Mahabaleshwar. More details coming soon!",
-                status: "Request Invite"
+                key: 'kashmir',
+                title: 'Kashmir',
+                badge: 'Expedition',
+                badgeClass: 'expedition',
+                tagline: 'Our first mountain trip — Kashmir Great Lakes trek, Srinagar to Srinagar',
+                startDate: '10 Jul 2026 · Srinagar',
+                endDate: '19 Jul 2026 · 9N 10D',
+                groupSize: '≤20 people',
+                price: '₹27,499 per person\n(flights not included — on participants)',
+                whatMakesThisTrip: 'This is our first proper mountain expedition. Seven days across the world\'s most scenic trek — Kashmir Great Lakes Trek — witnessing glacial lakes at altitude, followed by two days in Srinagar. It\'s not just a trek — it\'s a complete shift in pace, scale, and perspective.',
+                itineraryHint: 'Days at altitude. Lakes that don\'t look real. And a morning somewhere above 4,000m where everything else feels distant.',
+                covered: 'KGL Trek (Srinagar to Srinagar, full circuit, 7 days) · 2 days Kashmir exploration · All stay (campsites on trek + homestay in Kashmir) · All meals throughout (₹300/meal cap) · Trek guide + Safety + Permits · Local transfers in Kashmir · Trip captain\n\nFlights not included — to be arranged by participants.',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Kashmir without me!"
             },
             matheran: {
-                title: "Matheran",
-                backgroundImage: "./journeys/Matheran.png",
-                dates: "Aug 6–10, 2026 (4N/3D)",
-                start: "Hyderabad departure on Aug 6, 2026",
-                return: "Return to Hyderabad on Aug 10, 2026",
-                price: "₹14,499",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (Hyderabad to Hyderabad, including toy train into Matheran) ## Stay — 2 nights ## All meals, 3 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "Matheran: a quiet, car-free hill station with slow walks, toy-train rides, and gentle hills.",
-                status: "active"
+                key: 'matheran',
+                title: 'Matheran',
+                badge: 'Friday Long Weekend',
+                tagline: 'No cars, no roads — just hills, rain, and time',
+                startDate: '6 Aug 2026 · Hyderabad to Hyderabad',
+                endDate: '10 Aug 2026 · 4N 3D',
+                groupSize: '≤11 people',
+                price: '₹14,499 per person',
+                whatMakesThisTrip: 'Matheran is India\'s only hill station with no access for vehicles — no cars, no bikes, no autorickshaws. You reach it by toy train, a narrow-gauge railway running since 1907. Once inside, you move on foot or horseback. No pollution. No engine noise. In monsoon the paths turn red mud, the viewpoints disappear into cloud, and there\'s genuinely nothing to do but walk slowly and eat well. Four days, all included, Hyderabad to Hyderabad.',
+                itineraryHint: 'A toy train that doesn\'t rush. Red mud paths. Viewpoints you may or may not see — that\'s up to the clouds. Good food at small places with no queue.',
+                covered: 'Travel (Hyderabad to Hyderabad, including toy train into Matheran) · Stay — 2 nights · All meals, 3 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Matheran without me!"
             },
-            nashik: {
-                title: "Nashik",
-                backgroundImage: "./journeys/Nashik.png",
-                description: "Discover the wine capital and spiritual city of Nashik. More details coming soon!",
-                status: "Request Invite"
+            kudremukhtrek: {
+                key: 'kudremukhtrek',
+                title: 'Kudremukh/ Netravathi',
+                badge: 'Weekend Trek',
+                tagline: 'Two treks, one weekend — and a river that begins here',
+                startDate: '21 Aug 2026 · Hyderabad to Hyderabad',
+                endDate: '24 Aug 2026 · 3N 2D',
+                groupSize: '≤11 people',
+                price: '₹10,499 per person',
+                whatMakesThisTrip: 'Friday night after work, Monday morning back at the desk. In between: the Kudremukh trek and the Netravathi river trek — both done in the same weekend. Kudremukh at monsoon capacity is the forest at its most dramatic. The Netravathi starts here as a thin cold stream you can step across — you\'re standing at the source of a river that runs to the Arabian Sea. Campsites both nights. Travel Hyderabad to Hyderabad, stay, and food for 2 days all included.',
+                itineraryHint: 'A forest that demands your full attention. A river crossing that\'s colder than you\'ll expect. A campsite where the only sound at night is rain on canvas.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 1 night in campsites · All meals, 2 days (₹300/meal cap) · Trek permits + guide · Local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Kudremukh without me!"
             },
-            netravathitrek: {
-                title: "Netravathi Trek",
-                backgroundImage: "./journeys/Netravathi Trek (Karnataka).png",
-                description: "Trek through the beautiful Netravathi region in Karnataka. Details will be revealed soon!",
-                status: "Request Invite"
-            },
-            pondicherry: {
-                title: "Pondicherry",
-                backgroundImage: "./journeys/Pondicherry.png",
-                dates: "Nov 20–25, 2026 (5N/4D)",
-                start: "Hyderabad departure on Nov 20, 2026",
-                return: "Return to Hyderabad on Nov 25, 2026",
-                price: "₹18,999",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 3 nights ## All meals, 4 days (₹300/meal cap) ## Surfing lesson + board ## Activities + local transfers ## Trip captain",
-                description: "French-colonial charm, beaches, and surf sessions in Pondicherry.",
-                status: "active"
-            },
-            honnavarudupi: {
-                title: "Honnavar · Udupi",
-                backgroundImage: "./journeys/Honnavar-Udupi.png",
-                dates: "Dec 23–28, 2026 (5N/4D)",
-                start: "23rd December, 2026, from Hyderabad",
-                return: "28th December, 2026, to Hyderabad",
-                price: "₹19,499",
-                maxSpots: "11 only",
-                lastDate: "",
-                includes: "Travel (both ways, Hyderabad to Hyderabad) ## Stay — 3 nights ## All meals, 4 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "A year-end coastal route through Honnavar and Udupi with backwaters, quiet beaches, and slow travel moments during the Christmas break.",
-                status: "active"
-            },
-            raigad: {
-                title: "Raigad",
-                backgroundImage: "./journeys/Raigad.png",
-                description: "Explore the historical fort and scenic beauty of Raigad. Details will be revealed soon!",
-                status: "Request Invite"
+            chikmagalursakleshpur: {
+                key: 'chikmagalursakleshpur',
+                title: 'Chikmagalur/ Sakleshpur',
+                badge: 'Janmashtami Long Weekend',
+                tagline: 'Two hill towns in the monsoon — coffee, rain, and roads that don\'t need a plan',
+                startDate: '3 Sep 2026 · Hyderabad to Hyderabad',
+                endDate: '7 Sep 2026 · 4N 3D',
+                groupSize: '≤11 people',
+                price: '₹17,499 per person',
+                whatMakesThisTrip: 'This trip connects Chikmagalur and Sakleshpur in one continuous monsoon stretch. Coffee estates, mist, and slow roads — the kind of places where you don\'t feel the need to rush.',
+                itineraryHint: 'Two hill towns, one stretch. Coffee, rain walks, and time that doesn\'t feel scheduled.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 2 nights · All meals, 3 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Chikmagalur without me!"
             },
             southgoa: {
-                title: "South Goa",
-                backgroundImage: "./journeys/South Goa.png",
-                dates: "Sep 12–17, 2026 (6D)",
-                start: "Hyderabad departure on Sep 12, 2026",
-                return: "Return on Sep 17, 2026",
-                price: "₹20,999",
-                maxSpots: "",
-                lastDate: "",
-                includes: "Travel (Hyderabad to Hyderabad, train) ## Stay — 3 nights in South Goa ## All meals, 4 days (₹300/meal cap) ## Activities + local transfers ## Trip captain",
-                description: "A relaxed coastal escape through South Goa's quieter beaches and beachside stays.",
-                status: "active"
+                key: 'southgoa',
+                title: 'South Goa',
+                badge: 'Ganesh Chaturthi',
+                tagline: 'The Konkan train, empty beaches, and Goa without the noise',
+                startDate: '18 Sep 2026 · Hyderabad',
+                endDate: '25 Sep 2026 · 6D',
+                groupSize: '≤16 people',
+                price: '₹20,999 per person',
+                whatMakesThisTrip: 'We go by the most scenic train ride — witnessing the beautiful Dudhsagar Waterfalls — and those two travel days are not just transit. They\'re two of the most scenic train journeys in India. South Goa in monsoon is everything North Goa isn\'t: empty beaches, no sunbeds, green cliffs meeting grey sea. We go during post monsoon, hoping to catch the festival energy along the way. Travel, stay, and food for 4 days included — Hyderabad to Hyderabad.',
+                itineraryHint: 'Empty monsoon beaches. A train window with the door open. A village somewhere on the Konkan coast. Goa the way it was before everyone found it.',
+                covered: 'Travel (Hyderabad to Hyderabad, train) · Stay — 3 nights in South Goa · All meals, 4 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to South Goa without me!"
             },
-            varkala: {
-                title: "Varkala",
-                backgroundImage: "./journeys/Varkala.png",
-                description: "Discover the cliff beach and spiritual vibes of Varkala. Details will be revealed soon!",
-                status: "Request Invite"
+            pondicherry: {
+                key: 'pondicherry',
+                title: 'Pondicherry',
+                badge: 'Long Weekend',
+                tagline: 'Five days in Pondi — surfing at dawn, French quarters with no plan, sea before the rush',
+                startDate: '20 Nov 2026 · Hyderabad to Hyderabad',
+                endDate: '25 Nov 2026 · 5N 4D',
+                groupSize: '≤16 people',
+                price: '₹18,999 per person',
+                whatMakesThisTrip: 'Pondicherry in November is past the monsoon and before the tourist rush — the sea is calm, the promenade is quiet in the mornings, and the French quarter is best walked slowly with no particular plan. We\'re doing surfing on this trip: early mornings at Serenity Beach before the town wakes up, lessons included. Five days is the right amount of time to actually feel Pondi rather than just pass through it. Travel, stay, and food for 4 days included — Hyderabad to Hyderabad.',
+                itineraryHint: 'Surfing at dawn with a lesson if you need one. A morning in the French quarter where the only plan is coffee and walking. A meal Tiri found last time she was here. The long journey back where everyone sleeps.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 3 nights · All meals, 4 days (₹300/meal cap) · Surfing lesson + board · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Pondicherry without me!"
             },
-            wayanad: {
-                title: "Wayanad",
-                backgroundImage: "./journeys/Wayanad.png",
-                description: "Explore the lush green landscapes and wildlife of Wayanad. More details coming soon!",
-                status: "Request Invite"
+            honnavarudupi: {
+                key: 'honnavarudupi',
+                title: 'Honnavar / Udupi',
+                badge: 'Christmas Break',
+                badgeClass: 'christmas',
+                tagline: 'A quieter coast for Christmas',
+                startDate: '23 Dec 2026 · Hyderabad to Hyderabad',
+                endDate: '28 Dec 2026 · 5N 4D',
+                groupSize: '≤11 people',
+                price: '₹19,499 per person',
+                whatMakesThisTrip: 'The Karnataka coast in December is the cleanest window of the year — post-monsoon, pre-summer, the right temperature to be outdoors all day. We go to Honnavar and Udupi — two of the most underrated stretches on the west coast. Christmas here means no malls, no countdown, no forced cheer. Just a small group, backwaters by a narrow boat, an empty beach, and Udupi breakfast — which, for the record, justifies the entire trip by itself. Travel, stay, and food for 4 days included, Hyderabad to Hyderabad.',
+                itineraryHint: 'Backwaters by a narrow boat. A beach that doesn\'t appear on any list. Udupi breakfast you\'ll think about for weeks. A Christmas evening that\'s genuinely, properly quiet.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 3 nights · All meals, 4 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, Don't go to Honnavar without me!"
+            },
+            badami: {
+                key: 'badami',
+                title: 'Badami',
+                badge: 'Surprise Weekend Getaway',
+                badgeClass: 'surprise',
+                tagline: 'Leave after work Friday, wake up at a cliff carved by hand a thousand years ago',
+                dates: 'TBD',
+                duration: '3N 2D',
+                groupSize: '≤11 people',
+                price: '₹9,999 per person',
+                whatMakesThisTrip: 'We leave after work on Friday and return before work on Monday. In between: cave temples carved into red sandstone cliffs in the 6th century, rock art older than that, and a lake at the base of it all. In monsoon the red sandstone turns deeper. The crowds don\'t come. Weekend escape, Hyderabad to Hyderabad, stay and food for 2 days included.',
+                itineraryHint: 'Ancient caves. A climb that earns its view. A quiet tank at dusk. Whatever else we find — there\'s always something in places like this.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 1 night · All meals, 2 days (₹300/meal cap) · Activities + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, I'm interested in the Badami surprise trip!"
+            },
+            araku: {
+                key: 'araku',
+                title: 'Araku',
+                badge: 'Surprise Trek / Trip',
+                badgeClass: 'surprise',
+                tagline: 'Jindhagada Peak and the valley below — Andhra\'s Eastern Ghats at their most alive',
+                dates: 'TBD',
+                duration: '4N 3D',
+                groupSize: '≤15 people',
+                price: '₹16,499 per person',
+                whatMakesThisTrip: 'Araku is Andhra\'s best-kept secret. Most people rush past the valley to get to the peak. We don\'t. Jindhagada is the highest point in the region and a relatively accessible trek — the climb earns its view. Then we come down and take proper time in the valley: tribal villages, coffee near where it grew, waterfalls still running from the monsoon. Hyderabad to Hyderabad, stay and food for 3 days included.',
+                itineraryHint: 'A peak that earns its climb. A valley that rewards the time you take with it. Coffee that tastes different near the plantation it came from. Enough empty space to actually exhale.',
+                covered: 'Travel (both ways, Hyderabad to Hyderabad) · Stay — 2 nights · Jindhagada Trek · All meals, 3 days (₹300/meal cap) · Trek support + local transfers · Trip captain',
+                status: 'upcoming',
+                whatsappMsg: "Hi, I'm interested in the Araku surprise trip!"
             }
         };
 
-        // Initialize page based on URL parameter
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const destination = urlParams.get('destination');
+        function escHtml(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
 
-            if (destination && journeyData[destination.toLowerCase()]) {
-                loadJourneyDetails(destination.toLowerCase());
+        function nl2p(str) {
+            if (!str) return '';
+            return str.split('\n\n').map(p => `<p style="margin:0 0 0.85rem 0;">${p.replace(/\n/g, '<br>')}</p>`).join('');
+        }
+
+        function renderDetail(key) {
+            const data = journeyData[key];
+            if (!data) {
+                window.location.href = 'all-trips.html';
+                return;
+            }
+
+            document.title = `${data.title} - Tiri Tara`;
+            document.getElementById('page-title').textContent = `${data.title} - Tiri Tara`;
+
+
+            // Build badge HTML
+            const badgeHtml = data.badge
+                ? `<span class="detail-badge ${data.badgeClass || ''}">${escHtml(data.badge)}</span>`
+                : '';
+
+            // Build fields
+            const fields = [];
+
+            if (data.tagline) fields.push({ label: 'Tagline', value: escHtml(data.tagline), cls: 'tagline-value' });
+
+            // Dates: support both startDate/endDate and simple dates
+            if (data.startDate) fields.push({ label: 'Start date', value: escHtml(data.startDate) });
+            if (data.endDate) fields.push({ label: 'End date', value: escHtml(data.endDate) });
+            if (data.dates && !data.startDate) fields.push({ label: 'Dates', value: escHtml(data.dates) });
+            if (data.duration && !data.endDate) fields.push({ label: 'Duration', value: escHtml(data.duration) });
+            if (data.groupSize) fields.push({ label: 'Group size', value: escHtml(data.groupSize) });
+            if (data.whatMakesThisTrip) fields.push({ label: 'What makes this trip', value: nl2p(data.whatMakesThisTrip), raw: true });
+            if (data.whatToExpect) fields.push({ label: 'What to expect', value: nl2p(data.whatToExpect), raw: true });
+            if (data.itineraryHint) fields.push({ label: 'Itinerary hint', value: nl2p(data.itineraryHint), raw: true });
+            if (data.covered) fields.push({ label: "What's covered", value: escHtml(data.covered) });
+            if (data.price) fields.push({ label: 'Price', value: escHtml(data.price).replace(/\n/g, '<br>'), cls: 'price-value', raw: true });
+
+            // For completed trips, show what made it special and what we did
+            if (data.status === 'completed') {
+                if (data.whatMadeThisTrip) fields.push({ label: 'What made this trip special', value: nl2p(data.whatMadeThisTrip), raw: true });
+                if (data.whatWeDid) fields.push({ label: 'What we did', value: nl2p(data.whatWeDid), raw: true });
+            }
+
+            const tableRows = fields.map(f => `
+                <div class="detail-row">
+                    <div class="detail-label">${f.label}</div>
+                    <div class="detail-value ${f.cls || ''}">${f.raw ? f.value : f.value}</div>
+                </div>
+            `).join('');
+
+            const waMsg = encodeURIComponent(data.whatsappMsg || `Hi, Don't go to ${data.title} without me!`);
+            const inviteLabel = data.status === 'completed' ? "Let's go again →" : "Request invite →";
+
+            document.getElementById('detail-container').innerHTML = `
+                <div class="detail-header">
+                    <h1 class="detail-title">${escHtml(data.title)}</h1>
+                    <div class="detail-cta">
+                        <a href="https://wa.me/918143120853?text=${waMsg}" class="btn-invite-detail" target="_blank" rel="noopener">${inviteLabel}</a>
+                    </div>
+                </div>
+                <div class="detail-table">
+                    ${tableRows}
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const dest = (params.get('destination') || '').toLowerCase();
+            if (dest && journeyData[dest]) {
+                renderDetail(dest);
             } else {
-                // If no valid destination, redirect to main page
-                window.location.href = 'index.html#journeys';
+                window.location.href = 'all-trips.html';
             }
         });
 
-        function loadJourneyDetails(destination) {
-            const data = journeyData[destination];
-            if (!data) return;
-
-            // Update page title
-            document.getElementById('page-title').textContent = `${data.title} - Tiri Tara`;
-            document.title = `${data.title} - Tiri Tara`;
-
-            // Set background image
-            const body = document.getElementById('journey-page-body');
-            body.style.backgroundImage = `url('${data.backgroundImage}')`;
-
-            // Generate content based on status
-            const cardElement = document.getElementById('journey-card');
-
-            if (data.status === 'active' || data.status === 'completed') {
-                cardElement.innerHTML = generateActiveJourneyCard(data);
-            } else {
-                cardElement.innerHTML = generateComingSoonCard(data);
-            }
-
-            // Setup back button
-            setupBackButton();
-        }
-
-        function generateActiveJourneyCard(data) {
-            // Helper function to generate info item only if value exists
-            const generateInfoItem = (label, value, cssClass = '') => {
-                if (!value || value.trim() === '') return '';
-                const valueClass = cssClass ? ` class="${cssClass}"` : '';
-                
-                // Special handling for Includes field - make it a bulleted list
-                if (label === 'Includes') {
-                    const items = value.split('##').map(item => `<li>${item.trim()}</li>`).join('');
-                    return `
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">${label}:</span>
-                            <ul class="journey-info-list${valueClass}">
-                                ${items}
-                            </ul>
-                        </div>`;
-                }
-                
-                return `
-                        <div class="journey-info-item">
-                            <span class="journey-info-label">${label}:</span>
-                            <span class="journey-info-value${valueClass}">${value}</span>
-                        </div>`;
-            };
-
-            return `
-                <h1>${data.title}</h1>
-                
-                <div class="journey-content-grid">
-                    <div class="journey-info">
-                        ${generateInfoItem('Dates', data.dates)}
-                        ${generateInfoItem('Start', data.start)}
-                        ${generateInfoItem('Return', data.return)}
-                        ${generateInfoItem('Price', data.price, 'price-highlight')}
-                        ${generateInfoItem('Max Spots', data.maxSpots)}
-                        ${generateInfoItem('Last day to request an invite', data.lastDate)}
-                        ${generateInfoItem('Includes', data.includes)}
-                    </div>
-
-                    <div class="what-to-expect">
-                        <h2>What to Expect:</h2>
-                        ${data.description.split('\n\n').map(para => `<p>${para.trim()}</p>`).join('')}
-                    </div>
-                </div>
-
-                <div class="book-now-section">
-                    <button class="book-now-btn" onclick="requestInvite('${data.title}', '${data.status}')">
-                        ${data.status === 'completed' ? "Let's go again" : "Request Invite"}
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateComingSoonCard(data) {
-            return `
-                <h1>${data.title}</h1>
-                
-                <div class="coming-soon">
-                    <h2>To be Revealed Soon!</h2>
-                    <p>${data.description}</p>
-                    <button class="book-now-btn" onclick="requestInvite('${data.title}')">
-                        Request Invite
-                    </button>
-                </div>
-            `;
-        }
-
-        function setupBackButton() {
-            const backButton = document.getElementById('back-button');
-            if (!backButton) return;
-            backButton.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                // Check if we came from the main page
-                if (document.referrer.includes(window.location.origin)) {
-                    window.history.back();
-                } else {
-                    window.location.href = 'index.html#journeys';
-                }
-            });
-        }
-
-        function requestInvite(destination, status) {
-            // Create WhatsApp URL with phone number and pre-filled message
-            const phoneNumber = '918143120853'; // +91 81431 20853
-            // Different message for completed trips
-            const message = status === 'completed'
-                ? `Hi, Let's go to ${destination} again!`
-                : `Hi, Don't go to ${destination} without me!`;
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-            // Track booking request
-            if (typeof window.va !== 'undefined') {
-                window.va('track', 'Booking Requested', { destination: destination, status: status || 'upcoming' });
-            }
-
-            // Open in new tab/window
-            window.open(whatsappURL, '_blank');
-        }
-
-        // Join form functionality
-        function openJoinForm(event, updateURL = false) {
+        function openJoinForm(event) {
             if (event) event.preventDefault();
-
             const popup = document.getElementById('joinFormPopup');
             if (popup) {
                 popup.style.display = 'flex';
                 popup.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
-
                 popup.addEventListener('click', function (e) {
-                    if (e.target === popup) {
-                        closeJoinForm();
-                    }
+                    if (e.target === popup) closeJoinForm();
                 });
-
-                const closeBtn = popup.querySelector('.form-close-btn');
-                if (closeBtn) {
-                    closeBtn.focus();
-                }
             }
         }
 
@@ -1423,6 +690,13 @@ Price: ₹26,499 per person · All-inclusive (Srinagar to Srinagar)`,
             }
         }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </body>
 
 </html>
